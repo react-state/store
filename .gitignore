@@ -1,0 +1,5 @@
+node_modules/
+release/src/
+release/index
+release/index.*
+.vscode/
