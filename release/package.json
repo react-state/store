@@ -1,14 +1,22 @@
 {
-  "name": "react-state",
-  "version": "1.0.0",
+  "name": "react-state-rxjs",
+  "version": "1.0.1",
   "description": "RxJS and ImmutableJs powered nested state management for React apps inspired by @ngrx.",
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --profile --port 3000 --info",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Vytautas Pranskunas",
-  "license": "ISC",
+  "keywords": [
+    "RxJS",
+    "React",
+    "Immutable Js",
+    "Nested",
+    "State"
+  ],
+  "author": "Vytautas Pranskunas <vytautas.pranskunas@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/react-state/store#readme",
   "dependencies": {
     "bootstrap": "^4.0.0-alpha.6",
     "core-js": "^2.4.1",
