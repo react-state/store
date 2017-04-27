@@ -2,8 +2,6 @@ import { StateHistory } from './../state/history';
 import { Store } from "../store/store";
 import { resolveAsync } from "../helpers/async-filter"
 
-// import { Store } from '../store/store';
-
 export function InjectStore(newPath: string[] | string | ((currentPath: any, stateIndex: any) => string[] | string), intialState?: Object | any) {
     let getStatePath = (currentPath: any, stateIndex: any, extractedPath: any) => {
 

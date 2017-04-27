@@ -12,10 +12,20 @@ on top of React. Core tenets:
 react-state is build on same core as ng-state [ng-state](https://github.com/ng-state). So most library behaviour can be found there.
 
 ### Main differences from other RxJs store based state managements solutions
-- Developers do not need to rememebr long nested paths to access store
+- Allows state nesting
+- Uses immutablejs fast equality object check for high performance
+- Actions can return observables, promises or simple objects
 - Decoples / Hides paths to state from components
 - Uses Redux like pure functions - actions to interact with state
-- Less boilerplate
+- No boilerplate
+- Developers do not need to rememebr long nested paths to access store
+
+### Performance first
+Each component implements ```shouldComponentUpdate``` method which default return value changed to ```false```.
+Component updates only when:
+- state is changed
+- changed default value of ```shouldComponentUpdate```to ```true``` by passing ```true``` to ComponentState decorator
+- component has explicit ```shouldComponentUpdate``` implementation that cause update
 
 ## Main differences made for React:
 
@@ -23,13 +33,12 @@ react-state is build on same core as ng-state [ng-state](https://github.com/ng-s
 In your app's main module, register store with initial state by using `ReactState.init`
 
 ```ts
-ReactState.init((state: any, routerHistory: History) => {
+ReactState.init((routerHistory: History) => {
     ReactDOM.render(<Main history={routerHistory} />, document.getElementById("example"))
 }, initialState)
 ```
 
 #### params
-- state - current state that will be passed in each time state mutates
 - routeHistory - it is react-router-dom 'createHistory' object initialized under the hood to collect routing history for 'time travel' functionality. This param passed to Main component and then to the Router
 ```ts
 <!--index.tsx-->

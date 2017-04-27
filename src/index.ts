@@ -7,7 +7,7 @@ import { StateHistory } from "./state/history";
 import { Store } from "./store/store";
 
 export class ReactState {
-    static init(domRender: (state: any, history: History) => void, initialState: any, collectHistory: boolean = true, storeHistoryItems: number = 100) {
+    static init(domRender: (history: History) => void, initialState: any, collectHistory: boolean = true, storeHistoryItems: number = 100) {
         const store = new Store(new State(initialState));
         new StateHistory(store, collectHistory, storeHistoryItems).init();
         (<any>window).state = StateHistory;
@@ -17,13 +17,15 @@ export class ReactState {
         ReactState.initRenderDom(store, domRender, routerHistory);
     }
 
-    private static initRenderDom(store: Store<any>, domRender: (state: any, history: History) => void, routerHistory: History) {
-        store.subscribe((state: any) => {
-            try {
-                domRender(state, routerHistory);
-            } catch (exception) {
-                console.error(exception);
-            }
-        });
+    private static initRenderDom(store: Store<any>, domRender: (history: History) => void, routerHistory: History) {
+        store
+            .take(1)
+            .subscribe((state: any) => {
+                try {
+                    domRender(routerHistory);
+                } catch (exception) {
+                    console.error(exception);
+                }
+            });
     }
 }

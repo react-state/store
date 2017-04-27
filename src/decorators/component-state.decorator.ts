@@ -26,9 +26,15 @@ export function ComponentState(stateActions: any | ((T: any) => any), updateComp
                 const initState = new extractedStateAction();
                 this.statePath = initState.createStore(initState, this.statePath, this.props.stateIndex);
                 this.actions = initState;
+
+                this.subscribtion = initState.store
+                    .subscribe((state: any)=> {
+                        prevState = state;
+                        this.forceUpdate();
+                    });
             }
 
-            componentWillMount();
+            componentWillMount.call(this);
         }
 
         target.prototype.shouldComponentUpdate = function (nextProps: any, nextState: any) {
@@ -43,8 +49,9 @@ export function ComponentState(stateActions: any | ((T: any) => any), updateComp
 
         target.prototype.componentWillUnmount = function() {
             const observableIds = this.actions.getAllObservableIds(this.actions);
-            unsubscribe(observableIds)
-            componentWillMount();
+            unsubscribe(observableIds);
+            this.subscribtion.unsubscribe();
+            componentWillMount.call(this);
         }
     };
 }
