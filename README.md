@@ -24,8 +24,8 @@ react-state is build on same core as ng-state [ng-state](https://github.com/ng-s
 Each component implements ```shouldComponentUpdate``` method which default return value changed to ```false```.
 Component updates only when:
 - state is changed
-- changed default value of ```shouldComponentUpdate```to ```true``` by passing ```true``` to ComponentState decorator
-- component has explicit ```shouldComponentUpdate``` implementation that cause update
+- changed default value of ```shouldComponentUpdate``` to ```true``` by passing ```true``` to ComponentState decorator
+- component has explicit ```shouldComponentUpdate``` implementation that causes update
 
 ## Main differences made for React:
 
