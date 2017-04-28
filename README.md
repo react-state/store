@@ -12,15 +12,15 @@ on top of React. Core tenets:
 react-state is build on same core as [ng-state](https://github.com/ng-state). So most library behaviour can be found there.
 
 ### Main differences from other RxJs store based state managements solutions
-- Allows state nesting
+- Allows state nesting and injects responable peaces to components
 - Uses immutablejs fast equality object check for high performance
 - Actions can return observables, promises or simple objects
 - Decoples / Hides paths to state from components
 - Uses Redux like pure functions - actions to interact with state
-- Uses Redux like messages for updating unconnected states: see [ng-state](https://github.com/ng-state) for more detail explanation
-- Does not use React component state, so it can be used by use for different purposes
+- Uses Redux like messages for comunication between not related components: see [ng-state](https://github.com/ng-state) for more detail explanation
+- Does not use React component state, so it can be used by user for other purposes
 - No boilerplate
-- Developers do not need to rememebr long nested paths to access store
+- No long nested paths to access store
 
 ### Performance first
 Each component implements ```shouldComponentUpdate``` method which default return value changed to ```false```.
@@ -85,3 +85,7 @@ get todoDescription() {
 ```ts
 <StateHistoryComponent routerHistory={this.props.history} />
 ```
+
+### Here is basic flow with code side-by-side explained:
+
+![flow](/react-state-flow.png)
