@@ -29,6 +29,15 @@ Component updates only when:
 - changed default value of ```shouldComponentUpdate``` to ```true``` by passing ```true``` to ComponentState decorator
 - component has explicit ```shouldComponentUpdate``` implementation that causes update
 
+### Installation
+Install react-state-rxjs from npm:
+```bash
+npm install react-state-rxjs --save
+```
+
+### Examples
+- [Official react-state/example-app](https://github.com/react-state/example-app) is an officially maintained example application showcasing possibilities of ```react-state```
+
 ## Main differences made for React:
 
 ### Configuration
@@ -89,3 +98,6 @@ get todoDescription() {
 ### Here is basic flow with code side-by-side explained:
 
 ![flow](/react-state-flow.png)
+
+## Contributing
+Please read [contributing guidelines here](https://github.com/react-state/store/blob/master/CONTRIBUTING.md).
