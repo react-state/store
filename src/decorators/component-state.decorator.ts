@@ -57,5 +57,5 @@ export function ComponentState(stateActions: any | ((T: any) => any), updateComp
 }
 
 export interface IComponentStateActions<T> {
-    state: T;
+    actions: T;
 }
