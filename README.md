@@ -9,7 +9,7 @@ on top of React. Core tenets:
 - Each component gets its own peace of nested state
 - State accessed with 'actions' variable under component or the `Store`, an observable of state and an observer of global state
 
-react-state is build on same core as ng-state [ng-state](https://github.com/ng-state). So most library behaviour can be found there.
+react-state is build on same core as [ng-state](https://github.com/ng-state). So most library behaviour can be found there.
 
 ### Main differences from other RxJs store based state managements solutions
 - Allows state nesting
@@ -17,6 +17,8 @@ react-state is build on same core as ng-state [ng-state](https://github.com/ng-s
 - Actions can return observables, promises or simple objects
 - Decoples / Hides paths to state from components
 - Uses Redux like pure functions - actions to interact with state
+- Uses Redux like messages for updating unconnected states: see [ng-state](https://github.com/ng-state) for more detail explanation
+- Does not use React component state, so it can be used by use for different purposes
 - No boilerplate
 - Developers do not need to rememebr long nested paths to access store
 
