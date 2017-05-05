@@ -9,16 +9,18 @@ on top of React. Core tenets:
 - Each component gets its own peace of nested state
 - State accessed with 'actions' variable under component or the `Store`, an observable of state and an observer of global state
 
-react-state is build on same core as ng-state [ng-state](https://github.com/ng-state). So most library behaviour can be found there.
+react-state is build on same core as [ng-state](https://github.com/ng-state). So most library behaviour can be found there.
 
 ### Main differences from other RxJs store based state managements solutions
-- Allows state nesting
+- Allows state nesting and injects responable peaces to components
 - Uses immutablejs fast equality object check for high performance
 - Actions can return observables, promises or simple objects
 - Decoples / Hides paths to state from components
 - Uses Redux like pure functions - actions to interact with state
+- Uses Redux like messages for comunication between not related components: see [ng-state](https://github.com/ng-state) for more detail explanation
+- Does not use React component state, so it can be used by user for other purposes
 - No boilerplate
-- Developers do not need to rememebr long nested paths to access store
+- No long nested paths to access store
 
 ### Performance first
 Each component implements ```shouldComponentUpdate``` method which default return value changed to ```false```.
@@ -26,6 +28,15 @@ Component updates only when:
 - state is changed
 - changed default value of ```shouldComponentUpdate``` to ```true``` by passing ```true``` to ComponentState decorator
 - component has explicit ```shouldComponentUpdate``` implementation that causes update
+
+### Installation
+Install react-state-rxjs from npm:
+```bash
+npm install react-state-rxjs --save
+```
+
+### Examples
+- [Official react-state/example-app](https://github.com/react-state/example-app) is an officially maintained example application showcasing possibilities of ```react-state```
 
 ## Main differences made for React:
 
@@ -83,3 +94,10 @@ get todoDescription() {
 ```ts
 <StateHistoryComponent routerHistory={this.props.history} />
 ```
+
+### Here is basic flow with code side-by-side explained:
+
+![flow](/react-state-flow.png)
+
+## Contributing
+Please read [contributing guidelines here](https://github.com/react-state/store/blob/master/CONTRIBUTING.md).
