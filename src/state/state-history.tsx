@@ -56,7 +56,7 @@ export class StateHistoryComponent extends React.Component<any, any> {
 
         return (
             this.state.showHistory
-                ? <div style={historyHolder}>{todoItems}</div>
+                ? <div style={historyHolder as any}>{todoItems}</div>
                 : null
         );
     }
