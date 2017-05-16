@@ -12,3 +12,4 @@ export * from './src/helpers/async-filter';
 export * from './src/services/dispatcher';
 export * from './src/decorators/component-state.decorator';
 export * from './src/decorators/inject-store.decorator';
+export * from './src/react-component-with-state-actions';

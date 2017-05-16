@@ -56,6 +56,7 @@ export function ComponentState(stateActions: any | ((T: any) => any), updateComp
     };
 }
 
-export interface IComponentStateActions<T> {
-    actions: T;
+export abstract class HasStateActions<T> {
+    actions: T = null;
+    statePath: any = null;
 }

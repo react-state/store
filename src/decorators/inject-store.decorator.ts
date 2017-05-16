@@ -128,10 +128,7 @@ export function InjectStore(newPath: string[] | string | ((currentPath: any, sta
     };
 }
 
-export interface HasStore {
-    store: Store<any>;
-}
-
-export interface HasState {
-    state: any;
+export abstract class HasStore<T> {
+    store: Store<T> = null;
+    state?: any = null;
 }
