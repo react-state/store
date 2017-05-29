@@ -10,7 +10,7 @@ export function ComponentState(stateActions: any | ((T: any) => any), updateComp
         var componentWillMount = target.prototype.componentWillMount || (() => { });
         var componentWillUnmount = target.prototype.componentWillUnmount || (() => { });
         var shouldComponentUpdate = target.prototype.shouldComponentUpdate || (() => updateComponentOnEveryRender);
-        var prevState: Immutabtle.Map<any, any> = null;
+        this.prevState = null
 
         target.prototype.componentWillMount = function () {
             this.statePath = !this.props.statePath
@@ -29,7 +29,7 @@ export function ComponentState(stateActions: any | ((T: any) => any), updateComp
 
                 this.subscribtion = initState.store
                     .subscribe((state: any)=> {
-                        prevState = state;
+                        this.prevState = state;
                         this.forceUpdate();
                     });
             }
@@ -39,8 +39,8 @@ export function ComponentState(stateActions: any | ((T: any) => any), updateComp
 
         target.prototype.shouldComponentUpdate = function (nextProps: any, nextState: any) {
             const currentState = StateHistory.CURRENT_STATE.getIn(this.statePath);
-            const shouldUpdate = prevState === null || !prevState.equals(currentState);
-            prevState = currentState;
+            const shouldUpdate = this.prevState === null || !this.prevState.equals(currentState);
+            this.prevState = currentState;
 
             return shouldUpdate
                 ? true
