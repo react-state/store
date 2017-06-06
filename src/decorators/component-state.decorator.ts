@@ -24,14 +24,16 @@ export function ComponentState(stateActions: any | ((T: any) => any), updateComp
                     : stateActions;
 
                 const initState = new extractedStateAction();
-                this.statePath = initState.createStore(initState, this.statePath, this.props.stateIndex);
-                this.actions = initState;
+                const stateIndex = this.stateIndex
+                    ? this.stateIndex
+                    : this.props.stateIndex;
 
-                this.subscribtion = initState.store
-                    .subscribe((state: any)=> {
-                        this.prevState = state;
-                        this.forceUpdate();
-                    });
+                this.statePath = initState.createStore(this.statePath, stateIndex, (state: any) => {
+                    this.prevState = state;
+                    this.forceUpdate();
+                });
+
+                this.actions = initState;
             }
 
             componentWillMount.call(this);
@@ -47,10 +49,10 @@ export function ComponentState(stateActions: any | ((T: any) => any), updateComp
                 : shouldComponentUpdate.apply(this, arguments)
         }
 
-        target.prototype.componentWillUnmount = function() {
-            const observableIds = this.actions.getAllObservableIds(this.actions);
+        target.prototype.componentWillUnmount = function () {
+            const observableIds = this.actions.getAllObservableIds();
             unsubscribe(observableIds);
-            this.subscribtion.unsubscribe();
+            this.actions.onDestroy();
             componentWillMount.call(this);
         }
     };
@@ -59,4 +61,5 @@ export function ComponentState(stateActions: any | ((T: any) => any), updateComp
 export abstract class HasStateActions<T> {
     actions: T = null;
     statePath: any = null;
+    readonly stateIndex?: string | number = null;
 }

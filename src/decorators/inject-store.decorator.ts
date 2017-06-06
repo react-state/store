@@ -87,7 +87,7 @@ export function InjectStore(newPath: string[] | string | ((currentPath: any, sta
 
     return (target: any) => {
 
-        target.prototype.createStore = function (instance: any, currentPath?: any[], stateIndex?: (string | number) | (string | number)[]) {
+        target.prototype.createStore = function (currentPath: any[], stateIndex: (string | number) | (string | number)[], stateChangeCallback?: (state: any) => void) {
 
             let extractedPath = typeof newPath === 'function' && (<any>newPath).name === ''
                 ? (<any>newPath)(currentPath, stateIndex)
@@ -97,33 +97,35 @@ export function InjectStore(newPath: string[] | string | ((currentPath: any, sta
                 ? getAbsoluteStatePath(stateIndex, extractedPath)
                 : getStatePath(currentPath, stateIndex, extractedPath);
 
-            instance.statePath = statePath;
+            this.statePath = statePath;
             const store = Store.store;
 
             if (intialState) {
-                store.initialize(instance.statePat, intialState);
+                store.initialize(this.statePath, intialState);
             }
 
             if (!StateHistory.CURRENT_STATE.getIn(statePath)) {
                 console.error(`No such state in path ${statePath}. Define initial state for this path in global initial state or comonent actions.`);
             }
 
-            instance.store = store.select(statePath);
+            this.store = store.select(statePath);
+            this.stateChangeSubscription = this.store.subscribe((state: any) => {
+                this.state = state;
+                stateChangeCallback(state);
+            })
 
-            Object.defineProperty(instance, 'state', {
-                get: function () {
-                    return StateHistory.CURRENT_STATE.getIn(statePath);
-                }
-            });
-
-            wrapToAsync(instance, target);
+            wrapToAsync(this, target);
 
             return statePath;
         };
 
-        target.prototype.getAllObservableIds = function (instance: any) {
-            const asyncMethods = getAllAsyncMethods(instance);
-            return asyncMethods.map(value => getObservableId(instance, target, value.name));
+        target.prototype.getAllObservableIds = function () {
+            const asyncMethods = getAllAsyncMethods(this);
+            return asyncMethods.map(value => getObservableId(this, target, value.name));
+        }
+
+        target.prototype.onDestroy = function() {
+            this.stateChangeSubscription.unsubscribe();
         }
     };
 }

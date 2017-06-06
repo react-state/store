@@ -1,3 +1,8 @@
+### 1.5.0
+- added <strong>readonly</strong> ```stateIndex``` to HasStateActions. This is usefull when you want to edit list item on different route for instance and want to pass list index not via params but via route.
+
+- improved state refresh
+
 ### 1.4.0
 - Fixed bug in lists change detection.
 
