@@ -1,5 +1,5 @@
 # react-state
-RxJS and ImmutableJs powered state management React apps. Inspired by NgRx.
+RxJS and ImmutableJs powered state management React apps. Inspired by NgRx and Redux.
 
 [![npm version](https://badge.fury.io/js/react-state-rxjs.svg)](https://badge.fury.io/js/react-state-rxjs)
 
@@ -12,15 +12,16 @@ on top of React. Core tenets:
 react-state is build on same core as [ng-state](https://github.com/ng-state). So most library behaviour can be found there.
 
 ### Main differences from other RxJs store based state managements solutions
-- Allows state nesting and injects responable peaces to components
-- Uses immutablejs fast equality object check for high performance
+- Allows state nesting and injects responsible peaces to components
+- Uses immutablejs fast equality object comparison for high performance
 - Actions can return observables, promises or simple objects
-- Decoples / Hides paths to state from components
+- Decouples / Hides paths to state from components
 - Uses Redux like pure functions - actions to interact with state
-- Uses Redux like messages for comunication between not related components: see [ng-state](https://github.com/ng-state) for more detail explanation
-- Does not use React component state, so it can be used by user for other purposes
+- Uses Redux like messages for communication between not related components
+- Does not use React component state
 - No boilerplate
-- No long nested paths to access store
+- No long paths to access nested state / store
+
 
 ### Performance first
 Each component implements ```shouldComponentUpdate``` method which default return value changed to ```false```.
@@ -70,6 +71,19 @@ let initialState = Immutable.fromJS({
 export { initialState };
 ```
 
+### Difference in Components
+- starting from version 1.5.0 there is readonly ```stateIndex``` property introduced. This usefull in those cases when you want to edit list item on different route for instance and have to pass stateIndex via route not via params. In this case library has priority on property over over params.
+
+```ts
+export class TodoDescription extends React.Component<any, any> implements HasStateActions<TodoStateActions> {
+    actions: TodoStateActions;
+    statePath: any;
+    get stateIndex() {
+        return '0' // param comming from router or any other source
+    };
+}
+```
+
 ### Difference in StateAction's
 - Geeters are not converted to properties because React change detecions has no performance penalties with it
 - All actions that returns Observable or Promise has to end with 'Async'
@@ -80,7 +94,7 @@ get todoDescriptionAsync() {
     });
 }
 ```
-- Apart from ```stroe``` injected to actions there is an optional parameter ```state``` that can be used in non Async actions
+- Apart from ```store``` injected to actions there is an optional parameter ```state``` that can be used in non Async actions
 ```ts
 get todoDescription() {
     return this.state.get('description');
@@ -90,12 +104,15 @@ get todoDescription() {
 ```ts
 <TodoDescription statePath={this.statePath} stateIndex={index} />
 ```
+
+### Difference in Time Travel
+
 - To get 'Time Travel' functionality you have to include StateHistoryComponent to your main application passing routerHistory param to it
 ```ts
 <StateHistoryComponent routerHistory={this.props.history} />
 ```
 
-### Here is basic flow with code side-by-side explained:
+### Basic flow with code side-by-side explained:
 
 ![flow](/react-state-flow.png)
 

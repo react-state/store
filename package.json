@@ -14,7 +14,7 @@
     "build:umd": "rollup -c rollup.config.js",
     "build:uglify": "uglifyjs -c --screw-ie8 --comments -o ./release/bundles/store.min.umd.js ./release/bundles/store.umd.js",
     "prebuild": "npm run clean:pre",
-    "postbuild": "npm run clean:post && npm run copy",
+    "postbuild": "npm run copy",
     "build": "npm run build:js && npm run build:umd && npm run build:uglify"
   },
   "repository": {
