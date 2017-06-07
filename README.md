@@ -64,9 +64,9 @@ ReactState.init((routerHistory: History) => {
 ```ts
 import * as Immutable from "immutable";
 
-let initialState = Immutable.fromJS({
-    todos: []
-});
+let initialState = {
+    todos: <any[]>[]
+};
 
 export { initialState };
 ```
