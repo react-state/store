@@ -132,5 +132,5 @@ export function InjectStore(newPath: string[] | string | ((currentPath: any, sta
 
 export abstract class HasStore<T> {
     store: Store<T> = null;
-    state?: any = null;
+    state: any = null;
 }
