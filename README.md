@@ -1,9 +1,27 @@
 # react-state
 RxJS and ImmutableJs powered state management React apps. Inspired by NgRx and Redux.
 
+# Table of Contents
+1. [Introduction](#introduction)
+2. [Main differences](#differences-from-others)
+3. [Performance first](#performance)
+4. [Installation](#installation)
+5. [Examples](#examples)
+6. [Main differences made for React](#differences)<br />
+    a. [Configuration](#configuration)<br />
+    b. [Params](#params)<br />
+    c. [Difference in components](#difference-in-components)<br />
+    d. [Difference in StateAction's](#difference-in-state-actions)<br />
+    e. [Difference in Time Travel](#difference-in-time-travel)<br />
+7. [Flow diagram](#flow)
+8. [Contributing](#contributing)
+
 [![npm version](https://badge.fury.io/js/react-state-rxjs.svg)](https://badge.fury.io/js/react-state-rxjs)
 
-ng-state is a controlled nested state container designed to help write performant, consistent applications
+## Introduction
+<a name="introduction"></a>
+
+react-state is a controlled nested state container designed to help write performant, consistent applications
 on top of React. Core tenets:
 - State is a single immutable data structure
 - Each component gets its own peace of nested state
@@ -11,7 +29,9 @@ on top of React. Core tenets:
 
 react-state is build on same core as [ng-state](https://github.com/ng-state). So most library behaviour can be found there.
 
-### Main differences from other RxJs store based state managements solutions
+## Main differences from other RxJs store based state managements solutions
+<a name="differences-from-others"></a>
+
 - Allows state nesting and injects responsible peaces to components
 - Uses immutablejs fast equality object comparison for high performance
 - Actions can return observables, promises or simple objects
@@ -23,25 +43,30 @@ react-state is build on same core as [ng-state](https://github.com/ng-state). So
 - No long paths to access nested state / store
 
 
-### Performance first
+## Performance first
+<a name="performance"></a>
 Each component implements ```shouldComponentUpdate``` method which default return value changed to ```false```.
 Component updates only when:
 - state is changed
 - changed default value of ```shouldComponentUpdate``` to ```true``` by passing ```true``` to ComponentState decorator
 - component has explicit ```shouldComponentUpdate``` implementation that causes update
 
-### Installation
+## Installation
+<a name="installation"></a>
 Install react-state-rxjs from npm:
 ```bash
 npm install react-state-rxjs --save
 ```
 
-### Examples
+## Examples
+<a name="examples"></a>
 - [Official react-state/example-app](https://github.com/react-state/example-app) is an officially maintained example application showcasing possibilities of ```react-state```
 
-## Main differences made for React:
+# Main differences made for React
+<a name="differences"></a>
 
-### Configuration
+## Configuration
+<a name="configuration"></a>
 In your app's main module, register store with initial state by using `ReactState.init`
 
 ```ts
@@ -50,7 +75,8 @@ ReactState.init((routerHistory: History) => {
 }, initialState)
 ```
 
-#### params
+## Params
+<a name="params"></a>
 - routeHistory - it is react-router-dom 'createHistory' object initialized under the hood to collect routing history for 'time travel' functionality. This param passed to Main component and then to the Router
 ```ts
 <!--index.tsx-->
@@ -71,7 +97,8 @@ let initialState = Immutable.fromJS({
 export { initialState };
 ```
 
-### Difference in Components
+## Difference in Components
+<a name="difference-in-components"></a>
 - starting from version 1.5.0 there is readonly ```stateIndex``` property introduced. This usefull in those cases when you want to edit list item on different route for instance and have to pass stateIndex via route not via params. In this case library has priority on property over over params.
 
 ```ts
@@ -84,7 +111,8 @@ export class TodoDescription extends React.Component<any, any> implements HasSta
 }
 ```
 
-### Difference in StateAction's
+## Difference in StateAction's
+<a name="difference-in-state-actions"></a>
 - Geeters are not converted to properties because React change detecions has no performance penalties with it
 - All actions that returns Observable or Promise has to end with 'Async'
 ```ts
@@ -105,16 +133,17 @@ get todoDescription() {
 <TodoDescription statePath={this.statePath} stateIndex={index} />
 ```
 
-### Difference in Time Travel
-
+## Difference in Time Travel
+<a name="difference-in-time-travel"></a>
 - To get 'Time Travel' functionality you have to include StateHistoryComponent to your main application passing routerHistory param to it
 ```ts
 <StateHistoryComponent routerHistory={this.props.history} />
 ```
 
-### Basic flow with code side-by-side explained:
-
+## Flow diagram
+<a name="flow"></a>
 ![flow](/react-state-flow.png)
 
 ## Contributing
+<a name="contributing"></a>
 Please read [contributing guidelines here](https://github.com/react-state/store/blob/master/CONTRIBUTING.md).
