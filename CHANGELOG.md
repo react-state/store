@@ -1,3 +1,9 @@
+### 2.0.0
+- upgraded to React 16.0.0
+- debuging was simplyfied. Added startDebugging and stopDebugging methods to window.state. startDebugging takes optional array parameter statePath to watch over some state part. Also additional param debug = true / false was added to InjectStore decorator. When set to true console will show state part of the component that uses those actions.
+- Store.store.clear() added
+- isProd flag added to ReactState.init method (read ng-state documentation for more details)
+
 ### 1.5.0
 - added <strong>readonly</strong> ```stateIndex``` to HasStateActions. This is usefull when you want to edit list item on different route for instance and want to pass list index not via params but via route.
 

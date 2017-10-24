@@ -59,7 +59,7 @@ export function ComponentState(stateActions: any | ((T: any) => any), updateComp
 }
 
 export abstract class HasStateActions<T> {
-    actions: T = null;
-    statePath: any = null;
+    readonly actions: T = null;
+    readonly statePath: any = null;
     readonly stateIndex?: string | number = null;
 }

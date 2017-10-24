@@ -9,13 +9,18 @@ export class StateHistory {
     private static collectHistory: boolean;
     private static _viewHistory = new Rx.Subject<boolean>();
     private static storeHistoryItems: number | null;
+    static initialState = {};
+
+    private static debugMode = false;
+    private static debugStatePath: any = null;
 
     constructor(private store: Store<any>, collectHistory: boolean, storeHistoryItems: number | null) {
         StateHistory.collectHistory = collectHistory;
         StateHistory.storeHistoryItems = storeHistoryItems;
     }
 
-    init() {
+    init(initialState: any) {
+        StateHistory.initialState = initialState;
         this.store.subscribe(state => {
             this.add(state);
         });
@@ -33,6 +38,10 @@ export class StateHistory {
         };
 
         StateHistory.HISTORY.push(state);
+
+        if (StateHistory.debugMode) {
+            console.info((StateHistory.debugStatePath && state.getIn(StateHistory.debugStatePath) || state).toJS());
+        }
     }
 
     static showHistory() {
@@ -47,5 +56,14 @@ export class StateHistory {
 
     static get viewHistory(): Rx.Subject<boolean> {
         return StateHistory._viewHistory;
+    }
+
+    static startDebugging(statePath?: any[]) {
+        StateHistory.debugStatePath = statePath;
+        StateHistory.debugMode = true;
+    }
+
+    static stopDebugging() {
+        StateHistory.debugMode = false;
     }
 }

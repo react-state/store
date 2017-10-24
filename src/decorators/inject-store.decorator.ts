@@ -2,7 +2,7 @@ import { StateHistory } from './../state/history';
 import { Store } from "../store/store";
 import { resolveAsync } from "../helpers/async-filter"
 
-export function InjectStore(newPath: string[] | string | ((currentPath: any, stateIndex: any) => string[] | string), intialState?: Object | any) {
+export function InjectStore(newPath: string[] | string | ((currentPath: any, stateIndex: any) => string[] | string), intialState?: Object | any, debug: boolean = false) {
     let getStatePath = (currentPath: any, stateIndex: any, extractedPath: any) => {
 
         let transformedPath = (<string[]>extractedPath).map(item => {
@@ -112,6 +112,10 @@ export function InjectStore(newPath: string[] | string | ((currentPath: any, sta
             this.stateChangeSubscription = this.store.subscribe((state: any) => {
                 this.state = state;
                 stateChangeCallback(state);
+
+                if (debug && state.toJS) {
+                    console.info(state.toJS());
+                }
             })
 
             wrapToAsync(this, target);

@@ -1,3 +1,4 @@
+import { Store } from './store';
 import { Observable } from 'rxjs/Observable';
 import { distinctUntilChanged } from 'rxjs/operator/distinctUntilChanged';
 import { map } from 'rxjs/operator/map';
@@ -20,5 +21,5 @@ export class Select {
 }
 
 export interface SelectSignature {
-    <R>(path: string[]): Observable<R>;
+    (path: string[]): Store<any>;
 }

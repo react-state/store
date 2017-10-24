@@ -80,8 +80,8 @@ export class StateHistoryComponent extends React.Component<any, any> {
 
     private changeState(index: any) {
         this.state.lastIndex = index;
-        (Store.store.select([]) as Store<any>)
-            .update(state => {
+        Store.store.select([])
+            .update((state: any) => {
                 state.merge(this.state.items[index]);
             });
     }

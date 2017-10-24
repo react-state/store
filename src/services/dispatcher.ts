@@ -6,7 +6,7 @@ export class Message {
 }
 
 export class DispatcherService {
-    private subject = new Subject<Message>();
+    private subject = new Subject<any>();
     private static _instance: DispatcherService;
 
     static get instance(): DispatcherService {
@@ -48,4 +48,4 @@ export class DispatcherService {
     }
 }
 
-export const Dispatcher = DispatcherService.instance;;
+export const Dispatcher = DispatcherService.instance;
