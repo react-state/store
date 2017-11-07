@@ -1,3 +1,6 @@
+### 2.1.0
+- fixed bug when using ```"module": "es2015"``` in typescript
+
 ### 2.0.0
 - upgraded to React 16.0.0
 - debuging was simplyfied. Added startDebugging and stopDebugging methods to window.state. startDebugging takes optional array parameter statePath to watch over some state part. Also additional param debug = true / false was added to InjectStore decorator. When set to true console will show state part of the component that uses those actions.
