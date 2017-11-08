@@ -144,7 +144,7 @@ get todoDescription() {
 ## Production
 <a name="production"></a>
 Apart of other production features described in Angular part starting from version 2.2.0 ```process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'prod'``` check is added to make sure minified bundle is included. For webpack users add
-```
+```json
 new webpack.DefinePlugin({
     "process.env": {
         NODE_ENV: JSON.stringify("production")
