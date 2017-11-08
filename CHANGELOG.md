@@ -1,3 +1,8 @@
+### 2.2.0
+- made compatible with ssr (server side rendering).
+- added ```process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'prod'``` for minified bundle include in production.
+- example application is updated with server side rendering.
+
 ### 2.1.0
 - fixed bug when using ```"module": "es2015"``` in typescript
 

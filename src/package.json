@@ -1,6 +1,6 @@
 {
   "name": "react-state-rxjs",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "RxJS and ImmutableJs powered nested state management for React apps inspired by @ngrx and Redux.",
   "main": "index.js",
   "repository": {

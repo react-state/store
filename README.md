@@ -13,8 +13,9 @@ RxJS and ImmutableJs powered state management React apps. Inspired by NgRx and R
     c. [Difference in components](#difference-in-components)<br />
     d. [Difference in StateAction's](#difference-in-state-actions)<br />
     e. [Difference in Time Travel](#difference-in-time-travel)<br />
-7. [Flow diagram](#flow)
-8. [Contributing](#contributing)
+7. [Production](#production)
+8. [Flow diagram](#flow)
+9. [Contributing](#contributing)
 
 [![npm version](https://badge.fury.io/js/react-state-rxjs.svg)](https://badge.fury.io/js/react-state-rxjs)
 
@@ -139,6 +140,18 @@ get todoDescription() {
 ```ts
 <StateHistoryComponent routerHistory={this.props.history} />
 ```
+
+## Production
+<a name="production"></a>
+Apart of other production features described in Angular part starting from version 2.2.0 ```process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'prod'``` check is added to make sure minified bundle is included. For webpack users add
+```
+new webpack.DefinePlugin({
+    "process.env": {
+        NODE_ENV: JSON.stringify("production")
+    }
+})
+```
+to your production build
 
 ## Flow diagram
 <a name="flow"></a>

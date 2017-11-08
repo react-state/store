@@ -11,6 +11,7 @@ export class ReactState {
         domRender: (history: History) => void,
         initialState: any,
         isProd: boolean = false,
+        enableSSR = false,
         collectHistory: boolean = true,
         storeHistoryItems: number = 100
     ) {
@@ -21,7 +22,7 @@ export class ReactState {
             (<any>window).state = StateHistory;
         }
 
-        const routerHistory = new RouterState(store).init();
+        const routerHistory = new RouterState(store, enableSSR).init();
 
         Store.store = store;
         ReactState.initRenderDom(store, domRender, routerHistory);
