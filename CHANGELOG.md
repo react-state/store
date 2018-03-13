@@ -1,3 +1,6 @@
+### 3.0.0
+- Added ```ReactStateTestBed``` for simplified actions and components unit testing.
+
 ### 2.2.0
 - made compatible with ssr (server side rendering).
 - added ```process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'prod'``` for minified bundle include in production.

@@ -15,7 +15,8 @@ RxJS and ImmutableJs powered state management React apps. Inspired by NgRx and R
     e. [Difference in Time Travel](#difference-in-time-travel)<br />
 7. [Production](#production)
 8. [Flow diagram](#flow)
-9. [Contributing](#contributing)
+9. [Testing](#testing)
+10. [Contributing](#contributing)
 
 [![npm version](https://badge.fury.io/js/react-state-rxjs.svg)](https://badge.fury.io/js/react-state-rxjs)
 
@@ -144,7 +145,7 @@ get todoDescription() {
 ## Production
 <a name="production"></a>
 Apart of other production features described in Angular part starting from version 2.2.0 ```process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'prod'``` check is added to make sure minified bundle is included. For webpack users add
-```
+```json
 new webpack.DefinePlugin({
     "process.env": {
         NODE_ENV: JSON.stringify("production")
@@ -156,6 +157,55 @@ to your production build
 ## Flow diagram
 <a name="flow"></a>
 ![flow](/react-state-flow.png)
+
+## Testing
+<a name="testing"></a>
+Unit testing is important part of every software. For this reason ng-state has simplified test bed setup. In order to setup unit test you need to make few simple actions
+
+Tell ng-state that actions are going to run in testing mode:
+```ts
+beforeAll(() => {
+    ReactStateTestBed.setTestEnvironment();
+});
+```
+
+actions can be tested by calling ```ReactStateTestBed.createActions``` method:
+```ts
+ it('should return actions', () => {
+    const initialState = { todos: [] };
+    initialState.todos.push({ description: 'test description' });
+
+    const actions = ReactStateTestBed.createActions(initialState, ['todos', 0], TestActions) as TestActions;
+    expect(actions.todoDescription).toEqual('test description');
+});
+```
+where
+- first param is ```initialState``` is object or class
+- second param is ```statePath``` to bind actions to
+- third param is ```actions``` class
+
+In order to test components with actions you need to call ```ReactStateTestBed.setActionsToComponent``` method with ```actions``` and instance of ```component```. Same like in example above just add
+```ts
+component: TodoComponent;
+
+beforeAll(() => {
+    ReactStateTestBed.setTestEnvironment();
+});
+
+beforeEach(() => {
+    component = new TodoComponent();
+});
+```
+```ts
+...
+actions = ...
+
+ReactStateTestBed.setActionsToComponent(actions, component);
+
+expect(component.actions.todoDescription).toEqual('test description');
+```
+
+that simple :)
 
 ## Contributing
 <a name="contributing"></a>

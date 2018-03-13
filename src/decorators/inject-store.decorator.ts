@@ -123,6 +123,14 @@ export function InjectStore(newPath: string[] | string | ((currentPath: any, sta
             return statePath;
         };
 
+        target.prototype.createTestStore = function (statePath: any[]) {
+            this.store = Store.store.select(statePath);
+            const that = this;
+            this.stateChangeSubscription = this.store.subscribe((state: any) => {
+                that.state = state;
+            });
+        };
+
         target.prototype.getAllObservableIds = function () {
             const asyncMethods = getAllAsyncMethods(this);
             return asyncMethods.map(value => getObservableId(this, target, value.name));

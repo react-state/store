@@ -2,6 +2,7 @@ import * as Immutabtle from 'immutable';
 
 import { StateHistory } from "../state/history";
 import { unsubscribe } from "../helpers/async-filter"
+import { ReactStateConfig } from '../react-state.config';
 
 export function ComponentState(stateActions: any | ((T: any) => any), updateComponentOnEveryRender: boolean = false) {
 
@@ -12,6 +13,11 @@ export function ComponentState(stateActions: any | ((T: any) => any), updateComp
         var shouldComponentUpdate = target.prototype.shouldComponentUpdate || (() => updateComponentOnEveryRender);
 
         target.prototype.componentWillMount = function () {
+
+            if (ReactStateConfig.isTest) {
+                return;
+            }
+
             this.statePath = !this.props.statePath
                 ? []
                 : this.props.statePath;
