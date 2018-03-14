@@ -1,3 +1,6 @@
+### 3.1.0
+- Improve constructor ovveriding by ovveriding prototype instead of instance constructor.
+
 ### 3.0.0
 - Added ```ReactStateTestBed``` for simplified actions and components unit testing.
 
