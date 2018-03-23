@@ -169,13 +169,15 @@ beforeAll(() => {
 });
 ```
 
-actions can be tested by calling ```ReactStateTestBed.createActions``` method:
+actions can be tested by calling ```ReactStateTestBed.createActions``` method. `createActions` has required param `actions` and two params with default values: `initialState` with value `{}` and `statePath` with value `[]`. This means that for most of situations we can pass just actions type and test application in localized state. But for more complex scenarios we can pass initial state and path.
 ```ts
  it('should return actions', () => {
     const initialState = { todos: [] };
     initialState.todos.push({ description: 'test description' });
 
-    const actions = ReactStateTestBed.createActions(initialState, ['todos', 0], TestActions) as TestActions;
+    const actions = ReactStateTestBed.createActions<TestActions>(TestActions); // in this case actions will be created with state = {};
+    // OR
+    const actions = ReactStateTestBed.createActions(TestActions, initialState, ['todos', 0]) as TestActions;
     expect(actions.todoDescription).toEqual('test description');
 });
 ```

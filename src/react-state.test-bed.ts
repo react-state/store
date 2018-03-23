@@ -9,7 +9,7 @@ export class ReactStateTestBed {
         ReactStateConfig.isTest = true;
     }
 
-    public static createActions(initialState: any, path: string | any[], actionsType: any) {
+    public static createActions<T>(actionsType: any, initialState: any = {}, path: string | any[] = []): T {
         const store = new Store(new State(initialState));
         const stateHistory = new StateHistory(store, false, null);
         stateHistory.init(initialState);

@@ -1,3 +1,6 @@
+### 3.1.1
+- Simplified TestBed. Now `initial state` and `statePath` are optional and has defult values of `{}` and `[]`. More info in Readme.
+
 ### 3.1.0
 - Improve constructor ovveriding by ovveriding prototype instead of instance constructor.
 
