@@ -58,7 +58,11 @@ export function ComponentState(stateActions: any | ((T: any) => any), updateComp
             this.prevState = null;
             const observableIds = this.actions.getAllObservableIds();
             unsubscribe(observableIds);
-            this.actions.onDestroy();
+
+            if (this.actions) {
+                this.actions.onDestroy();
+            }
+
             componentWillMount.call(this);
         }
     };

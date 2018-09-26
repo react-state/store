@@ -1,3 +1,9 @@
+### 3.3.3
+- Fixed bug with inheritance
+
+### 3.3.2
+- Added createStore method to NgStateTestBed
+
 ### 3.1.1
 - Simplified TestBed. Now `initial state` and `statePath` are optional and has defult values of `{}` and `[]`. More info in Readme.
 
