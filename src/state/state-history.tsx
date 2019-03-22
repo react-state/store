@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as Rx from 'rxjs';
+import { Subscription } from 'rxjs';
 
 import { StateHistory } from './history';
 import { Store } from '../store/store';
@@ -11,7 +11,7 @@ export class StateHistoryComponent extends React.Component<any, any> {
         items: [] as any[]
     }
 
-    viewistorySubscription: Rx.Subscription;
+    viewistorySubscription: Subscription;
 
     componentWillMount() {
         this.viewistorySubscription = StateHistory.viewHistory
@@ -82,7 +82,8 @@ export class StateHistoryComponent extends React.Component<any, any> {
         this.state.lastIndex = index;
         Store.store.select([])
             .update((state: any) => {
+                state.clear();
                 state.merge(this.state.items[index]);
-            });
+            }, true);
     }
 }

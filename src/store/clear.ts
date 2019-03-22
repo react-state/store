@@ -1,7 +1,7 @@
 import { Store } from './store';
 import { StateHistory } from '../state/history';
-import * as Immutable from 'immutable';
-import { _do } from 'rxjs/operator/do';
+import { fromJS, Map } from 'immutable';
+import { tap, take } from 'rxjs/operators';
 
 export class Clear {
     constructor() {
@@ -10,16 +10,16 @@ export class Clear {
         const clearMainStore = function (store: Store<any>) {
             store
                 .select([])
-                .update((state: Immutable.Map<any, any>) => {
+                .update((state: Map<any, any>) => {
                     const router = state.get('router');
                     state.clear();
-                    state.merge(Immutable.fromJS(StateHistory.initialState));
+                    state.merge(fromJS(StateHistory.initialState));
                     state.set('router', router);
                     state.setIn(['router', 'url'], '');
                 });
         };
 
-        let actionWrapper = function (state: Immutable.Map<any, any>) {
+        let actionWrapper = function () {
             if (clered) {
                 return;
             }
@@ -31,10 +31,10 @@ export class Clear {
 
         }.bind(this);
 
-        let done = _do.call(this, actionWrapper);
-        done
-            .take(1)
-            .subscribe();
+        (<any>this).pipe(
+            tap(actionWrapper),
+            take(1)
+        ).subscribe();
 
         return this;
     }

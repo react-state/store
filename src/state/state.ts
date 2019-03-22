@@ -1,10 +1,10 @@
-import * as Immutable from 'immutable';
-import * as Rx from 'rxjs';
+import { fromJS } from 'immutable';
+import { BehaviorSubject } from 'rxjs';
 import { Helpers } from '../helpers/helpers';
 
-export class State<T> extends Rx.BehaviorSubject<T> {
+export class State<T> extends BehaviorSubject<T> {
   constructor(initialState: T) {
     Helpers.overrideContructor(initialState);
-    super(Immutable.fromJS(initialState));
+    super(fromJS(initialState));
   }
 }

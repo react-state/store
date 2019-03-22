@@ -1,8 +1,8 @@
 {
     "compilerOptions": {
-        "lib": ["es6", "dom"],
+        "lib": ["es2016", "dom"],
         "sourceMap": true,
-        "noImplicitAny": true,
+        "noImplicitAny": false,
         "moduleResolution": "node",
         "module": "commonjs",
         "target": "es5",

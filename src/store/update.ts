@@ -1,10 +1,10 @@
 import { Cursor } from './cursor';
-import { _do } from 'rxjs/operator/do';
+import { tap, take } from 'rxjs/operators';
 
 export class Update {
     constructor(action: (state: any) => void, wrapToWithMutations: boolean = true) {
         let updated = false;
-        let actionWrapper = function (state: any) {
+        let actionWrapper = function () {
             if (updated) {
                 return;
             }
@@ -26,15 +26,13 @@ export class Update {
 
         }.bind(this);
 
-        let done = _do.call(this, actionWrapper);
-        done
-            .take(1)
-            .subscribe();
-
-        return this;
+        (<any>this).pipe(
+            tap(actionWrapper),
+            take(1)
+        ).subscribe();
     }
 }
 
 export interface UpdateSignature<T> {
-    <R>(action: (state: T) => void, wrapToWithMutations?: boolean): R;
+    (action: (state: T) => void, wrapToWithMutations?: boolean): void;
 }

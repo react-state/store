@@ -1,5 +1,3 @@
-import * as Immutabtle from 'immutable';
-
 import { StateHistory } from "../state/history";
 import { unsubscribe } from "../helpers/async-filter"
 import { ReactStateConfig } from '../react-state.config';
@@ -63,7 +61,7 @@ export function ComponentState(stateActions: any | ((T: any) => any), updateComp
                 this.actions.onDestroy();
             }
 
-            componentWillMount.call(this);
+            componentWillUnmount.call(this);
         }
     };
 }

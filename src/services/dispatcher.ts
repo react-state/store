@@ -1,4 +1,5 @@
 import {Observable, Subject, Subscription} from 'rxjs';
+import { filter, share, map } from 'rxjs/operators';
 
 export class Message {
     constructor(public type?: string, public payload?: any) {
@@ -22,7 +23,7 @@ export class DispatcherService {
     }
 
     getMessagesOfType(messageType: string): Observable<Message> {
-        return this.subject.filter(msg => msg.type === messageType).share();
+        return this.subject.pipe(filter(msg => msg.type === messageType), share());
     }
 
     publish(message: Message): void;
@@ -43,7 +44,7 @@ export class DispatcherService {
             : messageType;
 
         return this.getMessagesOfType(messageType as string)
-            .map(msg =>  msg.payload)
+            .pipe(map(msg =>  msg.payload))
             .subscribe(observerOrNext, error, complete);
     }
 }

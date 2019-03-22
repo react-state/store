@@ -1,10 +1,12 @@
-import * as Immutable from 'immutable';
-
+import { fromJS } from 'immutable';
 import { Helpers } from '../helpers/helpers';
-import { _do } from 'rxjs/operator/do';
+import { tap, take } from 'rxjs/operators';
+import { Store } from './store';
 
 export class Initialize {
-    constructor(statePath: any[], initialState: any = null) {
+    newStore: Store<any>;
+
+    constructor(statePath, initialState: any = null) {
         let actionWrapper = function (state: any) {
             if (state.getIn([...statePath, '__initialized'])) {
                 return;
@@ -12,13 +14,16 @@ export class Initialize {
 
             Helpers.overrideContructor(initialState);
             initialState.constructor = Object;
-            initialState = Immutable.fromJS(initialState);
+            initialState = fromJS(initialState);
             initialState = initialState.set('__initialized', true);
 
             let newState;
 
             try {
                 newState = state.setIn(statePath, initialState);
+                this.newStore = (<any>this).select(statePath);
+                this.newStore.initialState = initialState;
+                this.newStore.rootPath = statePath;
             } catch (exception) {
                 console.error(exception);
             }
@@ -26,15 +31,15 @@ export class Initialize {
             (<any>this).source.next(newState);
         }.bind(this);
 
-        let done = _do.call(this, actionWrapper);
-        done
-            .take(1)
-            .subscribe();
+        (<any>this).pipe(
+            tap(actionWrapper),
+            take(1)
+        ).subscribe();
 
-        return this;
+        return this.newStore as any;
     }
 }
 
 export interface InitializeSignature<T> {
-    <R>(statePath: any[], initialState?: T, addToHistory?: boolean): R;
+    <R>(statePath, initialState?: T, addToHistory?: boolean): Store<R>;
 }

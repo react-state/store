@@ -1,8 +1,9 @@
 import { State } from './../src/state/state';
 import { StateHistory } from './../src/state/history';
 import { Store } from './../src/store/store';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import 'rxjs/add/operator/take';
+import { BehaviorSubject } from 'rxjs';
+import { take } from 'rxjs/operators';
+import { ReactStateTestBed } from '../src/react-state.test-bed';
 
 describe('Store tests', () => {
     let store: Store<any>;
@@ -11,7 +12,7 @@ describe('Store tests', () => {
         it('should convert initial state classes ES6 to ES5 objects', () => {
             const state = new State(new InitialState()) as BehaviorSubject<InitialState>;
             state
-                .take(1)
+                .pipe(take(1))
                 .subscribe((value: any) => {
                     const obj = value.toJS();
                     expect(obj.testProp).toBeDefined();
@@ -24,8 +25,7 @@ describe('Store tests', () => {
     describe('', () => {
         beforeEach(() => {
             const initialState = { layout: { test: 'test' } };
-            store = new Store(new State(initialState));
-            const history = new StateHistory(store, false, null).init(initialState);
+            store = ReactStateTestBed.createStore(initialState);
 
             Store.store = store;
         });
@@ -45,7 +45,7 @@ describe('Store tests', () => {
 
         it('should select state', (done) => {
             store.select(['layout'])
-                .take(1)
+                .pipe(take(1))
                 .subscribe((state: any) => {
                     expect(state.get('test')).toBeTruthy();
                     done();

@@ -1,8 +1,8 @@
-import { HasStateActions } from './decorators/component-state.decorator';
 import { StateHistory } from './state/history';
 import { ReactStateConfig } from './react-state.config';
 import { Store } from './store/store';
 import { State } from './state/state';
+import { HistoryController } from './state/history-controller';
 
 export class ReactStateTestBed {
     public static setTestEnvironment() {
@@ -11,8 +11,10 @@ export class ReactStateTestBed {
 
     public static createStore(initialState: any): Store<any> {
         const store = new Store(new State(initialState));
-        const stateHistory = new StateHistory(store, false, null);
+        const stateHistory = new StateHistory(false, null);
         stateHistory.init(initialState);
+        const historyController = new HistoryController(store, stateHistory);
+        historyController.init();
 
         return store;
     }

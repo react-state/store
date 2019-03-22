@@ -1,15 +1,14 @@
 import { History } from 'history';
 import { Store } from "../store/store";
-import createHistory from 'history/createBrowserHistory';
-import createMemoryHistory from 'history/createMemoryHistory';
+import { createBrowserHistory, createMemoryHistory } from 'history';
 
 export class RouterState {
     history: History;
 
     constructor(private store: Store<any>, serverSideRenderingEnabled: boolean) {
-       this.history = serverSideRenderingEnabled
-        ? createMemoryHistory()
-        : createHistory();
+        this.history = serverSideRenderingEnabled
+            ? createMemoryHistory()
+            : createBrowserHistory();
     }
 
     init() {

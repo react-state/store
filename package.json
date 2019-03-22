@@ -1,91 +1,102 @@
 {
-  "name": "react-state-rxjs",
-  "version": "1.5.0",
-  "description": "RxJS and ImmutableJs powered nested state management for React apps inspired by @ngrx and Redux.",
-  "main": "index.js",
-  "scripts": {
-    "dev": "webpack-dev-server --inline --progress --profile --port 3000 --info",
-    "test": "jest --verbose",
-    "clean:pre": "rimraf release",
-    "overwrite:index": "rimraf release/index.js && rimraf release/index.js.map && cpy ./index.js ./release",
-    "copy": "cpy LICENSE ./src/package.json README.md react-state-flow.png release",
-    "build:js": "tsc -p tsconfig.dist.json",
-    "build:umd": "rollup -c rollup.config.js",
-    "build:uglify": "uglifyjs -c --screw-ie8 --comments -o ./release/bundles/store.min.umd.js ./release/bundles/store.umd.js",
-    "prebuild": "npm run clean:pre",
-    "postbuild": "npm run copy && npm run overwrite:index",
-    "build": "npm run build:js && npm run build:umd && npm run build:uglify"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/react-state/store.git"
-  },
-  "keywords": [
-    "RxJS",
-    "React",
-    "Immutable Js",
-    "Nested",
-    "State"
-  ],
-  "author": "Vytautas Pranskunas <vytautas.pranskunas@gmail.com>",
-  "license": "MIT",
-  "homepage": "https://github.com/react-state/store#readme",
-  "dependencies": {
-    "core-js": "^2.4.1",
-    "immutable": "^3.8.1",
-    "immutable-cursor": "^1.0.2",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
-    "react-router-dom": "^4.2.2",
-    "rxjs": "^5.5.7"
-  },
-  "devDependencies": {
-    "@types/jest": "^22.2.0",
-    "@types/react": "^16.0.18",
-    "@types/react-dom": "^16.0.2",
-    "@types/react-router-dom": "^4.0.8",
-    "awesome-typescript-loader": "^3.1.2",
-    "babel-runtime": "^6.23.0",
-    "cpy-cli": "^1.0.1",
-    "html-webpack-plugin": "^2.28.0",
-    "istanbul-instrumenter-loader": "^0.2.0",
-    "jest": "^22.4.3",
-    "rimraf": "^2.5.4",
-    "rollup": "^0.34.13",
-    "source-map-loader": "^0.2.1",
-    "ts-jest": "^22.4.2",
-    "typescript": "^2.2.2",
-    "uglifyjs": "^2.4.10",
-    "webpack": "^2.3.3",
-    "webpack-dev-server": "^2.4.2"
-  },
-  "jest": {
-    "transform": {
-      "^.+\\.(ts|tsx)?$": "ts-jest"
+    "name": "react-state-rxjs",
+    "version": "1.5.0",
+    "description": "RxJS and ImmutableJs powered nested state management for React apps inspired by @ngrx and Redux.",
+    "main": "index.js",
+    "scripts": {
+        "dev": "webpack-dev-server --inline --progress --profile --port 3000 --info",
+        "test": "jest --verbose",
+        "clean:pre": "rimraf release",
+        "overwrite:index": "rimraf release/index.js && rimraf release/index.js.map && cpy ./index.js ./release",
+        "copy": "cpy LICENSE ./src/package.json README.md react-state-flow.png release",
+        "build:js": "tsc -p tsconfig.dist.json",
+        "build:umd": "rollup -c rollup.config.js",
+        "build:uglify": "uglifyjs -c --screw-ie8 --comments -o ./release/bundles/store.min.umd.js ./release/bundles/store.umd.js",
+        "prebuild": "npm run clean:pre",
+        "postbuild": "npm run copy && npm run overwrite:index",
+        "build": "npm run build:js && npm run build:umd && npm run build:uglify"
     },
-    "testRegex": "(src/app/__tests__/.*|(\\.|/)(test|spec))\\.((ts|tsx)?)$",
-    "testPathIgnorePatterns": [
-      "/node_modules/"
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/react-state/store.git"
+    },
+    "keywords": [
+        "RxJS",
+        "React",
+        "Immutable Js",
+        "Nested",
+        "State"
     ],
-    "collectCoverage": false,
-    "coverageReporters": [
-      "lcov",
-      "text"
-    ],
-    "coverageDirectory": "tests-coverage",
-    "collectCoverageFrom": [
-      "src/app/**/*component.ts",
-      "src/app/**/*service.ts",
-      "src/app/**/*pipe.ts",
-      "src/app/**/form-element.base.ts"
-    ],
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ]
-  }
+    "author": "Vytautas Pranskunas <vytautas.pranskunas@gmail.com>",
+    "license": "MIT",
+    "homepage": "https://github.com/react-state/store#readme",
+    "dependencies": {
+        "core-js": "^2.4.1",
+        "immutable": "^3.8.1",
+        "immutable-cursor": "^2.0.1",
+        "react": "^16.8.4",
+        "react-dom": "^16.8.4",
+        "react-router-dom": "^5.0.0",
+        "rxjs": "^6.3.2"
+    },
+    "devDependencies": {
+        "@types/enzyme": "^3.9.0",
+        "@types/enzyme-adapter-react-16": "^1.0.5",
+        "@types/jest": "^22.2.0",
+        "@types/react": "^16.8.8",
+        "@types/react-dom": "^16.8.3",
+        "@types/react-router-dom": "^4.3.1",
+        "awesome-typescript-loader": "^5.2.1",
+        "babel-runtime": "^6.23.0",
+        "cpy-cli": "^1.0.1",
+        "enzyme": "^3.9.0",
+        "enzyme-adapter-react-16": "^1.11.2",
+        "html-webpack-plugin": "^3.2.0",
+        "istanbul-instrumenter-loader": "^0.2.0",
+        "jest": "^22.4.2",
+        "jest-enzyme": "^7.0.2",
+        "react-addons-perf": "^15.4.2",
+        "rimraf": "^2.5.4",
+        "rollup": "^0.34.13",
+        "source-map-loader": "^0.2.1",
+        "ts-jest": "^22.4.1",
+        "typescript": "3.1.6",
+        "uglifyjs": "^2.4.10",
+        "webpack": "^4.29.6",
+        "webpack-cli": "^3.3.0",
+        "webpack-dev-server": "^3.2.1"
+    },
+    "jest": {
+        "transform": {
+            "^.+\\.(ts|tsx)?$": "ts-jest"
+        },
+        "testRegex": "(src/app/__tests__/.*|(\\.|/)(test|spec))\\.((ts|tsx)?)$",
+        "testPathIgnorePatterns": [
+            "/node_modules/"
+        ],
+        "collectCoverage": false,
+        "coverageReporters": [
+            "lcov",
+            "text"
+        ],
+        "coverageDirectory": "tests-coverage",
+        "collectCoverageFrom": [
+            "src/app/**/*component.ts",
+            "src/app/**/*service.ts",
+            "src/app/**/*pipe.ts",
+            "src/app/**/form-element.base.ts"
+        ],
+        "moduleFileExtensions": [
+            "ts",
+            "tsx",
+            "js",
+            "jsx",
+            "json",
+            "node"
+        ],
+        "setupFiles": [
+            "./spec/localstorage.mock.ts"
+        ],
+        "setupTestFrameworkScriptFile": "./spec/setupTests.ts"
+    }
 }

@@ -100,15 +100,14 @@ export function InjectStore(newPath: string[] | string | ((currentPath: any, sta
             this.statePath = statePath;
             const store = Store.store;
 
-            if (intialState) {
-                store.initialize(this.statePath, intialState);
-            }
+            this.store = intialState
+                 ? store.initialize(statePath, intialState)
+                 : store.select(statePath);
 
             if (!StateHistory.CURRENT_STATE.getIn(statePath)) {
                 console.error(`No such state in path ${statePath}. Define initial state for this path in global initial state or comonent actions.`);
             }
 
-            this.store = store.select(statePath);
             this.stateChangeSubscription = this.store.subscribe((state: any) => {
                 this.state = state;
                 stateChangeCallback(state);

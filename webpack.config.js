@@ -30,8 +30,24 @@ module.exports = {
         ]
     },
 
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                    name: "app",
+                    chunks: "initial",
+                    minChunks: 2
+                },
+                vendors: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: "vendors",
+                    chunks: "all"
+                }
+            }
+        }
+    },
+
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin({ name: ['app', 'vendors'] }),
         new HtmlWebpackPlugin({ template: './index.html', inject: 'body' })
     ],
 

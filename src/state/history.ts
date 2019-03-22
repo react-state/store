@@ -1,32 +1,35 @@
-import * as Rx from 'rxjs';
-
-import { Store } from '../store/store';
+import { Subject } from 'rxjs';
 
 export class StateHistory {
     static CURRENT_STATE: any = {};
-    static HISTORY: any[] = [];
-
-    private static collectHistory: boolean;
-    private static _viewHistory = new Rx.Subject<boolean>();
-    private static storeHistoryItems: number | null;
+    static HISTORY = [];
+    static collectHistory = true;
+    static storeHistoryItems: number | null = 100;
     static initialState = {};
 
+    private static _viewHistory = new Subject<boolean>();
     private static debugMode = false;
-    private static debugStatePath: any = null;
+    private static debugStatePath = null;
 
-    constructor(private store: Store<any>, collectHistory: boolean, storeHistoryItems: number | null) {
-        StateHistory.collectHistory = collectHistory;
-        StateHistory.storeHistoryItems = storeHistoryItems;
+    constructor(collectHistory: boolean | null = null, storeHistoryItems: number | null = null) {
+        if (collectHistory !== null) {
+            StateHistory.collectHistory = collectHistory;
+        }
+
+        if (storeHistoryItems !== null) {
+            StateHistory.storeHistoryItems = storeHistoryItems;
+        }
+    }
+
+    get currentState(): any {
+        return StateHistory.CURRENT_STATE;
     }
 
     init(initialState: any) {
         StateHistory.initialState = initialState;
-        this.store.subscribe(state => {
-            this.add(state);
-        });
     }
 
-    private add(state: any) {
+    add(state: any) {
         StateHistory.CURRENT_STATE = state;
 
         if (!StateHistory.collectHistory || StateHistory.HISTORY.indexOf(state) >= 0) {
@@ -54,7 +57,7 @@ export class StateHistory {
         StateHistory._viewHistory.next(false);
     }
 
-    static get viewHistory(): Rx.Subject<boolean> {
+    static get viewHistory(): Subject<boolean> {
         return StateHistory._viewHistory;
     }
 
