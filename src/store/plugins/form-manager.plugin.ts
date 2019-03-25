@@ -1,5 +1,5 @@
 import { distinctUntilChanged, debounceTime, takeUntil } from 'rxjs/operators';
-import { Observable, Subject, fromEvent } from 'rxjs';
+import { Observable, Subject, fromEvent, ReplaySubject } from 'rxjs';
 import { Store } from '../store';
 import { Map, fromJS } from 'immutable';
 import { Helpers } from '../../helpers/helpers';
@@ -14,7 +14,7 @@ export class FormStateManager {
     private params: FormStateManagerParams;
     private store: Store<any>;
 
-    private component: React.Component
+    onChange = new ReplaySubject<any>(1);
 
     constructor(store: Store<any>) {
         this.store = store;
@@ -39,8 +39,7 @@ export class FormStateManager {
         return this;
     }
 
-    sync(component: React.Component) {
-        this.component = component;
+    sync() {
         this.setInitialValue(this.store);
         this.subscribeToFormChange(this.store);
 
@@ -105,7 +104,7 @@ export class FormStateManager {
                     }
                 }
 
-                // this.component.shouldComponentUpdate(true);
+                this.onChange.next(state);
             });
     }
 
@@ -162,8 +161,8 @@ export class FormStateManager {
             )
             .subscribe((event: ElementValueChangeEvent) => {
                 store.update((state: Map<any, any>) => {
-                    console.log(event.value);
                     state.setIn(this.getCustomElementStatePath(event.target), event.value);
+                    this.onChange.next(state);
                 });
             });
     }
@@ -178,6 +177,7 @@ export class FormStateManager {
             .subscribe((event: any) => {
                 store.update((state: Map<any, any>) => {
                     state.setIn(this.getStatePath(event.target), this.getFormElementValue(event.target));
+                    this.onChange.next(state);
                 });
             });
     }
@@ -199,11 +199,10 @@ export class FormStateManager {
             : result[0];
     }
 
-    private getCustomElementStatePath(element: CustomFormElement): string[] {
-
-        return (<{[key: string]: any}>element.props)[this.formGroupName]
-            ? [(<{[key: string]: any}>element.props)[this.formGroupName], (<{[key: string]: any}>element.props)[this.formElementName]]
-            : [(<{[key: string]: any}>element.props)[this.formElementName]]
+    private getCustomElementStatePath(element: CustomFormElement) {
+        return element.props[this.formGroupName]
+            ? [element.props[this.formGroupName], element.props[this.formElementName]]
+            : [element.props[this.formElementName]]
     }
 
     private getStatePath(element: Element) {
@@ -222,8 +221,6 @@ export class FormStateManager {
                 return element.checked;
             case 'select':
                 return this.getMultiSelectValues(element);
-            case 'radio':
-                return element.checked;
             default:
                 return element.value;
         }

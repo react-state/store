@@ -10,6 +10,7 @@ export class FormsComponent extends React.Component<any, undefined> {
     private customFormElement = React.createRef<ComplexFormElementComponent>();
 
     private formStateManager: FormStateManager;
+    private unsubscribe = new Subject<any>();
 
     constructor(props: any) {
         super(props)
@@ -21,11 +22,19 @@ export class FormsComponent extends React.Component<any, undefined> {
         this.formStateManager = Store.store.select(['form']).form
             .bind(this.form)
             .addCustomFormElements([this.customFormElement.current])
-            .sync(this);
+            .sync();
+
+        this.formStateManager.onChange
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(state => {
+                this.forceUpdate();
+            });
     }
 
     componentWillUnmount() {
         this.formStateManager.destroy();
+        this.unsubscribe.next();
+        this.unsubscribe.unsubscribe();
     }
 
     handleSubmit(event: any) {
@@ -71,7 +80,7 @@ export class FormsComponent extends React.Component<any, undefined> {
 
                     <hr />
                     <section>
-                        <h6>Car model:</h6>
+                        <h6>Car color:</h6>
                         <select name="color">
                             <option value="red">Red</option>
                             <option value="white">White</option>
@@ -151,7 +160,7 @@ export class ComplexFormElementComponent extends React.Component<CustomFormEleme
 
     render() {
         return (
-            <input type="text" form-ignore="true" ref={this.inputElement} onChange={this.handleChange} />
+            <input type="text" name="custom-component-input" form-ignore="true" ref={this.inputElement} onChange={this.handleChange} />
         );
     }
 }
