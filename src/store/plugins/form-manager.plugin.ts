@@ -1,4 +1,4 @@
-import { distinctUntilChanged, debounceTime, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, debounceTime, takeUntil, filter } from 'rxjs/operators';
 import { Observable, Subject, fromEvent, ReplaySubject } from 'rxjs';
 import { Store } from '../store';
 import { Map, fromJS } from 'immutable';
@@ -13,14 +13,17 @@ export class FormStateManager {
     private formElements: FormElement[];
     private params: FormStateManagerParams;
     private store: Store<any>;
+    private form: HTMLFormElement;
 
-    onChange = new ReplaySubject<any>(1);
+    private onChangeFn: (state: any) => void;
+    private shouldUpdateStateFn: (form: HTMLFormElement, formElements: FormElement[], target: HTMLElement | CustomFormElement, state: any) => boolean;
 
     constructor(store: Store<any>) {
         this.store = store;
     }
 
-    bind(form: React.RefObject<HTMLFormElement>, params: FormStateManagerParams = {}): FormStateManager {
+    bind(form: HTMLFormElement, params: FormStateManagerParams = {}): FormStateManager {
+        this.form = form.current;
         this.formElements = this.getFilteredFormElements(form);
         this.params = { ... { debounceTime: 100, emitEvent: false }, ...params };
 
@@ -46,6 +49,17 @@ export class FormStateManager {
         return this;
     }
 
+    onChange(onChangeFn: (state: any) => void) {
+        this.onChangeFn = onChangeFn;
+        return this;
+    }
+
+    shouldUpdateState(shouldUpdateStateFn: (form: HTMLFormElement, formElements: FormElement[], target: HTMLElement | CustomFormElement, state: any) => boolean) {
+        this.shouldUpdateStateFn = shouldUpdateStateFn;
+        return this;
+    }
+
+
     reset() {
         this.store.reset();
     }
@@ -56,10 +70,11 @@ export class FormStateManager {
 
         this.formElements = null;
         this.store = null;
+        this.form = null;
     }
 
-    private getFilteredFormElements(form: React.RefObject<HTMLFormElement>) {
-        const elements = form.current.elements;
+    private getFilteredFormElements(form: HTMLFormElement) {
+        const elements = form.elements;
         const formElements = <FormElement[]>[]
         for (let i = 0; i < elements.length; i++) {
             const formElement = this.getElementAttributes(elements[i]);
@@ -104,7 +119,7 @@ export class FormStateManager {
                     }
                 }
 
-                this.onChange.next(state);
+                this.onChangeCall(state);
             });
     }
 
@@ -161,8 +176,8 @@ export class FormStateManager {
             )
             .subscribe((event: ElementValueChangeEvent) => {
                 store.update((state: Map<any, any>) => {
-                    state.setIn(this.getCustomElementStatePath(event.target), event.value);
-                    this.onChange.next(state);
+                    const statePath = this.getCustomElementStatePath(event.target);
+                    this.executeUpdate(statePath, event.value, state, event.target);
                 });
             });
     }
@@ -176,10 +191,27 @@ export class FormStateManager {
             )
             .subscribe((event: any) => {
                 store.update((state: Map<any, any>) => {
-                    state.setIn(this.getStatePath(event.target), this.getFormElementValue(event.target));
-                    this.onChange.next(state);
+                    const statePath = this.getStatePath(event.target);
+                    const value = this.getFormElementValue(element);
+                    this.executeUpdate(statePath, value, state, event.target);
                 });
             });
+    }
+
+    private executeUpdate(statePath: string[], value: any, state: any, element: HTMLElement | CustomFormElement) {
+        if (this.shouldUpdateStateFn) {
+            if (this.shouldUpdateStateFn(this.form, this.formElements, element, state)) {
+                state.setIn(statePath, value);
+                this.onChangeCall(state);
+            }
+        } else {
+            state.setIn(statePath, value);
+            this.onChangeCall(state);
+        }
+    }
+
+    private onChangeCall(state: any) {
+        this.onChangeFn && this.onChangeFn(state);
     }
 
     private getMultiSelectValues(select: any) {
@@ -261,7 +293,7 @@ export class FormStateManager {
     }
 }
 
-interface FormElement {
+export interface FormElement {
     element?: Element;
     customElement?: CustomFormElement;
     type: string;

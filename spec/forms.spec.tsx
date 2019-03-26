@@ -4,9 +4,13 @@ import { ReactStateTestBed } from "../src/react-state.test-bed";
 import * as ReactDOM from "react-dom";
 import { Store } from "../src/store/store";
 import { act } from 'react-dom/test-utils';
+import { StateHistory } from "../src/state/history";
+
+jest.useFakeTimers();
 
 describe('Forms manager', () => {
     let container: HTMLElement;
+    let component: any;
 
     beforeAll(() => {
         ReactStateTestBed.setTestEnvironment();
@@ -17,20 +21,18 @@ describe('Forms manager', () => {
 
         container = document.createElement('div');
         document.body.appendChild(container);
+
+        act(() => {
+            component = ReactDOM.render(<FormsComponent />, container);
+        });
     });
 
     afterEach(() => {
         document.body.removeChild(container);
         container = null;
-      });
+    });
 
     describe('initial state', () => {
-        beforeEach(() => {
-            act(() => {
-                ReactDOM.render(<FormsComponent />, container);
-            });
-        });
-
         it('should be set on checkboxes', () => {
             const newCheckbox = container.querySelector('[form-element-name="new"]') as HTMLFormElement;
             const usedCheckbox = container.querySelector('[form-element-name="used"]') as HTMLFormElement;
@@ -80,6 +82,150 @@ describe('Forms manager', () => {
 
             expect(customElementInput.value).toBe('complex element value');
         });
+    });
+
+    describe('on interaction with form', () => {
+        it('should update checkbox value in state', () => {
+            const newCheckbox = container.querySelector('[form-element-name=new]') as HTMLFormElement;
+
+            act(() => {
+                newCheckbox.checked = !newCheckbox.checked;
+                newCheckbox.dispatchEvent(new MouseEvent('change', { bubbles: true }));
+            });
+
+            jest.runAllTimers();
+
+            expect(StateHistory.CURRENT_STATE.getIn(['form', 'condition', 'new'])).toBeFalsy();
+        });
+
+        it('should update radiobutton value in state', () => {
+            const radio = document.querySelectorAll('[name=location]')[0] as HTMLFormElement;
+
+            act(() => {
+                radio.checked = !radio.checked;
+                radio.dispatchEvent(new MouseEvent('change', { bubbles: true }));
+            });
+
+            jest.runAllTimers();
+
+            expect(StateHistory.CURRENT_STATE.getIn(['form', 'location'])).toBe('usa');
+        });
+
+        it('should update multiselect value in state', () => {
+            const options = container.querySelectorAll('[name=cars] option');
+            const select = container.querySelector('[name=cars]');
+
+            act(() => {
+                (options[0] as any).selected = false;
+                (options[1] as any).selected = true;
+                (options[2] as any).selected = false;
+                (options[3] as any).selected = true;
+                select.dispatchEvent(new MouseEvent('change', { bubbles: true }));
+            });
+
+            jest.runAllTimers();
+
+            expect(StateHistory.CURRENT_STATE.getIn(['form', 'cars', 0])).toBe('saab');
+            expect(StateHistory.CURRENT_STATE.getIn(['form', 'cars', 1])).toBe('audi');
+        });
+
+        it('should update select value in state', () => {
+            const options = container.querySelectorAll('[name=color] option');
+            const select = container.querySelector('[name=color]');
+
+            act(() => {
+                (options[1] as any).selected = true;
+                select.dispatchEvent(new MouseEvent('change', { bubbles: true }));
+            });
+
+            jest.runAllTimers();
+
+            expect(StateHistory.CURRENT_STATE.getIn(['form', 'color'])).toBe('white');
+        });
+
+        it('should update textarea value in state', () => {
+            const input = container.querySelector('[name=description]') as HTMLFormElement;
+
+            act(() => {
+                input.value = 'test';
+                input.dispatchEvent(new MouseEvent('change', { bubbles: true }));
+            });
+
+            jest.runAllTimers();
+
+            expect(StateHistory.CURRENT_STATE.getIn(['form', 'description'])).toBe('test');
+        });
+
+        it('should update input value in state', () => {
+            const input = container.querySelector('[name=address]') as HTMLFormElement;
+
+            act(() => {
+                input.value = 'test';
+                input.dispatchEvent(new MouseEvent('change', { bubbles: true }));
+            });
+
+            jest.runAllTimers();
+
+            expect(StateHistory.CURRENT_STATE.getIn(['form', 'address'])).toBe('test');
+        });
+
+        it('should update custom form element value in state', () => {
+            const input = container.querySelector('[name=custom-component-input]') as HTMLFormElement;
+            var nativeInputValueSetter = Object.getOwnPropertyDescriptor((window as any).HTMLInputElement.prototype, "value").set;
+
+            act(() => {
+                nativeInputValueSetter.call(input, 'test');
+                input.dispatchEvent(new MouseEvent('change', { bubbles: true }));
+            });
+
+            jest.runAllTimers();
+
+            expect(StateHistory.CURRENT_STATE.getIn(['form', 'group', 'complexElement'])).toBe('test');
+        });
+    });
+
+    it('should call onChange hook after state change', () => {
+        spyOn(component, 'forceUpdate');
+        const input = container.querySelector('[name=address]') as HTMLFormElement;
+
+        act(() => {
+            input.value = 'test';
+            input.dispatchEvent(new MouseEvent('change', { bubbles: true }));
+        });
+
+        jest.runAllTimers();
+
+        expect(component.forceUpdate).toHaveBeenCalled();
+    });
+
+    it('should call shouldUpdateState hook before state change', () => {
+        spyOn(component, 'shouldUpdateResult').and.callThrough();
+
+        const input = container.querySelector('[name=address]') as HTMLFormElement;
+
+        act(() => {
+            input.value = 'test';
+            input.dispatchEvent(new MouseEvent('change', { bubbles: true }));
+        });
+
+        jest.runAllTimers();
+
+        expect(component.shouldUpdateResult).toHaveBeenCalled();
+    });
+
+    it('should not update state if shouldUpdateState hook returns false', () => {
+        spyOn(component, 'shouldUpdateResult').and.returnValue(false);
+
+        const input = container.querySelector('[name=address]') as HTMLFormElement;
+
+        act(() => {
+            input.value = 'test';
+            input.dispatchEvent(new MouseEvent('change', { bubbles: true }));
+        });
+
+        jest.runAllTimers();
+
+        expect(StateHistory.CURRENT_STATE.getIn(['form', 'address'])).toBe('Some Street 1a');
     });
 });
 

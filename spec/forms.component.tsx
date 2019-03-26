@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FormStateManager, CustomFormElement, CustomFormElementProps, ElementValueChangeEvent } from "../src/store/plugins/form-manager.plugin";
+import { FormStateManager, CustomFormElement, CustomFormElementProps, ElementValueChangeEvent, FormElement } from "../src/store/plugins/form-manager.plugin";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { Store } from "../src/store/store";
@@ -20,15 +20,11 @@ export class FormsComponent extends React.Component<any, undefined> {
 
     componentDidMount() {
         this.formStateManager = Store.store.select(['form']).form
-            .bind(this.form)
+            .bind(this.form.current)
             .addCustomFormElements([this.customFormElement.current])
+            .shouldUpdateState(this.shouldUpdateState)
+            .onChange(state => this.forceUpdate())
             .sync();
-
-        this.formStateManager.onChange
-            .pipe(takeUntil(this.unsubscribe))
-            .subscribe(state => {
-                this.forceUpdate();
-            });
     }
 
     componentWillUnmount() {
@@ -44,6 +40,14 @@ export class FormsComponent extends React.Component<any, undefined> {
 
     reset() {
         this.formStateManager.reset();
+    }
+
+    shouldUpdateState = (form: HTMLFormElement, formElements: FormElement[], target: HTMLElement | CustomFormElement, state: any) => {
+        return this.shouldUpdateResult();
+    }
+
+    shouldUpdateResult() {
+        return true;
     }
 
     render() {
