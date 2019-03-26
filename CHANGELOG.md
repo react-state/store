@@ -1,3 +1,11 @@
+
+### 4.0.0
+- Added new Map operator
+- Added new Clear operator
+- Added new Reset operator
+- Added store.bind.form plugin for binding state to forms
+- Added ability to store state to external storagies like localStorage or async storagies like IndexDB
+
 ### 3.3.3
 - Fixed bug with inheritance
 
