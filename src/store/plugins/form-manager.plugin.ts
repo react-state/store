@@ -71,6 +71,8 @@ export class FormStateManager {
         this.formElements = null;
         this.store = null;
         this.form = null;
+		this.onChangeFn = null;
+        this.shouldUpdateStateFn = null;
     }
 
     private getFilteredFormElements(form: HTMLFormElement) {
