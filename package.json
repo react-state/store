@@ -8,7 +8,7 @@
         "test": "jest --verbose",
         "clean:pre": "rimraf release",
         "overwrite:index": "rimraf release/index.js && rimraf release/index.js.map && cpy ./index.js ./release",
-        "copy": "cpy LICENSE ./src/package.json README.md react-state-flow.png release",
+        "copy": "cpy LICENSE ./src/package.json README.md logo.png release",
         "build:js": "tsc -p tsconfig.dist.json",
         "build:umd": "rollup -c rollup.config.js",
         "build:uglify": "uglifyjs -c --screw-ie8 --comments -o ./release/bundles/store.min.umd.js ./release/bundles/store.umd.js",

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FormStateManager, CustomFormElement, CustomFormElementProps, ElementValueChangeEvent, FormElement } from "../src/store/plugins/form-manager.plugin";
+import { FormStateManager, CustomFormElement, CustomFormElementProps, ElementValueChangeEvent, FormElement, ShoulUpdateStateParams } from "../src/store/plugins/form-manager.plugin";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { Store } from "../src/store/store";
@@ -42,7 +42,7 @@ export class FormsComponent extends React.Component<any, undefined> {
         this.formStateManager.reset();
     }
 
-    shouldUpdateState = (form: HTMLFormElement, formElements: FormElement[], target: HTMLElement | CustomFormElement, state: any) => {
+    shouldUpdateState = (params: ShoulUpdateStateParams) => {
         return this.shouldUpdateResult();
     }
 

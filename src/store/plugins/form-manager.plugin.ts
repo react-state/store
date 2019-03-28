@@ -16,7 +16,7 @@ export class FormStateManager {
     private form: HTMLFormElement;
 
     private onChangeFn: (state: any) => void;
-    private shouldUpdateStateFn: (form: HTMLFormElement, formElements: FormElement[], target: HTMLElement | CustomFormElement, state: any) => boolean;
+    private shouldUpdateStateFn: (params: ShoulUpdateStateParams) => boolean;
 
     constructor(store: Store<any>) {
         this.store = store;
@@ -25,7 +25,7 @@ export class FormStateManager {
     bind(form: HTMLFormElement, params: FormStateManagerParams = {}): FormStateManager {
         this.form = form.current;
         this.formElements = this.getFilteredFormElements(form);
-        this.params = { ... { debounceTime: 100, emitEvent: false }, ...params };
+        this.params = { ... { debounceTime: 100 }, ...params };
 
         return this;
     }
@@ -54,7 +54,7 @@ export class FormStateManager {
         return this;
     }
 
-    shouldUpdateState(shouldUpdateStateFn: (form: HTMLFormElement, formElements: FormElement[], target: HTMLElement | CustomFormElement, state: any) => boolean) {
+    shouldUpdateState(shouldUpdateStateFn: (params: ShoulUpdateStateParams) => boolean) {
         this.shouldUpdateStateFn = shouldUpdateStateFn;
         return this;
     }
@@ -200,7 +200,12 @@ export class FormStateManager {
 
     private executeUpdate(statePath: string[], value: any, state: any, element: HTMLElement | CustomFormElement) {
         if (this.shouldUpdateStateFn) {
-            if (this.shouldUpdateStateFn(this.form, this.formElements, element, state)) {
+            if (this.shouldUpdateStateFn({
+                form: this.form,
+                formElements: this.formElements,
+                target: element,
+                state: state
+            })) {
                 state.setIn(statePath, value);
                 this.onChangeCall(state);
             }
@@ -311,7 +316,6 @@ export type FormGroupLike = {
 
 export type FormStateManagerParams = {
     debounceTime?: number;
-    emitEvent?: boolean;
 };
 
 export interface CustomFormElement {
@@ -328,4 +332,11 @@ export interface CustomFormElementProps {
 export interface ElementValueChangeEvent {
     value: any;
     target: CustomFormElement;
+}
+
+export interface ShoulUpdateStateParams {
+    form: HTMLFormElement;
+    formElements: FormElement[];
+    target: HTMLElement | CustomFormElement;
+    state: any;
 }
