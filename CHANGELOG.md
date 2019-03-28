@@ -1,4 +1,7 @@
 
+### 4.1.1
+- all external storage operation now returns optional observable with possibility to subscribe and get notified about action completion.
+
 ### 4.0.0
 - Added new Map operator
 - Added new Clear operator

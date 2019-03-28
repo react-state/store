@@ -108,7 +108,7 @@ export class PersistStateManager {
 
         return onClearComplete
             .asObservable()
-            .pipe(take(1))
+            .pipe(take(1));
     }
 
     private removeAction(params: PersistStateParams): Observable<string> {
@@ -122,7 +122,7 @@ export class PersistStateManager {
 
         return onRemoveComplete
             .asObservable()
-            .pipe(take(1))
+            .pipe(take(1));
     }
 
     private getParams(params: PersistStateParams, store: Store<any>) {
