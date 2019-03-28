@@ -59,7 +59,6 @@ export class FormStateManager {
         return this;
     }
 
-
     reset() {
         this.store.reset();
     }
@@ -202,11 +201,15 @@ export class FormStateManager {
 
     private executeUpdate(statePath: string[], value: any, state: any, element: HTMLElement | CustomFormElement) {
         if (this.shouldUpdateStateFn) {
+            const currentValue = state.getIn(statePath);
+
             if (this.shouldUpdateStateFn({
                 form: this.form,
                 formElements: this.formElements,
                 target: element,
-                state: state
+                state: state,
+                currentValue: Helpers.isImmutable(currentValue) ? currentValue.toJS() : currentValue,
+                value: value
             })) {
                 state.setIn(statePath, value);
                 this.onChangeCall(state);
@@ -341,4 +344,6 @@ export interface ShoulUpdateStateParams {
     formElements: FormElement[];
     target: HTMLElement | CustomFormElement;
     state: any;
+    currentValue: any;
+    value: any;
 }

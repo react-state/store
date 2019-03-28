@@ -1,4 +1,7 @@
 
+### 4.2.0
+- Added more `currentValue` and `value` params to `shouldUpdateState` hook in external storage plugin.
+
 ### 4.1.2
 - Destroyd callbacks for possible mempry leacks.
 
