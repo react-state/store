@@ -27,8 +27,8 @@ export class PersistStateManager {
         PersistStateManager.customStorageConfig.deserialize = deserialize;
     }
 
-    save(params?: PersistStateParams): Observable<any> {
-        const onSaveComplete = new ReplaySubject<any>(1);
+    save(params?: PersistStateParams): Observable<PersistStateItem> {
+        const onSaveComplete = new ReplaySubject<PersistStateItem>(1);
 
         params = this.getParams(params, this.store);
 
@@ -37,7 +37,10 @@ export class PersistStateManager {
                 this.resolve(params.storageConfig.storage.setItem(params.key, params.serialize(state.toJS())))
                     .pipe(take(1))
                     .subscribe(_ => {
-                        onSaveComplete.next(state.toJS());
+                        onSaveComplete.next({
+                            key: params.key,
+                            data: state.toJS()
+                        });
                     });
             }),
             take(1)
@@ -48,8 +51,8 @@ export class PersistStateManager {
             .pipe(take(1));
     }
 
-    load(params?: PersistStateParams, keepEntry = false): Observable<any> {
-        const onLoadComplete = new ReplaySubject<any>(1);
+    load(params?: PersistStateParams, keepEntry = false): Observable<PersistStateItem> {
+        const onLoadComplete = new ReplaySubject<PersistStateItem>(1);
 
         params = this.getParams(params, this.store);
         this.resolve(params.storageConfig.storage.getItem(params.key))
@@ -63,7 +66,10 @@ export class PersistStateManager {
                     this.removeAction(params);
                 }
 
-                onLoadComplete.next(loadedState);
+                onLoadComplete.next({
+                    key: params.key,
+                    data: loadedState
+                });
             });
 
         return onLoadComplete
@@ -172,4 +178,9 @@ export interface PersistStateParams {
 export interface StorageConfiguartion {
     storage: PersistStateStorage;
     getKeys: () => Promise<string[]> | Observable<string[]> | string[];
+}
+
+export interface PersistStateItem {
+    key: string;
+    data: any;
 }
