@@ -5,6 +5,7 @@ import * as ReactDOM from "react-dom";
 import { Store } from "../src/store/store";
 import { act } from 'react-dom/test-utils';
 import { StateHistory } from "../src/state/history";
+import { fromJS } from "immutable";
 
 jest.useFakeTimers();
 
@@ -17,7 +18,7 @@ describe('Forms manager', () => {
     });
 
     beforeEach(() => {
-        Store.store = ReactStateTestBed.createStore(intiialState);
+        Store.store = ReactStateTestBed.createStore(intialState);
 
         container = document.createElement('div');
         document.body.appendChild(container);
@@ -185,7 +186,7 @@ describe('Forms manager', () => {
     });
 
     it('should call onChange hook after state change', () => {
-        spyOn(component, 'forceUpdate');
+        spyOn(component, 'onChangeMock').and.callThrough();
         const input = container.querySelector('[name=address]') as HTMLFormElement;
 
         act(() => {
@@ -195,7 +196,10 @@ describe('Forms manager', () => {
 
         jest.runAllTimers();
 
-        expect(component.forceUpdate).toHaveBeenCalled();
+        const changedInitialState = { ...intialState.form };
+        changedInitialState.address = 'test';
+
+        expect(component.onChangeMock).toHaveBeenCalledWith(fromJS(changedInitialState));
     });
 
     it('should call shouldUpdateState hook before state change', () => {
@@ -246,7 +250,7 @@ var getMultiSelectValues = (select: HTMLFormElement) => {
         : result[0];
 }
 
-const intiialState = {
+const intialState = {
     form: {
         condition: {
             new: true,

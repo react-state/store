@@ -23,7 +23,7 @@ export class FormsComponent extends React.Component<any, undefined> {
             .bind(this.form.current)
             .addCustomFormElements([this.customFormElement.current])
             .shouldUpdateState(this.shouldUpdateState)
-            .onChange(state => this.forceUpdate())
+            .onChange(this.onChange)
             .sync();
     }
 
@@ -31,6 +31,14 @@ export class FormsComponent extends React.Component<any, undefined> {
         this.formStateManager.destroy();
         this.unsubscribe.next();
         this.unsubscribe.unsubscribe();
+    }
+
+    onChange = (state: any) => {
+        this.forceUpdate();
+        this.onChangeMock(state);
+    }
+
+    onChangeMock(state: any) {
     }
 
     handleSubmit(event: any) {
