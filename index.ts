@@ -18,3 +18,4 @@ export * from './src/services/dispatcher';
 export * from './src/decorators/component-state.decorator';
 export * from './src/decorators/inject-store.decorator';
 export * from './src/react-component-with-state-actions';
+export * from './src/react-state.test-bed';
