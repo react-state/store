@@ -2,9 +2,10 @@ import { Store } from './store';
 import { StateHistory } from '../state/history';
 import { fromJS, Map } from 'immutable';
 import { tap, take } from 'rxjs/operators';
+import { ActionType } from './debug-info-data';
 
 export class Clear {
-    constructor() {
+    constructor(debugMessage: string = null) {
         let clered = false;
 
         const clearMainStore = function (store: Store<any>) {
@@ -26,10 +27,15 @@ export class Clear {
 
             clered = true;
 
-            StateHistory.HISTORY = [];
             clearMainStore(this);
 
         }.bind(this);
+
+        StateHistory.debugInfo = {
+            message: debugMessage,
+            actionType: ActionType.Clear,
+            statePath: (<any>this).statePath
+        };
 
         (<any>this).pipe(
             tap(actionWrapper),
@@ -41,5 +47,5 @@ export class Clear {
 }
 
 export interface ClearSignature {
-    <R>(): R;
+    <R>(debugMessage?: string ): R;
 }

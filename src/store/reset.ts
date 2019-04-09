@@ -3,9 +3,10 @@ import { StateHistory } from '../state/history';
 import { Map, fromJS } from 'immutable';
 import { tap, take } from 'rxjs/operators';
 import { Helpers } from '../helpers/helpers';
+import { ActionType } from './debug-info-data';
 
 export class Reset {
-    constructor() {
+    constructor(debugMessage: string = null) {
         let reseted = false;
 
         const restoreState = function (store: Store<any>) {
@@ -39,6 +40,12 @@ export class Reset {
 
         }.bind(this);
 
+        StateHistory.debugInfo = {
+            message: debugMessage,
+            actionType: ActionType.Reset,
+            statePath: (<any>this).statePath
+        };
+
         (<any>this).pipe(
             tap(actionWrapper),
             take(1)
@@ -47,5 +54,5 @@ export class Reset {
 }
 
 export interface ResetSignature {
-    <R>(): void;
+    <R>(debugMessage?: string): void;
 }

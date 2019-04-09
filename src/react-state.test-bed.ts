@@ -11,8 +11,8 @@ export class ReactStateTestBed {
 
     public static createStore(initialState: any): Store<any> {
         const store = new Store(new State(initialState));
-        const stateHistory = new StateHistory(false, null);
-        stateHistory.init(initialState);
+        const stateHistory = new StateHistory();
+        stateHistory.init(initialState, false);
         const historyController = new HistoryController(store, stateHistory);
         historyController.init();
 

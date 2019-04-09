@@ -1,7 +1,6 @@
 export * from './src/index';
 export * from './src/state/state';
 export * from './src/state/history';
-export * from './src/state/state-history';
 export * from './src/store/store';
 export * from './src/store/initialize';
 export * from './src/store/select';

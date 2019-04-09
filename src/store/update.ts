@@ -1,8 +1,10 @@
 import { Cursor } from './cursor';
 import { tap, take } from 'rxjs/operators';
+import { StateHistory } from '../state/history';
+import { ActionType } from './debug-info-data';
 
 export class Update {
-    constructor(action: (state: any) => void, wrapToWithMutations: boolean = true) {
+    constructor(action: (state: any) => void, wrapToWithMutations: boolean = true, debugMessage: string = null) {
         let updated = false;
         let actionWrapper = function () {
             if (updated) {
@@ -26,6 +28,12 @@ export class Update {
 
         }.bind(this);
 
+        StateHistory.debugInfo = {
+            message: debugMessage,
+            actionType: ActionType.Update,
+            statePath: (<any>this).statePath
+        };
+
         (<any>this).pipe(
             tap(actionWrapper),
             take(1)
@@ -34,5 +42,5 @@ export class Update {
 }
 
 export interface UpdateSignature<T> {
-    (action: (state: T) => void, wrapToWithMutations?: boolean): void;
+    (action: (state: T) => void, wrapToWithMutations?: boolean, debugMessage?: string): void;
 }

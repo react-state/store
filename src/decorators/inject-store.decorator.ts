@@ -1,6 +1,7 @@
 import { StateHistory } from './../state/history';
 import { Store } from "../store/store";
 import { resolveAsync } from "../helpers/async-filter"
+import { delay } from 'rxjs/operators';
 
 export function InjectStore(newPath: string[] | string | ((currentPath: any, stateIndex: any) => string[] | string), intialState?: Object | any, debug: boolean = false) {
     let getStatePath = (currentPath: any, stateIndex: any, extractedPath: any) => {
@@ -45,10 +46,10 @@ export function InjectStore(newPath: string[] | string | ((currentPath: any, sta
                 .map(([key, descriptor]: [string, any]) => {
                     return { name: key, isGetter: typeof descriptor.get === 'function' }
                 })
-             methods = [...methods, ...asyncMethods];
+            methods = [...methods, ...asyncMethods];
         }
 
-       return methods;
+        return methods;
     }
 
     let getObservableId = function (instance: any, target: any, funcName: any) {
@@ -101,21 +102,25 @@ export function InjectStore(newPath: string[] | string | ((currentPath: any, sta
             const store = Store.store;
 
             this.store = intialState
-                 ? store.initialize(statePath, intialState)
-                 : store.select(statePath);
+                ? store.initialize(statePath, intialState)
+                : store.select(statePath);
 
             if (!StateHistory.CURRENT_STATE.getIn(statePath)) {
                 console.error(`No such state in path ${statePath}. Define initial state for this path in global initial state or comonent actions.`);
             }
 
-            this.stateChangeSubscription = this.store.subscribe((state: any) => {
-                this.state = state;
-                stateChangeCallback(state);
+            this.stateChangeSubscription = this.store
+                .subscribe((state: any) => {
+                    this.state = state;
 
-                if (debug && state.toJS) {
-                    console.info(state.toJS());
-                }
-            })
+                    setTimeout(() => { // Wait untill all async observables are updated
+                        stateChangeCallback(state);
+                    });
+
+                    if (debug && state.toJS) {
+                        console.info(state.toJS());
+                    }
+                })
 
             wrapToAsync(this, target);
 
@@ -135,7 +140,7 @@ export function InjectStore(newPath: string[] | string | ((currentPath: any, sta
             return asyncMethods.map(value => getObservableId(this, target, value.name));
         }
 
-        target.prototype.onDestroy = function() {
+        target.prototype.onDestroy = function () {
             this.stateChangeSubscription.unsubscribe();
         }
     };

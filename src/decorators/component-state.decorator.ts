@@ -49,7 +49,7 @@ export function ComponentState(stateActions: any | ((T: any) => any), updateComp
 
             return shouldUpdate
                 ? true
-                : shouldComponentUpdate.apply(this, arguments)
+                : shouldComponentUpdate.apply(this, arguments);
         }
 
         target.prototype.componentWillUnmount = function () {
