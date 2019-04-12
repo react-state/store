@@ -1,7 +1,8 @@
 import { StateHistory } from './../state/history';
 import { Store } from "../store/store";
-import { resolveAsync } from "../helpers/async-filter"
-import { delay } from 'rxjs/operators';
+import { AsyncValueResolver } from "../helpers/async-value-resolver"
+import { Dispatcher } from '../services/dispatcher';
+import { Helpers } from '../helpers/helpers';
 
 export function InjectStore(newPath: string[] | string | ((currentPath: any, stateIndex: any) => string[] | string), intialState?: Object | any, debug: boolean = false) {
     let getStatePath = (currentPath: any, stateIndex: any, extractedPath: any) => {
@@ -52,23 +53,21 @@ export function InjectStore(newPath: string[] | string | ((currentPath: any, sta
         return methods;
     }
 
-    let getObservableId = function (instance: any, target: any, funcName: any) {
-        const nameFor = instance.statePath.join('_');
-        const functionName = target.toString().match(/^function\s*([^\s(]+)/)[1];
-        return `${nameFor}_${functionName}_${funcName}`;
+    let getObservableId = function (funcName: any, actionId: string) {
+        return `${actionId}_${funcName}`;
     }
 
-    let createNewFunction = function (currentFunction: Function, instance: any, funcName: any, target: any) {
+    let createNewFunction = function (currentFunction: Function, instance: any, funcName: any) {
         return function () {
             var originalResult = currentFunction
                 .bind(instance)
                 .apply(currentFunction, arguments);
 
-            return resolveAsync(originalResult, getObservableId(instance, target, funcName));
+            return AsyncValueResolver.instance.resolve(originalResult, getObservableId(funcName, instance.aId));
         }
     }
 
-    let wrapToAsync = function (instance: any, target: any) {
+    let wrapToAsync = function (instance: any) {
         const asyncMethods = getAllAsyncMethods(instance);
 
         asyncMethods.forEach(value => {
@@ -77,18 +76,19 @@ export function InjectStore(newPath: string[] | string | ((currentPath: any, sta
             if (value.isGetter) {
                 Object.defineProperty(instance, value.name, {
                     get: function () {
-                        return resolveAsync(temp, getObservableId(instance, target, value.name));
+                        return AsyncValueResolver.instance.resolve(temp, getObservableId(value.name, instance.aId));
                     }
                 });
             } else {
-                instance[value.name] = createNewFunction(temp, instance, value.name, target);
+                instance[value.name] = createNewFunction(temp, instance, value.name);
             }
         });
     }
 
     return (target: any) => {
+        target.prototype.createStore = function (currentPath: any[], stateIndex: (string | number) | (string | number)[]) {
 
-        target.prototype.createStore = function (currentPath: any[], stateIndex: (string | number) | (string | number)[], stateChangeCallback?: (state: any) => void) {
+            this.aId = Helpers.guid()
 
             let extractedPath = typeof newPath === 'function' && (<any>newPath).name === ''
                 ? (<any>newPath)(currentPath, stateIndex)
@@ -105,24 +105,21 @@ export function InjectStore(newPath: string[] | string | ((currentPath: any, sta
                 ? store.initialize(statePath, intialState)
                 : store.select(statePath);
 
-            if (!StateHistory.CURRENT_STATE.getIn(statePath)) {
+            if (!StateHistory.instance.currentState.getIn(statePath)) {
                 console.error(`No such state in path ${statePath}. Define initial state for this path in global initial state or comonent actions.`);
             }
 
             this.stateChangeSubscription = this.store
                 .subscribe((state: any) => {
                     this.state = state;
-
-                    setTimeout(() => { // Wait untill all async observables are updated
-                        stateChangeCallback(state);
-                    });
+                    Dispatcher.publish(this.aId, state);
 
                     if (debug && state.toJS) {
                         console.info(state.toJS());
                     }
                 })
 
-            wrapToAsync(this, target);
+            wrapToAsync(this);
 
             return statePath;
         };
@@ -135,12 +132,8 @@ export function InjectStore(newPath: string[] | string | ((currentPath: any, sta
             });
         };
 
-        target.prototype.getAllObservableIds = function () {
-            const asyncMethods = getAllAsyncMethods(this);
-            return asyncMethods.map(value => getObservableId(this, target, value.name));
-        }
-
         target.prototype.onDestroy = function () {
+            AsyncValueResolver.instance.unsubscribe(this.aId);
             this.stateChangeSubscription.unsubscribe();
         }
     };

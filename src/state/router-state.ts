@@ -3,6 +3,8 @@ import { Store } from "../store/store";
 import { createBrowserHistory, createMemoryHistory } from 'history';
 
 export class RouterState {
+    static startingRoute = '/';
+
     history: History;
     currentRoute: string;
 
@@ -20,8 +22,8 @@ export class RouterState {
     }
 
     private initRouter() {
-        this.store.initialize(['router'], { url: '/' }, false);
-        this.currentRoute = '/';
+        this.store.initialize(['router'], { url: RouterState.startingRoute }, false); // TODO: move to Angular
+        this.currentRoute = RouterState.startingRoute;
     }
 
     private bindRouter() {

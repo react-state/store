@@ -25,10 +25,10 @@ describe('Storage', () => {
 
         layoutStore.storage.save();
         layoutStore.update(state => state.set('test', 'test-updated'));
-        expect(StateHistory.CURRENT_STATE.getIn(['layout', 'test'])).toEqual('test-updated');
+        expect(StateHistory.instance.currentState.getIn(['layout', 'test'])).toEqual('test-updated');
 
         layoutStore.storage.load();
-        expect(StateHistory.CURRENT_STATE.getIn(['layout', 'test'])).toEqual('test');
+        expect(StateHistory.instance.currentState.getIn(['layout', 'test'])).toEqual('test');
     });
 
     it('should clear state', () => {

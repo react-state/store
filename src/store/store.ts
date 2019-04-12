@@ -11,7 +11,7 @@ import { PersistStateManager } from './plugins/persist-state.plugin';
 export class Store<T> extends Observable<T> implements Observer<any> {
     static store: Store<any>;
 
-    statePath: any[];
+    statePath: any[] = [];
     rootPath: any[] = [];
     initialState: any;
 
@@ -34,7 +34,7 @@ export class Store<T> extends Observable<T> implements Observer<any> {
 
     select: SelectSignature = (statePath: string[]): Store<T> => {
         let selectStore = Select.bind(this).call(this, statePath);
-        selectStore.statePath = !!this.statePath ? [...this.statePath, ...statePath] : statePath;
+        selectStore.statePath = [...this.statePath, ...statePath]; // TODO: I ANGULARA
         selectStore.rootPath = this.rootPath;
         selectStore.initialState = this.initialState;
         this.initializeOperators(selectStore);

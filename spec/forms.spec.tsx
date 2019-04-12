@@ -96,7 +96,7 @@ describe('Forms manager', () => {
 
             jest.runAllTimers();
 
-            expect(StateHistory.CURRENT_STATE.getIn(['form', 'condition', 'new'])).toBeFalsy();
+            expect(StateHistory.instance.currentState.getIn(['form', 'condition', 'new'])).toBeFalsy();
         });
 
         it('should update radiobutton value in state', () => {
@@ -109,7 +109,7 @@ describe('Forms manager', () => {
 
             jest.runAllTimers();
 
-            expect(StateHistory.CURRENT_STATE.getIn(['form', 'location'])).toBe('usa');
+            expect(StateHistory.instance.currentState.getIn(['form', 'location'])).toBe('usa');
         });
 
         it('should update multiselect value in state', () => {
@@ -126,8 +126,8 @@ describe('Forms manager', () => {
 
             jest.runAllTimers();
 
-            expect(StateHistory.CURRENT_STATE.getIn(['form', 'cars', 0])).toBe('saab');
-            expect(StateHistory.CURRENT_STATE.getIn(['form', 'cars', 1])).toBe('audi');
+            expect(StateHistory.instance.currentState.getIn(['form', 'cars', 0])).toBe('saab');
+            expect(StateHistory.instance.currentState.getIn(['form', 'cars', 1])).toBe('audi');
         });
 
         it('should update select value in state', () => {
@@ -141,7 +141,7 @@ describe('Forms manager', () => {
 
             jest.runAllTimers();
 
-            expect(StateHistory.CURRENT_STATE.getIn(['form', 'color'])).toBe('white');
+            expect(StateHistory.instance.currentState.getIn(['form', 'color'])).toBe('white');
         });
 
         it('should update textarea value in state', () => {
@@ -154,7 +154,7 @@ describe('Forms manager', () => {
 
             jest.runAllTimers();
 
-            expect(StateHistory.CURRENT_STATE.getIn(['form', 'description'])).toBe('test');
+            expect(StateHistory.instance.currentState.getIn(['form', 'description'])).toBe('test');
         });
 
         it('should update input value in state', () => {
@@ -167,7 +167,7 @@ describe('Forms manager', () => {
 
             jest.runAllTimers();
 
-            expect(StateHistory.CURRENT_STATE.getIn(['form', 'address'])).toBe('test');
+            expect(StateHistory.instance.currentState.getIn(['form', 'address'])).toBe('test');
         });
 
         it('should update custom form element value in state', () => {
@@ -181,7 +181,7 @@ describe('Forms manager', () => {
 
             jest.runAllTimers();
 
-            expect(StateHistory.CURRENT_STATE.getIn(['form', 'group', 'complexElement'])).toBe('test');
+            expect(StateHistory.instance.currentState.getIn(['form', 'group', 'complexElement'])).toBe('test');
         });
     });
 
@@ -229,7 +229,7 @@ describe('Forms manager', () => {
 
         jest.runAllTimers();
 
-        expect(StateHistory.CURRENT_STATE.getIn(['form', 'address'])).toBe('Some Street 1a');
+        expect(StateHistory.instance.currentState.getIn(['form', 'address'])).toBe('Some Street 1a');
     });
 });
 

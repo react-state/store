@@ -1,36 +1,54 @@
 import { History } from 'history';
 import { RouterState } from "./state/router-state";
 import { State } from "./state/state";
-import { StateHistory } from "./state/history";
+import { StateHistory, StateHistoryOptions, StateKeeper } from "./state/history";
 import { Store } from "./store/store";
 import { HistoryController } from "./state/history-controller";
-import { take, switchMap } from "rxjs/operators";
+import { take } from "rxjs/operators";
+import { DebugInfo, DebugOptions } from './debug/debug-info';
 
-export class ReactState {
-    static init(
+class ReactStateInitializer {
+    init(
         domRender: (history: History) => void,
         initialState: any,
-        isProd: boolean = false,
-        debugMode = false,
+        isProd: boolean,
         enableSSR = false
-    ) {
+    ): void {
+        StateHistory.instance.init(initialState);
+
         const store = new Store(new State(initialState));
-        const history = new StateHistory();
-        history.init(initialState, debugMode);
         const routerHistory = new RouterState(store, enableSSR).init();
 
-        new HistoryController(store, history).init();
+        new HistoryController(store).init();
         HistoryController.routerHistory = routerHistory;
 
-        if(!isProd) {
-            (<any>window).state = StateHistory;
+        if (!isProd) {
+            (<any>window).state = {
+                history: StateKeeper,
+                debug: DebugInfo.instance.publicApi
+            };
         }
 
         Store.store = store;
-        ReactState.initRenderDom(store, domRender, routerHistory.history);
+        this.initRenderDom(store, domRender, routerHistory.history);
     }
 
-    private static initRenderDom(store: Store<any>, domRender: (history: History) => void, routerHistory: History) {
+    debugger(enableInitialDebugging: boolean, options: DebugOptions): ReactStateInitializer {
+        DebugInfo.instance.changeDefaults(options);
+
+        if (enableInitialDebugging) {
+            DebugInfo.instance.init(true);
+        }
+
+        return this;
+    }
+
+    changeHistoryDefaultOptions(options: StateHistoryOptions): ReactStateInitializer {
+        StateHistory.instance.changeDefaults(options);
+        return this;
+    }
+
+    private initRenderDom(store: Store<any>, domRender: (history: History) => void, routerHistory: History) {
         store
             .pipe(
                 take(1)
@@ -44,3 +62,6 @@ export class ReactState {
             });
     }
 }
+
+const ReactState = new ReactStateInitializer();
+export { ReactState };

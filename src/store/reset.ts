@@ -3,7 +3,8 @@ import { StateHistory } from '../state/history';
 import { Map, fromJS } from 'immutable';
 import { tap, take } from 'rxjs/operators';
 import { Helpers } from '../helpers/helpers';
-import { ActionType } from './debug-info-data';
+import { ActionType } from '../debug/debug-info-data';
+import { RouterState } from '../state/router-state';
 
 export class Reset {
     constructor(debugMessage: string = null) {
@@ -12,16 +13,29 @@ export class Reset {
         const restoreState = function (store: Store<any>) {
             store
                 .update((state: Map<any, any>) => {
+
+                    let path = store.statePath.filter(item => !store.rootPath.includes(item));
+                    const isRootPath = Array.isArray(path) && path.length === 0;
+
+                    let router = '';
+                    if (isRootPath) {
+                        router = state.get('router');
+                    }
+
                     state.clear();
 
                     let initialState: Map<any, any> = !!store.initialState
                         ? store.initialState
-                        : fromJS(StateHistory.initialState);
-
-                    let path = store.statePath.filter(item => !store.rootPath.includes(item));
+                        : fromJS(StateHistory.instance.initialState);
 
                     state.merge(initialState.getIn(path));
-                });
+
+                    if (isRootPath) {
+                        state.set('router', router);
+                        state.setIn(['router', 'url'], RouterState.startingRoute); // TODO: Move to Angular
+                    }
+
+                }, true, { message: debugMessage, actionType: ActionType.Reset });
         };
 
         let actionWrapper = function (state: Map<any, any>) {
@@ -39,12 +53,6 @@ export class Reset {
             restoreState(this);
 
         }.bind(this);
-
-        StateHistory.debugInfo = {
-            message: debugMessage,
-            actionType: ActionType.Reset,
-            statePath: (<any>this).statePath
-        };
 
         (<any>this).pipe(
             tap(actionWrapper),

@@ -1,18 +1,22 @@
 import { Store } from '../store/store';
 import { StateHistory } from './history';
-import { Subject, ReplaySubject } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 import { RouterState } from './router-state';
+import { DebugInfo } from '../debug/debug-info';
 
 export class HistoryController {
     private static onHistoryChange = new ReplaySubject<boolean>(1);
     static routerHistory: RouterState = null;
 
-    constructor(private store: Store<any>, private history: StateHistory) {
+    constructor(private store: Store<any>) {
     }
 
     init() {
         this.store.subscribe(state => {
-            this.history.add(state);
+            const isIntialState = !StateHistory.instance.currentState;
+
+            StateHistory.instance.add(state);
+            DebugInfo.instance.onStateChange(state, isIntialState);
             HistoryController.onHistoryChange.next(true);
         });
     }

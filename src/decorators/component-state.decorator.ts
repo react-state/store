@@ -1,12 +1,14 @@
 import { StateHistory } from "../state/history";
-import { unsubscribe } from "../helpers/async-filter"
+import { AsyncValueResolver } from "../helpers/async-value-resolver"
 import { ReactStateConfig } from '../react-state.config';
+import { Dispatcher } from "../services/dispatcher";
 
 export function ComponentState(stateActions: any | ((T: any) => any), updateComponentOnEveryRender: boolean = false) {
 
     return (target: any) => {
 
         var componentWillMount = target.prototype.componentWillMount || (() => { });
+        var componentDidMount = target.prototype.componentDidMount || (() => { });
         var componentWillUnmount = target.prototype.componentWillUnmount || (() => { });
         var shouldComponentUpdate = target.prototype.shouldComponentUpdate || (() => updateComponentOnEveryRender);
 
@@ -21,29 +23,38 @@ export function ComponentState(stateActions: any | ((T: any) => any), updateComp
                 : this.props.statePath;
 
             if (stateActions) {
-                // DOC - CONVETION: only annonymous function allwed for choosing state; Actions can be only named functions;
+                // DOC - CONVETION: only annonymous function allowed for choosing state; Actions can be only named functions;
                 const extractedStateAction = stateActions.name === ''
                     ? stateActions(this)
                     : stateActions;
 
-                const initState = new extractedStateAction();
+                const actions = new extractedStateAction();
                 const stateIndex = this.stateIndex
                     ? this.stateIndex
                     : this.props.stateIndex;
 
-                this.statePath = initState.createStore(this.statePath, stateIndex, (state: any) => {
-                    this.prevState = state;
-                    this.forceUpdate();
-                });
-
-                this.actions = initState;
+                this.statePath = actions.createStore(this.statePath, stateIndex);
+                this.actions = actions;
             }
 
             componentWillMount.call(this);
         }
 
+        target.prototype.componentDidMount = function () {
+            this.asyncUpdateSubscription = Dispatcher
+                .subscribe(this.actions.aId, (state) => {
+                    if (state) {
+                        this.prevState = state;
+                    }
+
+                    this.forceUpdate();
+                });
+
+            componentDidMount.call(this);
+        }
+
         target.prototype.shouldComponentUpdate = function (nextProps: any, nextState: any) {
-            const currentState = StateHistory.CURRENT_STATE.getIn(this.statePath);
+            const currentState = StateHistory.instance.currentState.getIn(this.statePath);
             const shouldUpdate = this.prevState == null || !this.prevState.equals(currentState);
             this.prevState = currentState;
 
@@ -54,11 +65,16 @@ export function ComponentState(stateActions: any | ((T: any) => any), updateComp
 
         target.prototype.componentWillUnmount = function () {
             this.prevState = null;
-            const observableIds = this.actions.getAllObservableIds();
-            unsubscribe(observableIds);
 
             if (this.actions) {
                 this.actions.onDestroy();
+                this.actions = null;
+            }
+
+            this.statePath = null;
+
+            if (this.asyncUpdateSubscription) {
+                this.asyncUpdateSubscription.unsubscribe();
             }
 
             componentWillUnmount.call(this);
