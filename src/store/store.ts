@@ -1,4 +1,3 @@
-import { ClearSignature, Clear } from './clear';
 import { Select, SelectSignature } from './select';
 import { Update, UpdateSignature } from './update';
 import { Initialize, InitializeSignature } from './initialize';
@@ -19,8 +18,6 @@ export class Store<T> extends Observable<T> implements Observer<any> {
     initialize: InitializeSignature<T>;
     map: MapSgnature<T>;
     reset: ResetSignature;
-
-    clear: ClearSignature = Clear.bind(this);
 
     form: FormStateManager;
     storage: PersistStateManager;

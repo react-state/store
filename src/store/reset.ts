@@ -49,7 +49,6 @@ export class Reset {
             }
 
             reseted = true;
-
             restoreState(this);
 
         }.bind(this);

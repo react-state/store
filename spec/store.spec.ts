@@ -4,6 +4,7 @@ import { Store } from './../src/store/store';
 import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { ReactStateTestBed } from '../src/react-state.test-bed';
+import { RouterState } from '../src/state/router-state';
 
 describe('Store tests', () => {
     let store: Store<any>;
@@ -52,15 +53,15 @@ describe('Store tests', () => {
                 });
         });
 
-        it('should clear state', () => {
+        it('should reset state', () => {
             store.initialize(['router'], { url: 'home' }, false);
             store.select(['layout']).update(state => state.set('loading', true));
             expect(StateHistory.instance.currentState.getIn(['layout', 'loading'])).toEqual(true);
 
-            store.clear();
+            store.reset();
             expect(StateHistory.instance.currentState.getIn(['layout', 'test'])).toEqual('test');
             expect(StateHistory.instance.currentState.getIn(['layout', 'loading'])).not.toBeDefined();
-            expect(StateHistory.instance.currentState.getIn(['router', 'url'])).toBe('');
+            expect(StateHistory.instance.currentState.getIn(['router', 'url'])).toBe(RouterState.startingRoute);
         });
     });
 });

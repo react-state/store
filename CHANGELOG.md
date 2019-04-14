@@ -1,3 +1,9 @@
+### 5.0.0
+- Added integration with Redux DevTools
+- Improved async support in actions
+
+##### BREAKING CHANGES
+- Removed clear operator. Instead use immutable operator ```store.update(state => state.clear())```. Previouse functionality of clear operator was moved to ```reset``` to avoid confusion
 
 ### 4.2.0
 - Added more `currentValue` and `value` params to `shouldUpdateState` hook in external storage plugin.

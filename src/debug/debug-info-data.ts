@@ -6,7 +6,6 @@ export interface DebugInfoData {
 
 export const enum ActionType {
     Update = 'UPDATE',
-    Clear = 'CLEAR',
     Reset = 'RESET',
     Insert = 'INSERT',
     Delete = 'DELETE'

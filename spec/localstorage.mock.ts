@@ -18,4 +18,4 @@ class LocalStorageMock {
     }
 }
 
-Object.defineProperty(window, 'localStorage', { value: new LocalStorageMock() });
+Object.defineProperty(window, 'customStorage', { value: new LocalStorageMock() });
