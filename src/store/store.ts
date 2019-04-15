@@ -31,7 +31,7 @@ export class Store<T> extends Observable<T> implements Observer<any> {
 
     select: SelectSignature = (statePath: string[]): Store<T> => {
         let selectStore = Select.bind(this).call(this, statePath);
-        selectStore.statePath = [...this.statePath, ...statePath]; // TODO: I ANGULARA
+        selectStore.statePath = [...this.statePath, ...statePath];
         selectStore.rootPath = this.rootPath;
         selectStore.initialState = this.initialState;
         this.initializeOperators(selectStore);

@@ -22,7 +22,7 @@ export class RouterState {
     }
 
     private initRouter() {
-        this.store.initialize(['router'], { url: RouterState.startingRoute }, false); // TODO: move to Angular
+        this.store.initialize(['router'], { url: RouterState.startingRoute }, false);
         this.currentRoute = RouterState.startingRoute;
     }
 

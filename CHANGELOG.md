@@ -1,9 +1,11 @@
 ### 5.0.0
-- Added integration with Redux DevTools
-- Improved async support in actions
+- Added integration with Redux DevTools - [documentation](https://vytautaspranskunas.gitbook.io/react-state-rxjs/debugging/redux-devtools)
+- Improved async support in actions - [documentation](https://vytautaspranskunas.gitbook.io/react-state-rxjs/core-concepts/actions/async)
+- Improved debugging experience
 
 ##### BREAKING CHANGES
 - Removed clear operator. Instead use immutable operator ```store.update(state => state.clear())```. Previouse functionality of clear operator was moved to ```reset``` to avoid confusion
+- Time travel was removed because of integration with Redux DevTools. You do not need to include <StateHistoryComponent /> to your main.tsx file.
 
 ### 4.2.0
 - Added more `currentValue` and `value` params to `shouldUpdateState` hook in external storage plugin.

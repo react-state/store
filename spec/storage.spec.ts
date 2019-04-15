@@ -78,15 +78,7 @@ describe('Storage', () => {
         it('should notify observer after state is loaded', (done) => {
             const layoutStore = store.select(['layout']);
 
-            layoutStore.storage.save({
-                key: 'testKey',
-                storageConfig: {
-                    storage: storage,
-                    getKeys: () => Object.keys((keyValueStorage as unknown as LocalStorageMock).store)
-                }
-            });
-
-            jest.runTimersToTime(delay);
+            layoutStore.storage.save({ key: 'testKey' });
 
             layoutStore
                 .storage.load({
@@ -107,14 +99,7 @@ describe('Storage', () => {
         it('should notify observer after item is removed from storage', (done) => {
             const layoutStore = store.select(['layout']);
 
-            layoutStore.storage.save({
-                key: 'testKey', storageConfig: {
-                    storage: storage,
-                    getKeys: () => Object.keys((keyValueStorage as unknown as LocalStorageMock).store)
-                }
-            });
-
-            jest.runTimersToTime(delay);
+            layoutStore.storage.save({ key: 'testKey' });
 
             layoutStore
                 .storage.remove({
@@ -134,20 +119,8 @@ describe('Storage', () => {
         it('should notify observer after storage is cleared', (done) => {
             const layoutStore = store.select(['layout']);
 
-            layoutStore.storage.save({
-                key: 'testKey', storageConfig: {
-                    storage: storage,
-                    getKeys: () => Object.keys((keyValueStorage as unknown as LocalStorageMock).store)
-                }
-            });
-            layoutStore.storage.save({
-                key: 'testKey2', storageConfig: {
-                    storage: storage,
-                    getKeys: () => Object.keys((keyValueStorage as unknown as LocalStorageMock).store)
-                }
-            });
-
-            jest.runTimersToTime(delay);
+            layoutStore.storage.save({ key: 'testKey' });
+            layoutStore.storage.save({ key: 'testKey2' });
 
             layoutStore
                 .storage.clear({

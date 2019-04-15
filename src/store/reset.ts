@@ -32,7 +32,7 @@ export class Reset {
 
                     if (isRootPath) {
                         state.set('router', router);
-                        state.setIn(['router', 'url'], RouterState.startingRoute); // TODO: Move to Angular
+                        state.setIn(['router', 'url'], RouterState.startingRoute);
                     }
 
                 }, true, { message: debugMessage, actionType: ActionType.Reset });

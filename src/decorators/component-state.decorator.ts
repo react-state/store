@@ -1,5 +1,4 @@
 import { StateHistory } from "../state/history";
-import { AsyncValueResolver } from "../helpers/async-value-resolver"
 import { ReactStateConfig } from '../react-state.config';
 import { Dispatcher } from "../services/dispatcher";
 

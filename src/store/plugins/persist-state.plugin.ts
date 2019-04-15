@@ -140,7 +140,7 @@ export class PersistStateManager {
     }
 
     private setDefaultStorage() {
-        if (!this.defaults.storageConfig) {
+        if (!this.defaults.storageConfig && window && window['localStorage']) {
             this.defaults.storageConfig = {
                 storage: localStorage,
                 getKeys: () => Object.keys(localStorage)
