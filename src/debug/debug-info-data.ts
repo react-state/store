@@ -1,5 +1,5 @@
 export interface DebugInfoData {
-    actionType?: ActionType | string,
+    actionType?: ActionType | string;
     message?: string;
     statePath?: any[];
 }

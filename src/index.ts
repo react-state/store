@@ -19,8 +19,7 @@ class ReactStateInitializer {
         const store = new Store(new State(initialState));
         const routerHistory = new RouterState(store, enableSSR).init();
 
-        new HistoryController(store).init();
-        HistoryController.routerHistory = routerHistory;
+        new HistoryController(store, routerHistory).init();
 
         if (!isProd) {
             (<any>window).state = {

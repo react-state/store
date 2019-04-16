@@ -67,10 +67,7 @@ export function ComponentState(stateActions: any | ((T: any) => any), updateComp
 
             if (this.actions) {
                 this.actions.onDestroy();
-                this.actions = null;
             }
-
-            this.statePath = null;
 
             if (this.asyncUpdateSubscription) {
                 this.asyncUpdateSubscription.unsubscribe();

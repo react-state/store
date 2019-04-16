@@ -1,14 +1,15 @@
 import { Store } from '../store/store';
 import { StateHistory } from './history';
-import { ReplaySubject } from 'rxjs';
+import { ReplaySubject, Subject } from 'rxjs';
 import { RouterState } from './router-state';
-import { DebugInfo } from '../debug/debug-info';
+import { DebugInfo, DebugHistoryItem } from '../debug/debug-info';
+import { take } from 'rxjs/operators';
 
 export class HistoryController {
     private static onHistoryChange = new ReplaySubject<boolean>(1);
-    static routerHistory: RouterState = null;
+    private onHistoryChange = new Subject();
 
-    constructor(private store: Store<any>) {
+    constructor(private store: Store<any>, private routerHistory: RouterState) {
     }
 
     init() {
@@ -19,20 +20,28 @@ export class HistoryController {
             DebugInfo.instance.onStateChange(state, isIntialState);
             HistoryController.onHistoryChange.next(true);
         });
+
+        DebugInfo.instance.onApplyHistory.subscribe(this.applyHistory);
     }
 
-    static applyHistory(targetState: any, statePath: any[]) {
-        const targetRoute = targetState.getIn(['router', 'url']);
+    applyHistory = (debugHistoryItem: DebugHistoryItem) => {
+        DebugInfo.instance.turnOnTimeTravel();
+
+        const targetRoute = debugHistoryItem.state.getIn(['router', 'url']);
         if (targetRoute && this.routerHistory.currentRoute !== targetRoute) {
             this.routerHistory.history.push(targetRoute);
         }
 
-        this.applyState(targetState, statePath);
+        this.applyState(debugHistoryItem.state, debugHistoryItem.statePath);
 
-        return this.onHistoryChange;
+        this.onHistoryChange
+            .pipe(take(1))
+            .subscribe(_ => {
+                DebugInfo.instance.turnOffTimeTravel();
+            });
     }
 
-    private static applyState(targetState: any, statePath: string[]) {
+    private applyState(targetState: any, statePath: string[]) {
         Store.store.select(statePath)
             .update((state: any) => {
                 state.clear();

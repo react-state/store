@@ -4,6 +4,7 @@ import { HistoryController } from '../state/history-controller';
 import { fromJS } from 'immutable';
 import { take } from 'rxjs/operators';
 import { StateHistory } from '../state/history';
+import { Subject } from 'rxjs';
 
 export class DebugInfo {
     private static _instance: DebugInfo = null;
@@ -12,12 +13,15 @@ export class DebugInfo {
     private debugMode: boolean;
     private withDevTools: boolean;
     private debugStatePath = null;
-    private devTools = null;;
+    private devTools = null;
     private devToolsSubscription = null;
     private options: DebugOptions = {
         enableConsoleOutput: true,
         enableDevToolsOutput: true
-    }
+    };
+
+    isTimeTravel = false;
+    onApplyHistory = new Subject<DebugHistoryItem>();
 
     static get instance() {
         if (!this._instance) {
@@ -56,9 +60,17 @@ export class DebugInfo {
     }
 
     onStateChange(state: any, isIntialState: boolean) {
-        if (this.debugMode) {
+        if (this.debugMode && !this.isTimeTravel) {
             this.logDebugInfo(state, isIntialState);
         }
+    }
+
+    turnOnTimeTravel() {
+        this.isTimeTravel = true;
+    }
+
+    turnOffTimeTravel() {
+        this.isTimeTravel = false;
     }
 
     private logDebugInfo(state: any, isIntialState: boolean) {
@@ -103,7 +115,7 @@ export class DebugInfo {
     }
 
     private getDebugStatePath() {
-        return this.debugStatePath
+        return this.debugStatePath && this.debugStatePath.length > 0
             ? this.debugStatePath.join('->')
             : 'root';
     }
@@ -116,15 +128,10 @@ export class DebugInfo {
         this.devTools = window['__REDUX_DEVTOOLS_EXTENSION__'].connect();
         this.devToolsSubscription = this.devTools.subscribe((message: any) => {
             if (message.type === 'DISPATCH' && (message.payload.type === 'JUMP_TO_ACTION' || message.payload.type === 'JUMP_TO_STATE')) {
-
-                const debugModeOriginal = this.debugMode;
-                this.debugMode = false;
-
-                HistoryController.applyHistory(fromJS(JSON.parse(message.state)), statePath)
-                    .pipe(take(1))
-                    .subscribe(_ => {
-                        this.debugMode = debugModeOriginal;
-                    });
+                this.onApplyHistory.next({
+                    state: fromJS(JSON.parse(message.state)),
+                    statePath: statePath
+                });
             }
         });
     }
@@ -161,4 +168,9 @@ export class DebugInfo {
 export interface DebugOptions {
     enableConsoleOutput?: boolean;
     enableDevToolsOutput?: boolean;
+}
+
+export interface DebugHistoryItem {
+    state: any;
+    statePath: any[];
 }

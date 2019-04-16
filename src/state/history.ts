@@ -4,7 +4,7 @@ export class StateHistory {
     private options: StateHistoryOptions = {
         collectHistory: true,
         storeHistoryItems: 100
-    }
+    };
 
     initialState = {};
 
@@ -53,6 +53,6 @@ export class StateKeeper {
 }
 
 export interface StateHistoryOptions {
-    collectHistory?: boolean,
-    storeHistoryItems?: number | null
+    collectHistory?: boolean;
+    storeHistoryItems?: number | null;
 }

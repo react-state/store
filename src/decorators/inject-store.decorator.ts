@@ -88,7 +88,7 @@ export function InjectStore(newPath: string[] | string | ((currentPath: any, sta
     return (target: any) => {
         target.prototype.createStore = function (currentPath: any[], stateIndex: (string | number) | (string | number)[]) {
 
-            this.aId = Helpers.guid()
+            this.aId = Helpers.guid();
 
             let extractedPath = typeof newPath === 'function' && (<any>newPath).name === ''
                 ? (<any>newPath)(currentPath, stateIndex)
