@@ -17,4 +17,6 @@ export * from './src/decorators/component-state.decorator';
 export * from './src/decorators/inject-store.decorator';
 export * from './src/react-component-with-state-actions';
 export * from './src/react-state.test-bed';
+export * from './src/debug/debug-info';
+export * from './src/debug/debug-info-data';
 export { ReactState } from './src/index';
