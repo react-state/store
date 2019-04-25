@@ -8,6 +8,7 @@ RxJS and ImmutableJs powered nested state management for React applications insp
 - 🎓 Learn about it on the [docs site](https://vytautaspranskunas.gitbook.io/react-state-rxjs)
 - 🚀 See it in action on [Stackblitz](https://stackblitz.com/edit/react-state-rxjs-example-app)
 - 👉 Checkout the [sample application](https://github.com/react-state/example-app)
+- 📖 Read the [blog posts](https://vytautaspranskunas.gitbook.io/react-state-rxjs/other-information/blog-posts)
 - 📣 Join @react-state-rxjs [Gitter](https://gitter.im/App-State-Management/react-state-rxjs) room
 
 

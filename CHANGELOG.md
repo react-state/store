@@ -1,3 +1,7 @@
+### 5.0.1
+- Added debug message on Initialization
+- Improved code
+
 ### 5.0.0
 - Added integration with Redux DevTools - [documentation](https://vytautaspranskunas.gitbook.io/react-state-rxjs/debugging/redux-devtools)
 - Improved async support in actions - [documentation](https://vytautaspranskunas.gitbook.io/react-state-rxjs/core-concepts/actions/async)

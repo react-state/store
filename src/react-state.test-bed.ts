@@ -12,7 +12,7 @@ export class ReactStateTestBed {
     public static createStore(initialState: any): Store<any> {
         const store = new Store(new State(initialState));
         StateHistory.instance.init(initialState);
-        const historyController = new HistoryController(store);
+        const historyController = new HistoryController(store, { history: { push: () => {}  } as any } as any);
         historyController.init();
 
         return store;

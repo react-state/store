@@ -1,6 +1,6 @@
 {
   "name": "react-state-rxjs",
-  "version": "5.0.0",
+  "version": "5.1.1",
   "description": "RxJS and ImmutableJs powered nested state management for React apps inspired by @ngrx and Redux.",
   "main": "index.js",
   "repository": {
@@ -8,11 +8,18 @@
     "url": "git+https://github.com/react-state/store.git"
   },
   "keywords": [
-    "RxJS",
-    "React",
-    "Immutable Js",
-    "Nested",
-    "State"
+    "state management",
+    "rxjs",
+    "react",
+    "immutable",
+    "immutablejs",
+    "nested state",
+    "store",
+    "observable data store",
+    "javascript",
+    "typescript",
+    "react store",
+    "redux"
   ],
   "author": "Vytautas Pranskunas <vytautas.pranskunas@gmail.com>",
   "license": "MIT",
