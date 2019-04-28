@@ -92,6 +92,8 @@ export class DebugInfo {
             this.devTools.send(debugMessage, debugState);
         }
 
+        StateHistory.instance.add({ message: debugMessage, state: debugState });
+
         this.debugInfo = null;
     }
 
@@ -125,7 +127,7 @@ export class DebugInfo {
             return;
         }
 
-        this.devTools = window['__REDUX_DEVTOOLS_EXTENSION__'].connect();
+        this.devTools = window['__REDUX_DEVTOOLS_EXTENSION__'].connect({ maxAge: StateHistory.instance.storeHistoryItems });
         this.devToolsSubscription = this.devTools.subscribe((message: any) => {
             if (message.type === 'DISPATCH' && (message.payload.type === 'JUMP_TO_ACTION' || message.payload.type === 'JUMP_TO_STATE')) {
                 this.onApplyHistory.next({

@@ -9,14 +9,14 @@ export class HistoryController {
     private static onHistoryChange = new ReplaySubject<boolean>(1);
     private onHistoryChange = new Subject();
 
-    constructor(private store: Store<any>, private routerHistory: RouterState) {
+    constructor(private store: Store<any>, private routerState: RouterState) {
     }
 
     init() {
         this.store.subscribe(state => {
             const isIntialState = !StateHistory.instance.currentState;
 
-            StateHistory.instance.add(state);
+            StateHistory.instance.setCurrentState(state);
             DebugInfo.instance.onStateChange(state, isIntialState);
             HistoryController.onHistoryChange.next(true);
         });
@@ -28,8 +28,8 @@ export class HistoryController {
         DebugInfo.instance.turnOnTimeTravel();
 
         const targetRoute = debugHistoryItem.state.getIn(['router', 'url']);
-        if (targetRoute && this.routerHistory.currentRoute !== targetRoute) {
-            this.routerHistory.history.push(targetRoute);
+        if (targetRoute && this.routerState.currentRoute !== targetRoute) {
+            this.routerState.history.push(targetRoute);
         }
 
         this.applyState(debugHistoryItem.state, debugHistoryItem.statePath);

@@ -8,6 +8,8 @@ import { take } from "rxjs/operators";
 import { DebugInfo, DebugOptions } from './debug/debug-info';
 
 class ReactStateInitializer {
+    private enableInitialDebugging: boolean;
+
     init(
         domRender: (history: History) => void,
         initialState: any,
@@ -18,6 +20,10 @@ class ReactStateInitializer {
 
         const store = new Store(new State(initialState));
         const routerHistory = new RouterState(store, enableSSR);
+
+        if (this.enableInitialDebugging) {
+            DebugInfo.instance.init(true);
+        }
 
         new HistoryController(store, routerHistory).init();
         routerHistory.init();
@@ -34,11 +40,8 @@ class ReactStateInitializer {
     }
 
     debugger(enableInitialDebugging: boolean, options: DebugOptions): ReactStateInitializer {
+        this.enableInitialDebugging = enableInitialDebugging;
         DebugInfo.instance.changeDefaults(options);
-
-        if (enableInitialDebugging) {
-            DebugInfo.instance.init(true);
-        }
 
         return this;
     }

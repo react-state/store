@@ -24,6 +24,10 @@ export class StateHistory {
         return StateKeeper.HISTORY;
     }
 
+    get storeHistoryItems() {
+        return this.options.storeHistoryItems;
+    }
+
     init(initialState: any) {
         this.initialState = initialState;
     }
@@ -32,9 +36,11 @@ export class StateHistory {
         this.options = { ...this.options, ...options };
     }
 
-    add(state: any) {
+    setCurrentState(state: any) {
         StateKeeper.CURRENT_STATE = state;
+    }
 
+    add(item: HistoryItem) {
         if (!this.options.collectHistory) {
             return;
         }
@@ -43,7 +49,7 @@ export class StateHistory {
             StateKeeper.HISTORY.shift();
         };
 
-        StateKeeper.HISTORY.push(state.toJS());
+        StateKeeper.HISTORY.push(item);
     }
 }
 
@@ -55,4 +61,9 @@ export class StateKeeper {
 export interface StateHistoryOptions {
     collectHistory?: boolean;
     storeHistoryItems?: number | null;
+}
+
+export interface HistoryItem {
+    message: string;
+    state: any;
 }

@@ -1,3 +1,8 @@
+### 5.2.0
+- Improved code
+- Improved information of history items
+- Redux DevTools `maxAge` now is set from `storeHistoryItems` property
+
 ### 5.0.1
 - Added debug message on Initialization
 - Improved code
