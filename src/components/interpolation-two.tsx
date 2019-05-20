@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Dispatcher, Message } from '../../projects/react-state/src/services/dispatcher'
+import { Dispatcher, Message } from '../../projects/react-state/src/services/dispatcher';
 
 import { ClearTodoMessage, UpdateTodoItemMessage } from './actions/todo.model';
 import { ComponentState } from '../../projects/react-state/src/decorators/component-state.decorator';
@@ -14,7 +14,7 @@ export class InterpolationOne extends React.Component<any, any> {
 
     render() {
         return (
-            <div>{this.test()} - { this.actions.interpolationValue }
+            <div>{this.test()} - {this.actions.interpolationValue}
                 <button onClick={() => this.changeState()}>click</button>
                 <button onClick={() => this.updateDocList()}>clear todos from not related component</button>
                 <button onClick={() => this.updateTodoItem()}>Update first item</button>

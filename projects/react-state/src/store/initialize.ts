@@ -1,28 +1,30 @@
-import { fromJS } from 'immutable';
 import { Helpers } from '../helpers/helpers';
 import { tap, take } from 'rxjs/operators';
 import { Store } from './store';
 import { ActionType } from '../debug/debug-info-data';
 import { DebugInfo } from '../debug/debug-info';
+import { DataStrategyProvider } from '../data-strategy/data-strategy-provider';
 
 export class Initialize {
     newStore: Store<any>;
 
     constructor(statePath, initialState: any = null) {
+        const initialized = '__initialized';
+
         let actionWrapper = function (state: any) {
-            if (state.getIn([...statePath, '__initialized'])) {
+            if (DataStrategyProvider.instance.getIn(state, [...statePath, initialized])) {
                 return;
             }
 
-            Helpers.overrideContructor(initialState);
+            DataStrategyProvider.instance.overrideContructor(initialState);
             initialState.constructor = Object;
-            initialState = fromJS(initialState);
-            initialState = initialState.set('__initialized', true);
+            initialState = DataStrategyProvider.instance.fromJS(initialState);
+            initialState = DataStrategyProvider.instance.set(initialState, initialized, true);
 
             let newState;
 
             try {
-                newState = state.setIn(statePath, initialState);
+                newState = DataStrategyProvider.instance.setIn(state, statePath, initialState);
                 this.newStore = (<any>this).select(statePath);
                 this.newStore.initialState = initialState;
                 this.newStore.rootPath = statePath;

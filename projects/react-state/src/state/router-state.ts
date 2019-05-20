@@ -1,6 +1,7 @@
 import { History } from 'history';
 import { Store } from '../store/store';
 import { createBrowserHistory, createMemoryHistory } from 'history';
+import { DataStrategyProvider } from '../data-strategy/data-strategy-provider';
 
 export class RouterState {
     static startingRoute = '/';
@@ -30,7 +31,7 @@ export class RouterState {
         this.history.listen((location: any, action: any) => {
             this.currentRoute = location.pathname;
             (<Store<any>>this.store.select(['router'])).update(state => {
-                state.set('url', location.pathname);
+                DataStrategyProvider.instance.set(state, 'url', location.pathname);
             });
         });
     }

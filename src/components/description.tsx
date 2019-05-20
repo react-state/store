@@ -8,8 +8,8 @@ export class TodoDescription extends React.Component<any, any> implements HasSta
     actions: TodoStateActions;
     statePath: any;
 
-    render(){
-        return <div>{ this.actions.todoDescriptionAsync } - { this.interpolationTest() }</div>
+    render() {
+        return <div>{this.actions.todoDescriptionAsync} - {this.interpolationTest()}</div>;
     }
 
     interpolationTest() {

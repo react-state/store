@@ -11,15 +11,15 @@ export class InterpolationTwo extends React.Component<any, any> {
 
     render() {
         return (
-            <div>{this.test()} - { this.actions.interpolationValue }
+            <div>{this.test()} - {this.actions.interpolationValue}
                 <button onClick={() => this.changeState()}>click</button>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
+                <br />
+                <br />
+                <br />
+                <br />
                 <button onClick={() => this.unloadComponent()}>UNMOUNT</button>
             </div>
-            );
+        );
     }
 
     test() {
@@ -30,7 +30,7 @@ export class InterpolationTwo extends React.Component<any, any> {
         this.actions.update(Math.random());
     }
 
-    unloadComponent(){
+    unloadComponent() {
         ReactDOM.unmountComponentAtNode(document.getElementById('example'));
     }
 }

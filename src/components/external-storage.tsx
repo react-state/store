@@ -72,6 +72,6 @@ export class StorageComponent extends React.Component {
                 <button className='btn btn-primary' style={{ marginLeft: '5px' }} onClick={this.load.bind(this)}>load</button>
                 <button className='btn btn-primary' style={{ marginLeft: '5px' }} onClick={this.change.bind(this)}>change</button>
             </div>
-        )
+        );
     }
 }

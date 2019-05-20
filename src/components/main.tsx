@@ -25,7 +25,7 @@ export class Main extends React.Component<any, undefined> {
                 <li className='nav-item'>
                     <Link className='nav-link' to='/async-demo' title='Async Demo'>Async Demo</Link>
                 </li>
-            </nav>
+            </nav>;
 
         return (
             <div>
@@ -41,6 +41,6 @@ export class Main extends React.Component<any, undefined> {
                     </Router>
                 </div>
             </div>
-        )
+        );
     }
 }

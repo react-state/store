@@ -20,7 +20,7 @@ describe('Storage', () => {
 
     it('should save state', () => {
         store.select(['layout']).storage.save({ key: 'testKey' });
-        expect(<any>keyValueStorage.getItem('state::testKey')).toBe("{'test':'test'}");
+        expect(<any>keyValueStorage.getItem('state::testKey')).toBe('{\'test\':\'test\'}');
     });
 
     it('should load state', () => {

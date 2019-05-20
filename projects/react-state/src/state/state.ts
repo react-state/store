@@ -1,10 +1,9 @@
-import { fromJS } from 'immutable';
 import { BehaviorSubject } from 'rxjs';
-import { Helpers } from '../helpers/helpers';
+import { DataStrategyProvider } from '../data-strategy/data-strategy-provider';
 
 export class State<T> extends BehaviorSubject<T> {
-  constructor(initialState: T) {
-    Helpers.overrideContructor(initialState);
-    super(fromJS(initialState));
-  }
+    constructor(initialState: T) {
+        DataStrategyProvider.instance.overrideContructor(initialState);
+        super(DataStrategyProvider.instance.fromJS(initialState));
+    }
 }

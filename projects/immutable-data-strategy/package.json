@@ -1,7 +1,7 @@
 {
-    "name": "@ng-state/immutablejs-data-strategy",
+    "name": "@react-state/immutablejs-data-strategy",
     "version": "1.0.0",
-    "description": "Immutablejs data strategy for @ng-state/store",
+    "description": "Immutablejs data strategy for @react-state/store",
     "main": "index.js",
     "scripts": {
         "clean:pre": "rimraf release",

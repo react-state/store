@@ -1,8 +1,8 @@
 import { distinctUntilChanged, debounceTime, takeUntil, filter } from 'rxjs/operators';
 import { Observable, Subject, fromEvent, ReplaySubject } from 'rxjs';
 import { Store } from '../store';
-import { Map, fromJS } from 'immutable';
 import { Helpers } from '../../helpers/helpers';
+import { DataStrategyProvider } from '../../data-strategy/data-strategy-provider';
 
 export class FormStateManager {
 
@@ -96,7 +96,7 @@ export class FormStateManager {
                 distinctUntilChanged(),
                 takeUntil(this.unsubscribe)
             )
-            .subscribe((state: Map<any, any>) => {
+            .subscribe((state: any) => {
                 for (let i = 0; i < this.formElements.length; i++) {
                     const formElement = this.formElements[i];
                     let stateValue = this.getValueFromState(state, formElement);
@@ -129,9 +129,9 @@ export class FormStateManager {
             ? this.getStatePath(item.element)
             : this.getCustomElementStatePath(item.customElement);
 
-        let stateValue = state.getIn(statePath);
-        if (Helpers.isImmutable(stateValue)) {
-            stateValue = stateValue.toJS();
+        let stateValue = DataStrategyProvider.instance.getIn(state, statePath);
+        if (DataStrategyProvider.instance.isObject(stateValue)) {
+            stateValue = DataStrategyProvider.instance.toJS(stateValue);
         }
 
         return stateValue;
@@ -176,7 +176,7 @@ export class FormStateManager {
                 takeUntil(this.unsubscribe)
             )
             .subscribe((event: ElementValueChangeEvent) => {
-                store.update((state: Map<any, any>) => {
+                store.update((state: any) => {
                     const statePath = this.getCustomElementStatePath(event.target);
                     this.executeUpdate(statePath, event.value, state, event.target);
                 });
@@ -191,7 +191,7 @@ export class FormStateManager {
                 takeUntil(this.unsubscribe)
             )
             .subscribe((event: any) => {
-                store.update((state: Map<any, any>) => {
+                store.update((state: any) => {
                     const statePath = this.getStatePath(event.target);
                     const value = this.getFormElementValue(element);
                     this.executeUpdate(statePath, value, state, event.target);
@@ -201,21 +201,23 @@ export class FormStateManager {
 
     private executeUpdate(statePath: string[], value: any, state: any, element: HTMLElement | CustomFormElement) {
         if (this.shouldUpdateStateFn) {
-            const currentValue = state.getIn(statePath);
+            const currentValue = DataStrategyProvider.instance.getIn(state, statePath);
 
             if (this.shouldUpdateStateFn({
                 form: this.form,
                 formElements: this.formElements,
                 target: element,
                 state: state,
-                currentValue: Helpers.isImmutable(currentValue) ? currentValue.toJS() : currentValue,
+                currentValue: DataStrategyProvider.instance.isObject(currentValue)
+                    ? DataStrategyProvider.instance.toJS(currentValue)
+                    : currentValue,
                 value: value
             })) {
-                state.setIn(statePath, value);
+                DataStrategyProvider.instance.setIn(state, statePath, value);
                 this.onChangeCall(state);
             }
         } else {
-            state.setIn(statePath, value);
+            DataStrategyProvider.instance.setIn(state, statePath, value);
             this.onChangeCall(state);
         }
     }
@@ -237,7 +239,7 @@ export class FormStateManager {
             }
         }
         return select.multiple
-            ? fromJS(result)
+            ? DataStrategyProvider.instance.fromJS(result)
             : result[0];
     }
 

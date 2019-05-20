@@ -1,10 +1,8 @@
 import { DebugInfoData } from './debug-info-data';
 import { Helpers } from '../helpers/helpers';
-import { HistoryController } from '../state/history-controller';
-import { fromJS } from 'immutable';
-import { take } from 'rxjs/operators';
 import { StateHistory } from '../state/history';
 import { Subject } from 'rxjs';
+import { DataStrategyProvider } from '../data-strategy/data-strategy-provider';
 
 export class DebugInfo {
     private static _instance: DebugInfo = null;
@@ -74,9 +72,9 @@ export class DebugInfo {
     }
 
     private logDebugInfo(state: any, isIntialState: boolean) {
-        let debugState = this.debugStatePath && state.getIn(this.debugStatePath) || state;
-        if (Helpers.isImmutable(debugState)) {
-            debugState = debugState.toJS();
+        let debugState = this.debugStatePath && DataStrategyProvider.instance.getIn(state, this.debugStatePath) || state;
+        if (DataStrategyProvider.instance.isObject(debugState)) {
+            debugState = DataStrategyProvider.instance.toJS(debugState);
         }
 
         const debugMessage = this.getDebugMessage();
@@ -131,7 +129,7 @@ export class DebugInfo {
         this.devToolsSubscription = this.devTools.subscribe((message: any) => {
             if (message.type === 'DISPATCH' && (message.payload.type === 'JUMP_TO_ACTION' || message.payload.type === 'JUMP_TO_STATE')) {
                 this.onApplyHistory.next({
-                    state: fromJS(JSON.parse(message.state)),
+                    state: DataStrategyProvider.instance.fromJS(JSON.parse(message.state)),
                     statePath: statePath
                 });
             }

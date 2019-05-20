@@ -35,9 +35,9 @@ describe('Forms manager', () => {
 
     describe('initial state', () => {
         it('should be set on checkboxes', () => {
-            const newCheckbox = container.querySelector("[form-element-name='new ']") as HTMLFormElement;
-            const usedCheckbox = container.querySelector("[form-element-name='used']") as HTMLFormElement;
-            const notSpecifiedCheckbox = container.querySelector("[form-element-name='notSpecified']") as HTMLFormElement;
+            const newCheckbox = container.querySelector('[form-element-name=new]') as HTMLFormElement;
+            const usedCheckbox = container.querySelector('[form-element-name=used]') as HTMLFormElement;
+            const notSpecifiedCheckbox = container.querySelector('[form-element-name=notSpecified]') as HTMLFormElement;
 
             expect(newCheckbox.checked).toBeTruthy();
             expect(usedCheckbox.checked).toBeFalsy();

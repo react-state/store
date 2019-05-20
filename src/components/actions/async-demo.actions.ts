@@ -19,7 +19,7 @@ export class AsyncDemoStateActions extends HasStore<Map<any, any>> {
                         )),
                     of(0)
                 ))
-            )
+            );
     }
 
     get disabledAsync(): any {

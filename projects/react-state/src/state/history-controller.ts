@@ -4,6 +4,7 @@ import { ReplaySubject, Subject } from 'rxjs';
 import { RouterState } from './router-state';
 import { DebugInfo, DebugHistoryItem } from '../debug/debug-info';
 import { take } from 'rxjs/operators';
+import { DataStrategyProvider } from '../data-strategy/data-strategy-provider';
 
 export class HistoryController {
     private static onHistoryChange = new ReplaySubject<boolean>(1);
@@ -27,7 +28,7 @@ export class HistoryController {
     applyHistory = (debugHistoryItem: DebugHistoryItem) => {
         DebugInfo.instance.turnOnTimeTravel();
 
-        const targetRoute = debugHistoryItem.state.getIn(['router', 'url']);
+        const targetRoute = DataStrategyProvider.instance.getIn(debugHistoryItem.state, ['router', 'url']);
         if (targetRoute && this.routerState.currentRoute !== targetRoute) {
             this.routerState.history.push(targetRoute);
         }
@@ -42,10 +43,13 @@ export class HistoryController {
     }
 
     private applyState(targetState: any, statePath: string[]) {
-        Store.store.select(statePath)
-            .update((state: any) => {
-                state.clear();
-                state.merge(targetState);
-            }, true);
+        if (statePath.length === 0) {
+            Store.store.select(statePath).next(targetState);
+        } else {
+            Store.store.select(statePath)
+                .update((state: any) => {
+                    DataStrategyProvider.instance.setIn(state, statePath, targetState, { fromUpdate: true });
+                });
+        }
     }
 }

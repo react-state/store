@@ -19,7 +19,13 @@
         ],
         "paths": {
             "@react-state/data-strategy": [
-                "projects/data-strategy/release"
+                "./projects/data-strategy/release"
+            ],
+            "@react-state/immer-data-strategy": [
+                "./projects/immer-data-strategy/release"
+            ],
+            "@react-state/immutablejs-data-strategy": [
+                "./projects/immutable-data-strategy/release"
             ]
         }
     },

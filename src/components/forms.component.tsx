@@ -14,7 +14,7 @@ export class FormsComponent extends React.Component<any, any> {
     private unsubscribe = new Subject<any>();
 
     constructor(props) {
-        super(props)
+        super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.reset = this.reset.bind(this);
     }
@@ -24,7 +24,7 @@ export class FormsComponent extends React.Component<any, any> {
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(location => {
                 this.location = location;
-            })
+            });
 
         this.formStateManager = Store.store.select(['form']).form
             .bind(this.form.current)
@@ -45,7 +45,7 @@ export class FormsComponent extends React.Component<any, any> {
     }
 
     handleSubmit(event) {
-        alert(this.form.current.files[0].name)
+        alert(this.form.current.files[0].name);
         event.preventDefault();
     }
 
@@ -152,13 +152,13 @@ export class FormsComponent extends React.Component<any, any> {
                     <p><input className='btn btn-primary' type='submit' value='Submit' /></p>
                   </form>
                 </div>
-        )
+        );
     }
 }
 
 export class ComplexFormElementComponent extends React.Component<CustomFormElementProps, any> implements CustomFormElement {
 
-    private inputElement = React.createRef<HTMLInputElement>()
+    private inputElement = React.createRef<HTMLInputElement>();
     private takeUntil = new Subject<any>();
 
     onElementValueChange = new Subject<ElementValueChangeEvent>();
@@ -176,7 +176,7 @@ export class ComplexFormElementComponent extends React.Component<CustomFormEleme
         Store.store.select(['form', 'group', 'complexElement'])
             .subscribe(complexElement => {
                 this.complexElement = complexElement;
-            })
+            });
     }
 
     componentWillUnmount() {

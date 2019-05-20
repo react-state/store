@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { ClearTodoMessage, TodoModel } from './actions/todo.model';
-import { Dispatcher, Message } from '../../projects/react-state/src/services/dispatcher'
+import { Dispatcher, Message } from '../../projects/react-state/src/services/dispatcher';
 
 import { ComponentState } from '../../projects/react-state/src/decorators/component-state.decorator';
 import { Subscription } from 'rxjs';
@@ -38,7 +38,7 @@ export class Todos extends React.Component {
     }
 
     render() {
-        if(!this.actions.todosAsync) {
+        if (!this.actions.todosAsync) {
             return;
         }
 
@@ -48,7 +48,7 @@ export class Todos extends React.Component {
                 <td>{item.get('name')}</td>
                 <td><TodoDescription key={index} statePath={this.statePath} stateIndex={index} /></td>
                 <td><button className='btn btn-danger' onClick={() => this.deleteItem(index)}>X</button></td>
-            </tr>)
+            </tr>);
         });
 
         return (
@@ -62,7 +62,7 @@ export class Todos extends React.Component {
                     <input type='text' name='description' ref={input => this.description = input} className='form-control mb-2 mr-sm-2 mb-sm-0' id='inlineFormInput' placeholder='Description' />
 
                     <button type='button' className='btn btn-primary' onClick={this.addItem.bind(this)}>Submit</button>
-                    <button type='button' className='btn btn-primary' style={{marginLeft: '10px'}} onClick={this.reset.bind(this)}>Reset</button>
+                    <button type='button' className='btn btn-primary' style={{ marginLeft: '10px' }} onClick={this.reset.bind(this)}>Reset</button>
                 </form>
                 <br />
                 <table className='table'>
@@ -79,7 +79,7 @@ export class Todos extends React.Component {
                 </table>
                 TODOS - {this.interpolationTest()}
             </div>
-        )
+        );
     }
 
     reset() {

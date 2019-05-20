@@ -1,7 +1,7 @@
-import { Map, fromJS } from 'immutable';
 import { tap, take } from 'rxjs/operators';
 import { Store } from '../store';
 import { Observable, isObservable, from, of, ReplaySubject, forkJoin } from 'rxjs';
+import { DataStrategyProvider } from '../../data-strategy/data-strategy-provider';
 
 export class PersistStateManager {
     private prefix = 'state::';
@@ -33,13 +33,13 @@ export class PersistStateManager {
         params = this.getParams(params, this.store);
 
         this.store.pipe(
-            tap((state: Map<any, any>) => {
-                this.resolve(params.storageConfig.storage.setItem(params.key, params.serialize(state.toJS())))
+            tap((state: any) => {
+                this.resolve(params.storageConfig.storage.setItem(params.key, params.serialize(DataStrategyProvider.instance.toJS(state))))
                     .pipe(take(1))
                     .subscribe(_ => {
                         onSaveComplete.next({
                             key: params.key,
-                            data: state.toJS()
+                            data: DataStrategyProvider.instance.toJS(state)
                         });
                     });
             }),
@@ -58,8 +58,8 @@ export class PersistStateManager {
         this.resolve(params.storageConfig.storage.getItem(params.key))
             .pipe(take(1))
             .subscribe(loadedState => {
-                this.store.update((state: Map<any, any>) => {
-                    state.merge(fromJS(params.deserialize(loadedState)));
+                this.store.update((state: any) => {
+                    DataStrategyProvider.instance.merge(state,  DataStrategyProvider.instance.fromJS(params.deserialize(loadedState)));
                 });
 
                 if (!keepEntry) {

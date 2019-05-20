@@ -6,6 +6,8 @@ import { Store } from './store/store';
 import { HistoryController } from './state/history-controller';
 import { take } from 'rxjs/operators';
 import { DebugInfo, DebugOptions } from './debug/debug-info';
+import { DataStrategy } from '@react-state/data-strategy';
+import { DataStrategyProvider } from './data-strategy/data-strategy-provider';
 
 class ReactStateInitializer {
     private enableInitialDebugging: boolean;
@@ -16,10 +18,15 @@ class ReactStateInitializer {
         isProd: boolean,
         enableSSR = false
     ): void {
+        if (!DataStrategyProvider.instance) {
+            throw new Error('Please provide data strategy: @react-state/immutablejs-data-strategy or @react-state/immer-data-strategy');
+        }
+
         StateHistory.instance.init(initialState);
 
         const store = new Store(new State(initialState));
         const routerHistory = new RouterState(store, enableSSR);
+        DataStrategyProvider.instance.init(store);
 
         if (this.enableInitialDebugging) {
             DebugInfo.instance.init(true);
@@ -48,6 +55,11 @@ class ReactStateInitializer {
 
     changeHistoryDefaultOptions(options: StateHistoryOptions): ReactStateInitializer {
         StateHistory.instance.changeDefaults(options);
+        return this;
+    }
+
+    addDataStrategy<T extends DataStrategy>(dataStrategy: new () => T): ReactStateInitializer {
+        DataStrategyProvider.instance = new dataStrategy();
         return this;
     }
 

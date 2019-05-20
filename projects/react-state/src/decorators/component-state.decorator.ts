@@ -1,6 +1,7 @@
 import { StateHistory } from '../state/history';
-import { ReactStateConfig } from '../../../../projects/react-state/src/react-state.config';
 import { Dispatcher } from '../services/dispatcher';
+import { DataStrategyProvider } from '../data-strategy/data-strategy-provider';
+import { ReactStateConfig } from '../react-state.config';
 
 export function ComponentState(stateActions: any | ((T: any) => any), updateComponentOnEveryRender: boolean = false) {
 
@@ -53,7 +54,7 @@ export function ComponentState(stateActions: any | ((T: any) => any), updateComp
         };
 
         target.prototype.shouldComponentUpdate = function (nextProps: any, nextState: any) {
-            const currentState = StateHistory.instance.currentState.getIn(this.statePath);
+            const currentState = DataStrategyProvider.instance.getIn(StateHistory.instance.currentState, this.statePath);
             const shouldUpdate = this.prevState == null || !this.prevState.equals(currentState);
             this.prevState = currentState;
 

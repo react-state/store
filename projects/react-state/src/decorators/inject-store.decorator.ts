@@ -3,6 +3,7 @@ import { Store } from '../store/store';
 import { AsyncValueResolver } from '../helpers/async-value-resolver';
 import { Dispatcher } from '../services/dispatcher';
 import { Helpers } from '../helpers/helpers';
+import { DataStrategyProvider } from '../data-strategy/data-strategy-provider';
 
 export function InjectStore(newPath: string[] | string | ((currentPath: any, stateIndex: any) => string[] | string), intialState?: Object | any, debug: boolean = false) {
     let getStatePath = (currentPath: any, stateIndex: any, extractedPath: any) => {
@@ -105,7 +106,7 @@ export function InjectStore(newPath: string[] | string | ((currentPath: any, sta
                 ? store.initialize(statePath, intialState)
                 : store.select(statePath);
 
-            if (!StateHistory.instance.currentState.getIn(statePath)) {
+            if (!DataStrategyProvider.instance.getIn(StateHistory.instance.currentState, statePath)) {
                 console.error(`No such state in path ${statePath}. Define initial state for this path in global initial state or comonent actions.`);
             }
 
@@ -114,8 +115,8 @@ export function InjectStore(newPath: string[] | string | ((currentPath: any, sta
                     this.state = state;
                     Dispatcher.publish(this.aId, state);
 
-                    if (debug && state.toJS) {
-                        console.info(state.toJS());
+                    if (debug) {
+                        console.info(DataStrategyProvider.instance.toJS(state));
                     }
                 });
 

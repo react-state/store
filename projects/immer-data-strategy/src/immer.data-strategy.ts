@@ -7,10 +7,6 @@ export class ImmerDataStrategy extends DataStrategy {
         return this.getCursor(state, path);
     }
 
-    get(state: any, property: string) {
-        return state[property];
-    }
-
     fromJS(data: any): any {
         return data;
     }
@@ -73,7 +69,7 @@ export class ImmerDataStrategy extends DataStrategy {
 
     resetRoot(initialState: any, startingRoute: string) {
         const state = this.currentState;
-        const router = this.get(state, 'router');
+        const router = state['router'];
 
         const nextState = produce(initialState, (draftState: any) => {
             this.set(draftState, 'router', router);

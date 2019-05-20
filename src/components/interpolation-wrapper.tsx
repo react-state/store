@@ -10,7 +10,7 @@ import { Todos } from './todos';
 @ComponentState(InterpolationTestStateActions)
 export class InterpolationWrapper extends React.Component<any, any> {
     statePath: any;
-    render(){
+    render() {
         return (
             <div>
                 <InterpolationOne statePath={this.statePath} />
