@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { ComponentState } from '../../projects/react-state/src/decorators/component-state.decorator';
+import { ComponentState } from '../../../projects/react-state/src/decorators/component-state.decorator';
 import { InterpolationOne } from './interpolation-two';
 import { InterpolationTestStateActions } from './actions/interpolation-wrapper.actions';
 import { InterpolationTwo } from './interpolation-one';

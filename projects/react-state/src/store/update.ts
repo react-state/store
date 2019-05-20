@@ -1,25 +1,16 @@
 import { Cursor } from './cursor';
-import { tap, take } from 'rxjs/operators';
-import { StateHistory } from '../state/history';
 import { ActionType, DebugInfoData } from '../debug/debug-info-data';
 import { DebugInfo } from '../debug/debug-info';
+import { DataStrategyProvider } from '../data-strategy/data-strategy-provider';
 
 export class Update {
-    constructor(action: (state: any) => void, wrapToWithMutations: boolean = true, debugInfo: DebugInfoData = {}) {
+    constructor(action: (state: any) => void, debugInfo: DebugInfoData = {}) {
 
         const defaultDebugInfo = { actionType: ActionType.Update, statePath: (<any>this).statePath };
         DebugInfo.instance.add({ ...defaultDebugInfo, ...debugInfo });
 
-        const cursor = Cursor.bind(this).call(this);
-
         try {
-            if (wrapToWithMutations) {
-                cursor.withMutations((state: any) => {
-                    action(state);
-                });
-            } else {
-                action(cursor);
-            }
+            DataStrategyProvider.instance.update((this as any).statePath, action);
         } catch (exception) {
             console.error(exception);
         }
@@ -27,5 +18,5 @@ export class Update {
 }
 
 export interface UpdateSignature<T> {
-    (action: (state: T) => void, wrapToWithMutations?: boolean, debugInfo?: DebugInfoData): void;
+    (action: (state: T) => void, debugInfo?: DebugInfoData): void;
 }

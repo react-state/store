@@ -8,9 +8,9 @@
         "test": "jest --verbose",
         "build:data-strategy": "cd projects/data-strategy && npm run build",
         "build:immer-data-strategy": "cd projects/immer-data-strategy && npm run build",
-        "build:immutable-data-strategy-temp": "cd projects/immutable-data-strategy && npm run build",
+        "build:immutable-data-strategy": "cd projects/immutable-data-strategy && npm run build",
         "build:react-state": "cd projects/react-state && npm run build",
-        "build:all": "npm run build:data-strategy && npm run build:immer-data-strategy && npm run build:immutable-data-strategy-temp && npm run build:react-state"
+        "build:all": "npm run build:data-strategy && npm run build:immer-data-strategy && npm run build:immutable-data-strategy && npm run build:react-state"
     },
     "repository": {
         "type": "git",
@@ -37,6 +37,7 @@
         "bootstrap": "^4.3.1",
         "core-js": "^2.4.1",
         "cpy-cli": "^1.0.1",
+        "fast-deep-equal": "^2.0.1",
         "html-webpack-plugin": "^3.2.0",
         "immer": "^3.1.2",
         "immutable": "^3.8.1",
@@ -54,6 +55,7 @@
         "rxjs": "^6.5.2",
         "source-map-loader": "^0.2.1",
         "ts-jest": "^22.4.1",
+        "tslint": "^5.16.0",
         "typescript": "3.1.6",
         "uglifyjs": "^2.4.10",
         "webpack": "^4.29.6",
@@ -64,7 +66,7 @@
         "transform": {
             "^.+\\.(ts|tsx)?$": "ts-jest"
         },
-        "testRegex": "(src/app/__tests__/.*|(\\.|/)(test|spec))\\.((ts|tsx)?)$",
+        "testRegex": "(src/**/__tests__/.*|(\\.|/)(test|spec))\\.((ts|tsx)?)$",
         "testPathIgnorePatterns": [
             "/node_modules/"
         ],
@@ -75,10 +77,10 @@
         ],
         "coverageDirectory": "tests-coverage",
         "collectCoverageFrom": [
-            "src/app/**/*component.ts",
-            "src/app/**/*service.ts",
-            "src/app/**/*pipe.ts",
-            "src/app/**/form-element.base.ts"
+            "src/**/*component.ts",
+            "src/**/*service.ts",
+            "src/**/*pipe.ts",
+            "src/**/form-element.base.ts"
         ],
         "moduleFileExtensions": [
             "ts",

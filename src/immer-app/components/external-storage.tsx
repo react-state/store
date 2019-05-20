@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { PersistStateManager } from '../../projects/react-state/src/store/plugins/persist-state.plugin';
+import { PersistStateManager } from '../../../projects/react-state/src/store/plugins/persist-state.plugin';
 import { timer } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
-import { ComponentState } from '../../projects/react-state/src/decorators/component-state.decorator';
+import { ComponentState } from '../../../projects/react-state/src/decorators/component-state.decorator';
 import { StorageStateActions } from './actions/stroage.actions';
-import { Store } from '../../projects/react-state/src/store/store';
+import { Store } from '../../../projects/react-state/src/store/store';
 
 @ComponentState(StorageStateActions)
 export class StorageComponent extends React.Component {

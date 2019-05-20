@@ -1,8 +1,8 @@
 import { TodoDescription } from './description';
 import { TodoModel } from './actions/todo.model';
 import { TodoStateActions } from './actions/todo.actions';
-import { initialState } from '../initial-state';
-import { ReactStateTestBed } from '../../projects/react-state/src/react-state.test-bed';
+import { initialState } from '../../initial-state';
+import { ReactStateTestBed } from '../../../projects/react-state/src/react-state.test-bed';
 
 describe('TodoDescription', () => {
 

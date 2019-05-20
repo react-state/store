@@ -78,6 +78,10 @@ export class ImmutableJsDataStrategy extends DataStrategy {
         });
     }
 
+    equals(objOne: any, objTwo: any): boolean {
+        return objOne.equals(objTwo);
+    }
+
     private isNotImmutableObject(obj: any) {
         return obj !== null
             && typeof (obj) === 'object'

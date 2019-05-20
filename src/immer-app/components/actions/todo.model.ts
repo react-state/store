@@ -1,4 +1,4 @@
-import { Message } from './../../../projects/react-state/src/services/dispatcher';
+import { Message } from './../../../../projects/react-state/src/services/dispatcher';
 
 export class TodoModel {
     name: string;

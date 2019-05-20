@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import { ComponentState } from '../../projects/react-state/src/decorators/component-state.decorator';
+import { ComponentState } from '../../../projects/react-state/src/decorators/component-state.decorator';
 import { InterpolationOneStateActions } from './actions/interpolation-one.actions';
 
 @ComponentState(InterpolationOneStateActions)

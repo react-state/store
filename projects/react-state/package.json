@@ -66,7 +66,7 @@
         "transform": {
             "^.+\\.(ts|tsx)?$": "ts-jest"
         },
-        "testRegex": "(src/app/__tests__/.*|(\\.|/)(test|spec))\\.((ts|tsx)?)$",
+        "testRegex": "(src/**/__tests__/.*|(\\.|/)(test|spec))\\.((ts|tsx)?)$",
         "testPathIgnorePatterns": [
             "/node_modules/"
         ],
@@ -77,10 +77,10 @@
         ],
         "coverageDirectory": "tests-coverage",
         "collectCoverageFrom": [
-            "src/app/**/*component.ts",
-            "src/app/**/*service.ts",
-            "src/app/**/*pipe.ts",
-            "src/app/**/form-element.base.ts"
+            "src/**/*component.ts",
+            "src/**/*service.ts",
+            "src/**/*pipe.ts",
+            "src/**/form-element.base.ts"
         ],
         "moduleFileExtensions": [
             "ts",

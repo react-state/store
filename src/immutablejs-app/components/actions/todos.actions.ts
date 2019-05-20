@@ -1,9 +1,7 @@
-import { HasStore, InjectStore } from '../../../projects/react-state/src/decorators/inject-store.decorator';
-import { fromJS, List, Map } from 'immutable';
-import { Store } from '../../../projects/react-state/src/store/store';
+import { HasStore, InjectStore } from '../../../../projects/react-state/src/decorators/inject-store.decorator';
+import { fromJS } from 'immutable';
+import { Store } from '../../../../projects/react-state/src/store/store';
 import { TodoModel } from './todo.model';
-import { map, delayWhen, delay, throttleTime, debounceTime, startWith } from 'rxjs/operators';
-import { timer } from 'rxjs';
 
 @InjectStore('todos')
 export class TodosStateActions implements HasStore<any> {
@@ -15,13 +13,13 @@ export class TodosStateActions implements HasStore<any> {
         this.store
             .update(state => {
                 state.push(fromJS(item));
-            }, false, { message: 'Item Added' });
+            }, { message: 'Item Added' });
     }
 
     deleteTodo(index: number) {
         this.store.update(state => {
             state.delete(index);
-        }, false);
+        });
     }
 
     clearTodos() {

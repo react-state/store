@@ -1,13 +1,13 @@
 import * as React from 'react';
 
 import { ClearTodoMessage, TodoModel } from './actions/todo.model';
-import { Dispatcher, Message } from '../../projects/react-state/src/services/dispatcher';
+import { Dispatcher, Message } from '../../../projects/react-state/src/services/dispatcher';
 
-import { ComponentState } from '../../projects/react-state/src/decorators/component-state.decorator';
+import { ComponentState } from '../../../projects/react-state/src/decorators/component-state.decorator';
 import { Subscription } from 'rxjs';
 import { TodoDescription } from './description';
 import { TodosStateActions } from './actions/todos.actions';
-import { Store } from '../../projects/react-state/src/store/store';
+import { Store } from '../../../projects/react-state/src/store/store';
 
 @ComponentState(TodosStateActions)
 export class Todos extends React.Component {

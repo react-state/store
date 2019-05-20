@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { AsyncDemoStateActions } from './actions/async-demo.actions';
-import { ComponentState } from '../../projects/react-state/src/decorators/component-state.decorator';
-import { ReactComponentWithStateActions } from '../../projects/react-state/src/react-component-with-state-actions';
-import { Store } from '../../projects/react-state/src/store/store';
-import { FormStateManager } from '../../projects/react-state/src/store/plugins/form-manager.plugin';
+import { ComponentState } from '../../../projects/react-state/src/decorators/component-state.decorator';
+import { ReactComponentWithStateActions } from '../../../projects/react-state/src/react-component-with-state-actions';
+import { Store } from '../../../projects/react-state/src/store/store';
+import { FormStateManager } from '../../../projects/react-state/src/store/plugins/form-manager.plugin';
 import { Subject } from 'rxjs';
 
 @ComponentState(AsyncDemoStateActions)

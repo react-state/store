@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Store } from '../../projects/react-state/src/store/store';
-import { FormStateManager, CustomFormElement, CustomFormElementProps, ElementValueChangeEvent, FormElement, ShoulUpdateStateParams } from '../../projects/react-state/src/store/plugins/form-manager.plugin';
+import { Store } from '../../../projects/react-state/src/store/store';
+import { FormStateManager, CustomFormElement, CustomFormElementProps, ElementValueChangeEvent, FormElement, ShoulUpdateStateParams } from '../../../projects/react-state/src/store/plugins/form-manager.plugin';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
