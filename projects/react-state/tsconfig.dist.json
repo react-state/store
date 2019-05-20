@@ -1,23 +1,31 @@
 {
-  "compilerOptions": {
-    "baseUrl": ".",
-    "declaration": true,
-    "stripInternal": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "module": "es2015",
-    "moduleResolution": "node",
-    "noEmitOnError": false,
-    "outDir": "./release",
-    "rootDir": ".",
-    "sourceMap": true,
-    "inlineSources": true,
-    "lib": ["es2016", "dom"],
-    "target": "es5",
-    "jsx": "react",
-    "skipLibCheck": true
-  },
-  "files": [
-    "index.ts"
-  ]
+    "compilerOptions": {
+        "baseUrl": ".",
+        "declaration": true,
+        "stripInternal": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "module": "es2015",
+        "moduleResolution": "node",
+        "noEmitOnError": false,
+        "outDir": "./release",
+        "rootDir": ".",
+        "sourceMap": true,
+        "inlineSources": true,
+        "lib": [
+            "es2016",
+            "dom"
+        ],
+        "target": "es5",
+        "jsx": "react",
+        "skipLibCheck": true,
+        "paths": {
+            "@react-state/data-strategy": [
+                "../data-strategy/release"
+            ]
+        }
+    },
+    "files": [
+        "index.ts"
+    ]
 }
