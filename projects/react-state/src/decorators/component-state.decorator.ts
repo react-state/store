@@ -1,5 +1,5 @@
 import { StateHistory } from '../state/history';
-import { ReactStateConfig } from '../react-state.config';
+import { ReactStateConfig } from '../../../../projects/react-state/src/react-state.config';
 import { Dispatcher } from '../services/dispatcher';
 
 export function ComponentState(stateActions: any | ((T: any) => any), updateComponentOnEveryRender: boolean = false) {

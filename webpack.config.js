@@ -1,6 +1,5 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const webpack = require('webpack');
 
 module.exports = {
     entry: {
@@ -22,26 +21,22 @@ module.exports = {
     },
 
     module: {
-        loaders: [
+        rules: [
             // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
             { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
             // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
             { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
         ]
     },
-
     optimization: {
         splitChunks: {
             cacheGroups: {
                 commons: {
-                    name: "app",
+                    name: "common",
                     chunks: "initial",
-                    minChunks: 2
-                },
-                vendors: {
-                    test: /[\\/]node_modules[\\/]/,
-                    name: "vendors",
-                    chunks: "all"
+                    minChunks: 2,
+                    priority: 10,
+                    reuseExistingChunk: true
                 }
             }
         }

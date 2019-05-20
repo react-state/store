@@ -14,7 +14,8 @@
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "types": [
-            "node"
+            "node",
+            "jest"
         ],
         "paths": {
             "@react-state/data-strategy": [
