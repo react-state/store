@@ -6,11 +6,15 @@
     "scripts": {
         "dev": "webpack-dev-server --inline --progress --profile --port 3000 --info",
         "test": "jest --verbose",
-        "build:data-strategy": "cd projects/data-strategy && npm run build",
-        "build:immer-data-strategy": "cd projects/immer-data-strategy && npm run build",
-        "build:immutable-data-strategy-temp": "cd projects/immutable-data-strategy && npm run build",
-        "build:react-state": "cd projects/react-state && npm run build",
-        "build:all": "npm run build:data-strategy && npm run build:immer-data-strategy && npm run build:immutable-data-strategy-temp && npm run build:react-state"
+        "clean:pre": "rimraf release",
+        "overwrite:index": "rimraf release/index.js && rimraf release/index.js.map && cpy ./index.js ./release",
+        "copy": "cpy ../../LICENSE ./src/package.json ../../README.md ../../logo.png release",
+        "build:js": "tsc -p tsconfig.dist.json",
+        "build:umd": "rollup -c rollup.config.js",
+        "build:uglify": "uglifyjs -c --screw-ie8 --comments -o ./release/bundles/store.min.umd.js ./release/bundles/store.umd.js",
+        "prebuild": "npm run clean:pre",
+        "postbuild": "npm run copy && npm run overwrite:index",
+        "build": "npm run build:js && npm run build:umd && npm run build:uglify"
     },
     "repository": {
         "type": "git",

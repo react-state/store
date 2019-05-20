@@ -1,9 +1,9 @@
-import { StateHistory } from './../src/state/history';
-import { Store } from './../src/store/store';
-import { ReactStateTestBed } from '../src/react-state.test-bed';
+import { StateHistory } from '../projects/react-state/src/state/history';
+import { Store } from '../projects/react-state/src/store/store';
+import { ReactStateTestBed } from '../projects/react-state/src/react-state.test-bed';
 import { timer } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
-import { PersistStateStorage, PersistStateManager } from '../src/store/plugins/persist-state.plugin';
+import { PersistStateStorage, PersistStateManager } from '../projects/react-state/src/store/plugins/persist-state.plugin';
 
 jest.useFakeTimers();
 
@@ -20,7 +20,7 @@ describe('Storage', () => {
 
     it('should save state', () => {
         store.select(['layout']).storage.save({ key: 'testKey' });
-        expect(<any>keyValueStorage.getItem('state::testKey')).toBe('{"test":"test"}');
+        expect(<any>keyValueStorage.getItem('state::testKey')).toBe('{'test':'test'}');
     });
 
     it('should load state', () => {
@@ -68,7 +68,7 @@ describe('Storage', () => {
                     }
                 }).subscribe(data => {
                     expect(data.key).toEqual('state::testKey');
-                    expect(data.data).toMatchObject({ "test": "test" });
+                    expect(data.data).toMatchObject({ 'test': 'test' });
                     done();
                 });
 
@@ -89,7 +89,7 @@ describe('Storage', () => {
                     }
                 }).subscribe(data => {
                     expect(data.key).toEqual('state::testKey');
-                    expect(JSON.parse(data.data)).toMatchObject({ "test": "test" });
+                    expect(JSON.parse(data.data)).toMatchObject({ 'test': 'test' });
                     done();
                 });
 

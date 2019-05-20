@@ -1,5 +1,5 @@
-import { ReactStateTestBed } from '../src/react-state.test-bed';
-import { HasStore, InjectStore } from '../src/decorators/inject-store.decorator';
+import { ReactStateTestBed } from '../projects/react-state/src/react-state.test-bed';
+import { HasStore, InjectStore } from '../projects/react-state/src/decorators/inject-store.decorator';
 
 describe('ReactStateTestBed', () => {
 

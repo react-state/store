@@ -1,0 +1,36 @@
+{
+    "name": "@ng-state/data-strategy",
+    "version": "1.0.2",
+    "description": "Contract for different data stratgies",
+    "main": "index.js",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/ng-state/data-strategy.git"
+    },
+    "keywords": [
+        "ng-state",
+        "rxjs",
+        "immer",
+        "immutablejs",
+        "angular",
+        "state",
+        "management",
+        "typescript",
+        "angular",
+        "store",
+        "store",
+        "observable",
+        "data",
+        "store",
+        "redux"
+    ],
+    "author": "Vytautas Pranskunas <vytautas.pranskunas@gmail.com>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/ng-state/data-strategy/issues"
+    },
+    "homepage": "https://github.com/ng-state/data-strategy#readme",
+    "peerDependencies": {
+      "rxjs": "^6.3.2"
+    }
+  }

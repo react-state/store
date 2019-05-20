@@ -1,6 +1,10 @@
 {
     "compilerOptions": {
-        "lib": ["es2016", "dom"],
+        "baseUrl": ".",
+        "lib": [
+            "es2016",
+            "dom"
+        ],
         "sourceMap": true,
         "noImplicitAny": false,
         "moduleResolution": "node",
@@ -11,7 +15,12 @@
         "experimentalDecorators": true,
         "types": [
             "node"
-          ]
+        ],
+        "paths": {
+            "@react-state/data-strategy": [
+                "projects/data-strategy/release"
+            ]
+        }
     },
     "compileOnSave": false,
     "exclude": [

@@ -1,10 +1,10 @@
-import { State } from './../src/state/state';
-import { StateHistory } from './../src/state/history';
-import { Store } from './../src/store/store';
+import { State } from '../projects/react-state/src/state/state';
+import { StateHistory } from '../projects/react-state/src/state/history';
+import { Store } from '../projects/react-state/src/store/store';
 import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { ReactStateTestBed } from '../src/react-state.test-bed';
-import { RouterState } from '../src/state/router-state';
+import { ReactStateTestBed } from '../projects/react-state/src/react-state.test-bed';
+import { RouterState } from '../projects/react-state/src/state/router-state';
 
 describe('Store tests', () => {
     let store: Store<any>;

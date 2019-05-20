@@ -1,8 +1,8 @@
-import * as React from "react";
-import { FormStateManager, CustomFormElement, CustomFormElementProps, ElementValueChangeEvent, FormElement, ShoulUpdateStateParams } from "../src/store/plugins/form-manager.plugin";
-import { Subject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
-import { Store } from "../src/store/store";
+import * as React from 'react';
+import { FormStateManager, CustomFormElement, CustomFormElementProps, ElementValueChangeEvent, FormElement, ShoulUpdateStateParams } from '../projects/react-state/src/store/plugins/form-manager.plugin';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Store } from '../projects/react-state/src/store/store';
 
 export class FormsComponent extends React.Component<any, undefined> {
 
@@ -13,7 +13,7 @@ export class FormsComponent extends React.Component<any, undefined> {
     private unsubscribe = new Subject<any>();
 
     constructor(props: any) {
-        super(props)
+        super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.reset = this.reset.bind(this);
     }
@@ -42,8 +42,8 @@ export class FormsComponent extends React.Component<any, undefined> {
     }
 
     handleSubmit(event: any) {
-        alert(this.form.current.files[0].name)
-        event.preventDefault()
+        alert(this.form.current.files[0].name);
+        event.preventDefault();
     }
 
     reset() {
@@ -66,51 +66,51 @@ export class FormsComponent extends React.Component<any, undefined> {
                 <form onSubmit={this.handleSubmit} ref={this.form}>
                     <section>
                         <h6>Car Condition:</h6>
-                        <p><input type="checkbox" id="test" form-element-name="new" form-group-name="condition" /> New</p>
-                        <p><input type="checkbox" form-element-name="used" form-group-name="condition" /> Used</p>
-                        <p><input type="checkbox" form-element-name="notSpecified" form-group-name="condition" /> Not specified</p>
+                        <p><input type='checkbox' id='test' form-element-name='new' form-group-name='condition' /> New</p>
+                        <p><input type='checkbox' form-element-name='used' form-group-name='condition' /> Used</p>
+                        <p><input type='checkbox' form-element-name='notSpecified' form-group-name='condition' /> Not specified</p>
                     </section>
 
                     <hr />
                     <section>
                         <h6>Car location:</h6>
-                        <p><input type="radio" value="usa" name="location" /> USA</p>
-                        <p><input type="radio" value="europe" name="location" /> Europe</p>
-                        <p><input type="radio" value="asia" name="location" /> Asia specified</p>
+                        <p><input type='radio' value='usa' name='location' /> USA</p>
+                        <p><input type='radio' value='europe' name='location' /> Europe</p>
+                        <p><input type='radio' value='asia' name='location' /> Asia specified</p>
                     </section>
 
                     <hr />
                     <section>
                         <h6>Car model:</h6>
-                        <select multiple name="cars">
-                            <option value="volvo">Volvo</option>
-                            <option value="saab">Saab</option>
-                            <option value="opel">Opel</option>
-                            <option value="audi">Audi</option>
+                        <select multiple name='cars'>
+                            <option value='volvo'>Volvo</option>
+                            <option value='saab'>Saab</option>
+                            <option value='opel'>Opel</option>
+                            <option value='audi'>Audi</option>
                         </select>
                     </section>
 
                     <hr />
                     <section>
                         <h6>Car color:</h6>
-                        <select name="color">
-                            <option value="red">Red</option>
-                            <option value="white">White</option>
-                            <option value="blue">Blue</option>
-                            <option value="orange">Orange</option>
+                        <select name='color'>
+                            <option value='red'>Red</option>
+                            <option value='white'>White</option>
+                            <option value='blue'>Blue</option>
+                            <option value='orange'>Orange</option>
                         </select>
                     </section>
 
                     <hr />
                     <section>
                         <h6>Car description:</h6>
-                        <textarea name="description"></textarea>
+                        <textarea name='description'></textarea>
                     </section>
 
                     <hr />
                     <section>
                         <h6>Owner address:</h6>
-                        <input type="text" name="address" />
+                        <input type='text' name='address' />
                     </section>
 
                     <hr />
@@ -118,25 +118,25 @@ export class FormsComponent extends React.Component<any, undefined> {
                         <h6>Complex custom form element:</h6>
                         <ComplexFormElementComponent
                             ref={this.customFormElement}
-                            form-element-name="complexElement"
-                            form-group-name="group">
+                            form-element-name='complexElement'
+                            form-group-name='group'>
                         </ComplexFormElementComponent>
                     </section>
 
                     <hr />
-                    <p><input type="file" name="other-documents" /></p>
+                    <p><input type='file' name='other-documents' /></p>
 
                     <hr />
-                    <p><input type="submit" value="Submit" /></p>
+                    <p><input type='submit' value='Submit' /></p>
                 </form>
             </div>
-        )
+        );
     }
 }
 
 export class ComplexFormElementComponent extends React.Component<CustomFormElementProps, any> implements CustomFormElement {
 
-    private inputElement = React.createRef<HTMLInputElement>()
+    private inputElement = React.createRef<HTMLInputElement>();
     private takeUntil = new Subject<any>();
 
     onElementValueChange = new Subject<ElementValueChangeEvent>();
@@ -172,7 +172,7 @@ export class ComplexFormElementComponent extends React.Component<CustomFormEleme
 
     render() {
         return (
-            <input type="text" name="custom-component-input" form-ignore="true" ref={this.inputElement} onChange={this.handleChange} />
+            <input type='text' name='custom-component-input' form-ignore='true' ref={this.inputElement} onChange={this.handleChange} />
         );
     }
 }

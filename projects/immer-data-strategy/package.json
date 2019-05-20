@@ -1,0 +1,61 @@
+{
+    "name": "@ng-state/immer-data-strategy",
+    "version": "1.0.0",
+    "description": "Immer data strategy for @ng-state/store",
+    "main": "index.js",
+    "scripts": {
+        "clean:pre": "rimraf release",
+        "overwrite:index": "rimraf release/index.js && rimraf release/index.js.map && cpy ./index.js ./release",
+        "copy": "cpy ../../LICENSE ./src/package.json ../../README.md ../../logo.png release",
+        "build:js": "tsc -p tsconfig.dist.json",
+        "build:umd": "rollup -c rollup.config.js",
+        "build:uglify": "uglifyjs -c --screw-ie8 --comments -o ./release/bundles/immerDataStrategy.min.umd.js ./release/bundles/immerDataStrategy.umd.js",
+        "prebuild": "npm run lint && npm run clean:pre",
+        "postbuild": "npm run copy && npm run overwrite:index",
+        "build": "npm run build:js && npm run build:umd && npm run build:uglify",
+        "lint": "tslint --project ../../tsconfig.json --config ../../tslint.json"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ng-state/data-strategy.git"
+    },
+    "keywords": [
+        "ng-state",
+        "rxjs",
+        "immer",
+        "immutablejs",
+        "angular",
+        "state",
+        "management",
+        "typescript",
+        "angular",
+        "store",
+        "store",
+        "observable",
+        "data",
+        "store",
+        "redux"
+    ],
+    "author": "Vytautas Pranskunas",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/ng-state/data-strategy/issues"
+    },
+    "homepage": "https://github.com/ng-state/data-strategy#readme",
+    "devDependencies": {
+        "@angular/core": "^7.2.15",
+        "@ng-state/data-strategy": "^1.0.2",
+        "@types/node": "^11.13.4",
+        "awesome-typescript-loader": "^5.2.1",
+        "babel-runtime": "^6.23.0",
+        "cpy-cli": "^1.0.1",
+        "immer": "^3.1.2",
+        "rimraf": "^2.5.4",
+        "rollup": "^0.34.13",
+        "rxjs": "^6.3.2",
+        "source-map-loader": "^0.2.1",
+        "tslint": "^5.7.0",
+        "typescript": "3.1.6",
+        "uglify-js": "^3.5.12"
+    }
+}

@@ -1,11 +1,11 @@
-import * as React from "react";
+import * as React from 'react';
 import { FormsComponent } from './forms.component';
-import { ReactStateTestBed } from "../src/react-state.test-bed";
-import * as ReactDOM from "react-dom";
-import { Store } from "../src/store/store";
+import { ReactStateTestBed } from '../projects/react-state/src/react-state.test-bed';
+import * as ReactDOM from 'react-dom';
+import { Store } from '../projects/react-state/src/store/store';
 import { act } from 'react-dom/test-utils';
-import { StateHistory } from "../src/state/history";
-import { fromJS } from "immutable";
+import { StateHistory } from '../projects/react-state/src/state/history';
+import { fromJS } from 'immutable';
 
 jest.useFakeTimers();
 
@@ -35,9 +35,9 @@ describe('Forms manager', () => {
 
     describe('initial state', () => {
         it('should be set on checkboxes', () => {
-            const newCheckbox = container.querySelector('[form-element-name="new"]') as HTMLFormElement;
-            const usedCheckbox = container.querySelector('[form-element-name="used"]') as HTMLFormElement;
-            const notSpecifiedCheckbox = container.querySelector('[form-element-name="notSpecified"]') as HTMLFormElement;
+            const newCheckbox = container.querySelector('[form-element-name='new ']') as HTMLFormElement;
+            const usedCheckbox = container.querySelector('[form-element-name='used']') as HTMLFormElement;
+            const notSpecifiedCheckbox = container.querySelector('[form-element-name='notSpecified']') as HTMLFormElement;
 
             expect(newCheckbox.checked).toBeTruthy();
             expect(usedCheckbox.checked).toBeFalsy();
@@ -52,7 +52,7 @@ describe('Forms manager', () => {
 
         it('should be set on multiselect', () => {
             const model = container.querySelector('[name=cars]') as HTMLFormElement;
-            const selectedValues = getMultiSelectValues(model)
+            const selectedValues = getMultiSelectValues(model);
 
             expect(selectedValues.length).toEqual(2);
             expect(selectedValues[0]).toBe('volvo');
@@ -61,7 +61,7 @@ describe('Forms manager', () => {
 
         it('should be set on select', () => {
             const model = container.querySelector('[name=color]') as HTMLFormElement;
-            const selectedValue = getMultiSelectValues(model)
+            const selectedValue = getMultiSelectValues(model);
 
             expect(selectedValue).toBe('orange');
         });
@@ -172,7 +172,7 @@ describe('Forms manager', () => {
 
         it('should update custom form element value in state', () => {
             const input = container.querySelector('[name=custom-component-input]') as HTMLFormElement;
-            var nativeInputValueSetter = Object.getOwnPropertyDescriptor((window as any).HTMLInputElement.prototype, "value").set;
+            const nativeInputValueSetter = Object.getOwnPropertyDescriptor((window as any).HTMLInputElement.prototype, 'value').set;
 
             act(() => {
                 nativeInputValueSetter.call(input, 'test');
@@ -233,12 +233,12 @@ describe('Forms manager', () => {
     });
 });
 
-var getMultiSelectValues = (select: HTMLFormElement) => {
+const getMultiSelectValues = (select: HTMLFormElement) => {
     const result = [];
     const options = select && select.options;
     let opt: { selected: any; value: any; text: any; };
 
-    for (var i = 0; i < options.length; i++) {
+    for (const i = 0; i < options.length; i++) {
         opt = options[i];
 
         if (opt.selected) {
@@ -248,7 +248,7 @@ var getMultiSelectValues = (select: HTMLFormElement) => {
     return select.multiple
         ? result
         : result[0];
-}
+};
 
 const intialState = {
     form: {
