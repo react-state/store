@@ -1,3 +1,11 @@
+### 6.0.0
+- Intorduced immer support
+
+##### BREAKING CHANGES
+- In order to use react-state now you have to import `@react-state/store` instead of `react-state` and immer of immutable strategy: `ImmerDataStrategy` or `ImmutableJsDataStrategy` needs to be registered on by calling ```.addDataStrategy(ImmutableJsDataStrategy)```
+- Also for test bed you need to place `ReactStateTestBed.setTestEnvironment(new ImmerDataStrategy());` to beforeEach and provide immer or immutable data strategy.
+
+
 ### 5.2.0
 - Improved code
 - Improved information of history items
