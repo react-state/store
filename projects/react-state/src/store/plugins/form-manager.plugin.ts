@@ -120,7 +120,7 @@ export class FormStateManager {
                     }
                 }
 
-                this.onChangeCall(state);
+                this.onChangeCall();
             });
     }
 

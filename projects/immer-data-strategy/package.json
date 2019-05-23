@@ -1,5 +1,5 @@
 {
-    "name": "@ng-state/immer-data-strategy",
+    "name": "@react-state/immer-data-strategy",
     "version": "1.0.0",
     "description": "Immer data strategy for @ng-state/store",
     "main": "index.js",

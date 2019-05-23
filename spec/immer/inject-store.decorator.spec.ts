@@ -111,9 +111,11 @@ describe('InjectStore decorator', () => {
     });
 
     it('should not check path for prod', () => {
+        ReactStateConfig.isProd = true;
         spyOn(console, 'error');
         setup(['test'], null, true);
         target.createStore(['parent']);
         expect(console.error).not.toHaveBeenCalled();
+        ReactStateConfig.isProd = false;
     });
 });
