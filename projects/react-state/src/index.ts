@@ -8,6 +8,7 @@ import { take } from 'rxjs/operators';
 import { DebugInfo, DebugOptions } from './debug/debug-info';
 import { DataStrategy } from '@react-state/data-strategy';
 import { DataStrategyProvider } from './data-strategy/data-strategy-provider';
+import { ReactStateConfig } from './react-state.config';
 
 class ReactStateInitializer {
     private enableInitialDebugging: boolean;
@@ -44,6 +45,8 @@ class ReactStateInitializer {
 
         Store.store = store;
         this.initRenderDom(store, domRender, routerHistory.history);
+
+        ReactStateConfig.isProd = isProd;
     }
 
     debugger(enableInitialDebugging: boolean, options: DebugOptions): ReactStateInitializer {

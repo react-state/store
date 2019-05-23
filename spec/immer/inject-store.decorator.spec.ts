@@ -5,6 +5,7 @@ import { StateKeeper } from '../../projects/react-state/src/state/history';
 import { ReactStateTestBed } from '../../projects/react-state/src/react-state.test-bed';
 import { ImmerDataStrategy } from '../../projects/immer-data-strategy/src/immer.data-strategy';
 import { Store } from '../../projects/react-state/src/store/store';
+import { ReactStateConfig } from '../../projects/react-state/src/react-state.config';
 
 class TestStateActions {
     store: any;
@@ -30,8 +31,8 @@ describe('InjectStore decorator', () => {
         Store.store = store as any;
     });
 
-    let setup = (newPath: string[] | string | ((currentPath, stateIndex) => string[] | string), intialState?: Object | any) => {
-        const decorator = InjectStore(newPath, intialState);
+    let setup = (newPath: string[] | string | ((currentPath, stateIndex) => string[] | string), intialState?: Object | any, debug: boolean = false) => {
+        const decorator = InjectStore(newPath, intialState, debug);
         decorator(TestStateActions);
         target = new TestStateActions();
         StateKeeper.CURRENT_STATE = fromJS({});
@@ -91,5 +92,28 @@ describe('InjectStore decorator', () => {
         componentInstance = target;
 
         expect(typeof (<any>componentInstance).isOpened).toEqual('boolean');
+    });
+
+    it('should check path', () => {
+        spyOn(console, 'error');
+        ReactStateConfig.isTest = false;
+        setup(['test']);
+        target.createStore(['parent']);
+        expect(console.error).toHaveBeenCalled();
+        ReactStateConfig.isTest = true;
+    });
+
+    it('should check path if debug is set', () => {
+        spyOn(console, 'error');
+        setup(['test'], null, true);
+        target.createStore(['parent']);
+        expect(console.error).toHaveBeenCalled();
+    });
+
+    it('should not check path for prod', () => {
+        spyOn(console, 'error');
+        setup(['test'], null, true);
+        target.createStore(['parent']);
+        expect(console.error).not.toHaveBeenCalled();
     });
 });

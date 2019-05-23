@@ -87,6 +87,22 @@ export function InjectStore(newPath: string[] | string | ((currentPath: any, sta
         });
     };
 
+    const checkPath = (): boolean => {
+        if (ReactStateConfig.isProd) {
+            return false;
+        }
+
+        if (ReactStateConfig.isTest && debug) {
+            return true;
+        }
+
+        if (ReactStateConfig.isTest) {
+            return false;
+        }
+
+        return true;
+    };
+
     return (target: any) => {
         target.prototype.createStore = function (currentPath: any[], stateIndex: (string | number) | (string | number)[]) {
 
@@ -107,7 +123,7 @@ export function InjectStore(newPath: string[] | string | ((currentPath: any, sta
                 ? store.initialize(statePath, intialState)
                 : store.select(statePath);
 
-            if (!ReactStateConfig.isTest && !DataStrategyProvider.instance.getIn(StateHistory.instance.currentState, statePath)) {
+            if (checkPath() && !DataStrategyProvider.instance.getIn(StateHistory.instance.currentState, statePath)) {
                 console.error(`No such state in path ${statePath}. Define initial state for this path in global initial state or comonent actions.`);
             }
 
