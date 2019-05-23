@@ -55,7 +55,12 @@ export function ComponentState(stateActions: any | ((T: any) => any), updateComp
 
         target.prototype.shouldComponentUpdate = function (nextProps: any, nextState: any) {
             const currentState = DataStrategyProvider.instance.getIn(StateHistory.instance.currentState, this.statePath);
-            const shouldUpdate = this.prevState == null || !DataStrategyProvider.instance.equals(this.prevState, currentState);
+
+            const shouldUpdate = this.prevState == null ||
+                (DataStrategyProvider.instance.isObject(currentState)
+                    ? !DataStrategyProvider.instance.equals(this.prevState, currentState)
+                    : this.prevState !== currentState);
+
             this.prevState = currentState;
 
             return shouldUpdate

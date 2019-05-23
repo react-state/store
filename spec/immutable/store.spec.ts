@@ -1,16 +1,22 @@
-import { State } from '../projects/react-state/src/state/state';
-import { StateHistory } from '../projects/react-state/src/state/history';
-import { Store } from '../projects/react-state/src/store/store';
+import { State } from '../../projects/react-state/src/state/state';
+import { StateHistory } from '../../projects/react-state/src/state/history';
+import { Store } from '../../projects/react-state/src/store/store';
 import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { ReactStateTestBed } from '../projects/react-state/src/react-state.test-bed';
-import { RouterState } from '../projects/react-state/src/state/router-state';
+import { ReactStateTestBed } from '../../projects/react-state/src/react-state.test-bed';
+import { RouterState } from '../../projects/react-state/src/state/router-state';
+import { ImmutableJsDataStrategy } from '../../projects/immutable-data-strategy/src/immutablejs.data-strategy';
 
 describe('Store tests', () => {
     let store: Store<any>;
 
+    beforeEach(() => {
+        ReactStateTestBed.setTestEnvironment(new ImmutableJsDataStrategy());
+    });
+
     describe('', () => {
         it('should convert initial state classes ES6 to ES5 objects', () => {
+
             const state = new State(new InitialState()) as BehaviorSubject<InitialState>;
             state
                 .pipe(take(1))

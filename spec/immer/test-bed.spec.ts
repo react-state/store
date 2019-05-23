@@ -1,5 +1,6 @@
-import { ReactStateTestBed } from '../projects/react-state/src/react-state.test-bed';
-import { HasStore, InjectStore } from '../projects/react-state/src/decorators/inject-store.decorator';
+import { ReactStateTestBed } from '../../projects/react-state/src/react-state.test-bed';
+import { HasStore, InjectStore } from '../../projects/react-state/src/decorators/inject-store.decorator';
+import { ImmerDataStrategy } from '../../projects/immer-data-strategy/src/immer.data-strategy';
 
 describe('ReactStateTestBed', () => {
 
@@ -7,7 +8,7 @@ describe('ReactStateTestBed', () => {
     const initialState = { todos: [] as any };
 
     beforeEach(() => {
-        ReactStateTestBed.setTestEnvironment();
+        ReactStateTestBed.setTestEnvironment(new ImmerDataStrategy());
         component = {};
     });
 
@@ -32,7 +33,7 @@ describe('ReactStateTestBed', () => {
     let component: any;
 
     beforeEach(() => {
-        ReactStateTestBed.setTestEnvironment();
+        ReactStateTestBed.setTestEnvironment(new ImmerDataStrategy());
         component = {};
     });
 
@@ -48,12 +49,12 @@ describe('ReactStateTestBed', () => {
 @InjectStore([])
 export class TestActions extends HasStore<any> {
     get todoDescription() {
-        return this.state.get('description');
+        return this.state['description'];
     }
 
     set todoDescription(value) {
         this.store.update(state => {
-            state.set('description', value);
+            state['description'] = value;
         });
     }
 }

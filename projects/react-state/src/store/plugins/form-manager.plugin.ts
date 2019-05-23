@@ -1,4 +1,4 @@
-import { distinctUntilChanged, debounceTime, takeUntil, filter } from 'rxjs/operators';
+import { distinctUntilChanged, debounceTime, takeUntil, filter, take } from 'rxjs/operators';
 import { Observable, Subject, fromEvent, ReplaySubject } from 'rxjs';
 import { Store } from '../store';
 import { Helpers } from '../../helpers/helpers';
@@ -191,11 +191,17 @@ export class FormStateManager {
                 takeUntil(this.unsubscribe)
             )
             .subscribe((event: any) => {
+                let stateUpdated = false;
+
                 store.update((state: any) => {
                     const statePath = this.getStatePath(event.target);
                     const value = this.getFormElementValue(element);
-                    this.executeUpdate(statePath, value, state, event.target);
+                    stateUpdated = this.executeUpdate(statePath, value, state, event.target);
                 });
+
+                if (stateUpdated) {
+                    this.onChangeCall();
+                }
             });
     }
 
@@ -213,17 +219,25 @@ export class FormStateManager {
                     : currentValue,
                 value: value
             })) {
-                DataStrategyProvider.instance.setIn(state, statePath, value);
-                this.onChangeCall(state);
+                DataStrategyProvider.instance.setIn(state, statePath, value, { fromUpdate: true });
+                return true;
             }
         } else {
-            DataStrategyProvider.instance.setIn(state, statePath, value);
-            this.onChangeCall(state);
+            DataStrategyProvider.instance.setIn(state, statePath, value, { fromUpdate: true });
+            return true;
         }
+
+        return false;
     }
 
-    private onChangeCall(state: any) {
-        this.onChangeFn && this.onChangeFn(state);
+    private onChangeCall() {
+        if (this.onChangeFn) {
+            this.store
+                .pipe(take(1))
+                .subscribe(state => {
+                    this.onChangeFn(DataStrategyProvider.instance.toJS(state));
+                });
+        }
     }
 
     private getMultiSelectValues(select: any) {

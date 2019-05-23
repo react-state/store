@@ -3,14 +3,19 @@ import { ReactStateConfig } from './react-state.config';
 import { Store } from './store/store';
 import { State } from './state/state';
 import { HistoryController } from './state/history-controller';
+import { DataStrategy } from '@react-state/data-strategy';
+import { DataStrategyProvider } from './data-strategy/data-strategy-provider';
 
 export class ReactStateTestBed {
-    public static setTestEnvironment() {
+
+    public static setTestEnvironment(dataStrategy: DataStrategy) {
         ReactStateConfig.isTest = true;
+        DataStrategyProvider.instance = dataStrategy;
     }
 
     public static createStore(initialState: any): Store<any> {
         const store = new Store(new State(initialState));
+        DataStrategyProvider.instance.init(store, false);
         StateHistory.instance.init(initialState);
         const historyController = new HistoryController(store, { history: { push: () => {}  } as any } as any);
 

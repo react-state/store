@@ -1,9 +1,10 @@
-import { StateHistory } from '../projects/react-state/src/state/history';
-import { Store } from '../projects/react-state/src/store/store';
-import { ReactStateTestBed } from '../projects/react-state/src/react-state.test-bed';
+import { StateHistory } from '../../projects/react-state/src/state/history';
+import { Store } from '../../projects/react-state/src/store/store';
+import { ReactStateTestBed } from '../../projects/react-state/src/react-state.test-bed';
 import { timer } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
-import { PersistStateStorage, PersistStateManager } from '../projects/react-state/src/store/plugins/persist-state.plugin';
+import { PersistStateStorage, PersistStateManager } from '../../projects/react-state/src/store/plugins/persist-state.plugin';
+import { ImmerDataStrategy } from '../../projects/immer-data-strategy/src/immer.data-strategy';
 
 jest.useFakeTimers();
 
@@ -12,6 +13,8 @@ describe('Storage', () => {
     let keyValueStorage;
 
     beforeEach(() => {
+        ReactStateTestBed.setTestEnvironment(new ImmerDataStrategy());
+
         const initialState = { layout: { test: 'test' } };
         store = ReactStateTestBed.createStore(initialState);
         keyValueStorage = window['customStorage'];
@@ -20,18 +23,20 @@ describe('Storage', () => {
 
     it('should save state', () => {
         store.select(['layout']).storage.save({ key: 'testKey' });
-        expect(<any>keyValueStorage.getItem('state::testKey')).toBe('{\'test\':\'test\'}');
+
+        // tslint:disable-next-line:quotemark
+        expect(<any>keyValueStorage.getItem('state::testKey')).toBe('{"test":"test"}');
     });
 
     it('should load state', () => {
         const layoutStore = store.select(['layout']);
 
         layoutStore.storage.save();
-        layoutStore.update(state => state.set('test', 'test-updated'));
-        expect(StateHistory.instance.currentState.getIn(['layout', 'test'])).toEqual('test-updated');
+        layoutStore.update(state => state['test'] = 'test-updated');
+        expect(StateHistory.instance.currentState['layout']['test']).toEqual('test-updated');
 
         layoutStore.storage.load();
-        expect(StateHistory.instance.currentState.getIn(['layout', 'test'])).toEqual('test');
+        expect(StateHistory.instance.currentState['layout']['test']).toEqual('test');
     });
 
     it('should clear state', () => {

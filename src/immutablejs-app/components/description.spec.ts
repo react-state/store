@@ -3,16 +3,14 @@ import { TodoModel } from './actions/todo.model';
 import { TodoStateActions } from './actions/todo.actions';
 import { initialState } from '../../initial-state';
 import { ReactStateTestBed } from '../../../projects/react-state/src/react-state.test-bed';
+import { ImmutableJsDataStrategy } from '../../../projects/immutable-data-strategy/src/immutablejs.data-strategy';
 
 describe('TodoDescription', () => {
 
     let component: TodoDescription;
 
-    beforeAll(() => {
-        ReactStateTestBed.setTestEnvironment();
-    });
-
     beforeEach(() => {
+        ReactStateTestBed.setTestEnvironment(new ImmutableJsDataStrategy());
         component = new TodoDescription(null);
     });
 

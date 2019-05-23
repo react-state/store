@@ -66,7 +66,7 @@
         "transform": {
             "^.+\\.(ts|tsx)?$": "ts-jest"
         },
-        "testRegex": "(src/**/__tests__/.*|(\\.|/)(test|spec))\\.((ts|tsx)?)$",
+        "testRegex": "(spec/__tests__/.*|(\\.|/)(test|spec))\\.((ts|tsx)?)$",
         "testPathIgnorePatterns": [
             "/node_modules/"
         ],
@@ -92,6 +92,16 @@
         ],
         "setupFiles": [
             "./spec/localstorage.mock.ts"
-        ]
+        ],
+        "modulePathIgnorePatterns": [
+            "<rootDir>/projects/"
+        ],
+        "moduleNameMapper": {
+            "^@react-state/store$": "<rootDir>/projects/react-state/release",
+            "^@react-state/data-strategy$": "<rootDir>/projects/data-strategy/release",
+            "^@react-state/immer-data-strategy$": "<rootDir>/projects/immer-data-strategy/release",
+            "^@react-state/immutable-data-strategy$": "<rootDir>/projects/immutable-data-strategy/release",
+            "^@react-state/(.*)$": "<rootDir>/projects/$1/release"
+        }
     }
 }

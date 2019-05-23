@@ -26,7 +26,7 @@ class ReactStateInitializer {
 
         const store = new Store(new State(initialState));
         const routerHistory = new RouterState(store, enableSSR);
-        DataStrategyProvider.instance.init(store);
+        DataStrategyProvider.instance.init(store, isProd);
 
         if (this.enableInitialDebugging) {
             DebugInfo.instance.init(true);

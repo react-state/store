@@ -1,8 +1,13 @@
 import { DataStrategy } from '@react-state/data-strategy';
-import produce from 'immer';
+import { produce, setAutoFreeze } from 'immer';
 import * as deepEquals from 'fast-deep-equal';
 
 export class ImmerDataStrategy extends DataStrategy {
+
+    init(store: any, isProd: boolean) {
+        super.init(store, isProd);
+        setAutoFreeze(!isProd);
+    }
 
     getIn(state: any, path: any[]): any {
         return this.getCursor(state, path);

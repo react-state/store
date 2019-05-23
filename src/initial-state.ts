@@ -1,7 +1,5 @@
 let initialState = {
-    todos: <any[]>[
-        {name: 'aaa', description: 'bb'}
-    ],
+    todos: <any[]>[],
     storage: {
         itemToStore: 'some value'
     },

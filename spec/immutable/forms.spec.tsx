@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { FormsComponent } from './forms.component';
-import { ReactStateTestBed } from '../projects/react-state/src/react-state.test-bed';
+import { FormsComponent } from '../forms.component';
+import { ReactStateTestBed } from '../../projects/react-state/src/react-state.test-bed';
 import * as ReactDOM from 'react-dom';
-import { Store } from '../projects/react-state/src/store/store';
+import { Store } from '../../projects/react-state/src/store/store';
 import { act } from 'react-dom/test-utils';
-import { StateHistory } from '../projects/react-state/src/state/history';
+import { StateHistory } from '../../projects/react-state/src/state/history';
 import { fromJS } from 'immutable';
+import { ImmutableJsDataStrategy } from '../../projects/immutable-data-strategy/src/immutablejs.data-strategy';
 
 jest.useFakeTimers();
 
@@ -13,11 +14,9 @@ describe('Forms manager', () => {
     let container: HTMLElement;
     let component: any;
 
-    beforeAll(() => {
-        ReactStateTestBed.setTestEnvironment();
-    });
-
     beforeEach(() => {
+        ReactStateTestBed.setTestEnvironment(new ImmutableJsDataStrategy());
+
         Store.store = ReactStateTestBed.createStore(intialState);
 
         container = document.createElement('div');
@@ -199,7 +198,7 @@ describe('Forms manager', () => {
         const changedInitialState = { ...intialState.form };
         changedInitialState.address = 'test';
 
-        expect(component.onChangeMock).toHaveBeenCalledWith(fromJS(changedInitialState));
+        expect(component.onChangeMock).toHaveBeenCalledWith(changedInitialState);
     });
 
     it('should call shouldUpdateState hook before state change', () => {
