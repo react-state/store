@@ -3,9 +3,7 @@ import { HasStore, InjectStore } from '../../../../projects/react-state/src/deco
 import { Store } from '../../../../projects/react-state/src/store/store';
 
 @InjectStore(['${stateIndex}'])
-export class TodoStateActions implements HasStore<any> {
-    state: any;
-    store: Store<any>;
+export class TodoStateActions extends HasStore<any> {
 
     get todoDescriptionAsync() {
         return this.store.map((state) => {

@@ -4,10 +4,7 @@ import { Store } from '../../../../projects/react-state/src/store/store';
 import { TodoModel } from './todo.model';
 
 @InjectStore('todos')
-export class TodosStateActions implements HasStore<any> {
-
-    store: Store<any>;
-    state: any;
+export class TodosStateActions extends HasStore<any> {
 
     addTodo(item: TodoModel) {
         this.store

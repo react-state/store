@@ -3,7 +3,5 @@ import { HasStore, InjectStore } from './../../../../projects/react-state/src/de
 import { Store } from './../../../../projects/react-state/src/store/store';
 
 @InjectStore('interpolationTest')
-export class InterpolationTestStateActions implements HasStore<any> {
-    state: any;
-    store: Store<any>;
+export class InterpolationTestStateActions extends HasStore<any> {
 }

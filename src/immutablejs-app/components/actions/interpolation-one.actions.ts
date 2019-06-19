@@ -3,10 +3,7 @@ import { HasStore, InjectStore } from './../../../../projects/react-state/src/de
 import { Store } from './../../../../projects/react-state/src/store/store';
 
 @InjectStore(['interpolationOne'])
-export class InterpolationOneStateActions implements HasStore<any> {
-
-    store: Store<any>;
-    state: any;
+export class InterpolationOneStateActions extends HasStore<any> {
 
     get interpolationValue() {
         return this.state.get('value') + '-----<<<<';
