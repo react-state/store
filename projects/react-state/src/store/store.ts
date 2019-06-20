@@ -6,6 +6,7 @@ import { MapSgnature, Map } from './map';
 import { ResetSignature, Reset } from './reset';
 import { FormStateManager } from './plugins/form-manager.plugin';
 import { PersistStateManager } from './plugins/persist-state.plugin';
+import { OptimistaicUpdatesManager } from './plugins/optimistic-updates.plugin';
 
 export class Store<T> extends Observable<T> implements Observer<any> {
     static store: Store<any>;
@@ -21,6 +22,7 @@ export class Store<T> extends Observable<T> implements Observer<any> {
 
     form: FormStateManager;
     storage: PersistStateManager;
+    optimisticUpdates: OptimistaicUpdatesManager;
 
     constructor(state: Observable<any>) {
         super();
@@ -62,5 +64,6 @@ export class Store<T> extends Observable<T> implements Observer<any> {
         storeContext.map = Map.bind(storeContext);
         storeContext.form = new FormStateManager(storeContext);
         storeContext.storage = new PersistStateManager(storeContext);
+        storeContext.optimisticUpdates = new OptimistaicUpdatesManager(storeContext);
     }
 }

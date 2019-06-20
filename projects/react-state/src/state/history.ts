@@ -20,8 +20,12 @@ export class StateHistory {
         return StateKeeper.CURRENT_STATE;
     }
 
-    get history(): any[] {
+    get history(): HistoryItem[] {
         return StateKeeper.HISTORY;
+    }
+
+    set history(history: HistoryItem[]) {
+        StateKeeper.HISTORY = history;
     }
 
     get storeHistoryItems() {
@@ -38,6 +42,7 @@ export class StateHistory {
 
     setCurrentState(state: any) {
         StateKeeper.CURRENT_STATE = state;
+        this.add({ state: state, tag: null });
     }
 
     add(item: HistoryItem) {
@@ -64,6 +69,6 @@ export interface StateHistoryOptions {
 }
 
 export interface HistoryItem {
-    message: string;
+    tag?: string;
     state: any;
 }

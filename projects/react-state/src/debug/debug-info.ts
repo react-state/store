@@ -1,5 +1,4 @@
 import { DebugInfoData } from './debug-info-data';
-import { Helpers } from '../helpers/helpers';
 import { StateHistory } from '../state/history';
 import { Subject } from 'rxjs';
 import { DataStrategyProvider } from '../data-strategy/data-strategy-provider';
@@ -89,8 +88,6 @@ export class DebugInfo {
         } else {
             this.devTools.send(debugMessage, debugState);
         }
-
-        StateHistory.instance.add({ message: debugMessage, state: debugState });
 
         this.debugInfo = null;
     }
