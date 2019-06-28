@@ -3,7 +3,7 @@
 
 RxJS and ImmutableJs powered nested state management for React applications inspired by [@ngrx/store](https://github.com/ngrx/store).It is simple, fast, reliable and no boilerplate.
 
-[![npm version](https://badge.fury.io/js/ng-state.svg)](https://badge.fury.io/js/ng-state)
+[![npm version](https://badge.fury.io/js/ng-state.svg)](https://badge.fury.io/js/@react-state%2Fstore)
 
 - 🎓 Learn about it on the [docs site](https://vytautaspranskunas.gitbook.io/react-state-rxjs)
 - 🚀 See it in action on [Stackblitz](https://stackblitz.com/edit/react-state-rxjs-example-app)
