@@ -4,8 +4,6 @@ import { StateHistory, HistoryItem } from '../../state/history';
 
 export class OptimistaicUpdatesManager {
 
-    private _stateHistory: StateHistory;
-
     public static nonExistingChangeMessage(count: number) { return `There is no state ${count} steps back`; }
     public static nonExistingTagMessage(tag: string) { return `No state with tag: ${tag} has been found`; }
     public static nonTagsMessage = 'No state with tag has been found';
@@ -15,10 +13,6 @@ export class OptimistaicUpdatesManager {
 
     get stateHistory() {
         return StateHistory.instance;
-    }
-
-    get dataStrategy() {
-        return DataStrategyProvider.instance;
     }
 
     tagCurrentState(tag: string) {
@@ -55,10 +49,10 @@ export class OptimistaicUpdatesManager {
         let path = this.store.statePath.filter(item => !this.store.rootPath.includes(item));
         const isRootPath = Array.isArray(path) && path.length === 0;
         if (isRootPath) {
-            this.dataStrategy.resetRoot(state.state);
+            DataStrategyProvider.instance.resetRoot(state.state);
         } else {
-            const previousState = this.dataStrategy.getIn(state.state, (path));
-            this.dataStrategy.reset(this.store.statePath, previousState);
+            const previousState = DataStrategyProvider.instance.getIn(state.state, (path));
+            DataStrategyProvider.instance.reset(this.store.statePath, previousState);
         }
 
         const revertedHistory = this.stateHistory.history.slice(0, this.stateHistory.history.indexOf(state) + 1);

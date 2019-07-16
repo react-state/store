@@ -1,6 +1,6 @@
 {
     "name": "@react-state/store",
-    "version": "6.1.0",
+    "version": "6.2.0",
     "description": "RxJS and ImmutableJs powered nested state management for React apps inspired by @ngrx and Redux.",
     "main": "index.js",
     "repository": {
@@ -28,7 +28,7 @@
     },
     "homepage": "https://github.com/react-state/store#readme",
     "dependencies": {
-        "@react-state/data-strategy": "^1.0.0"
+        "@react-state/data-strategy": "^1.2.0"
     },
     "peerDependencies": {
         "core-js": "^2.4.1",

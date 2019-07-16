@@ -3,11 +3,11 @@ import { map, distinctUntilChanged, takeWhile } from 'rxjs/operators';
 import { DataStrategyProvider } from '../data-strategy/data-strategy-provider';
 
 export class Select {
-    constructor(path: any) {
+    static execute(store: Store<any>, path: any) {
         let mapped$;
 
         if (typeof path === 'object') {
-            mapped$ = (<any>this).pipe(
+            mapped$ = store.pipe(
                 map((state: any) => DataStrategyProvider.instance.getIn(state, path)),
                 takeWhile((state: any) => state !== undefined),
                 distinctUntilChanged()
