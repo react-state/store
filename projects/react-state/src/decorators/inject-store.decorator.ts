@@ -5,6 +5,8 @@ import { Dispatcher } from '../services/dispatcher';
 import { Helpers } from '../helpers/helpers';
 import { DataStrategyProvider } from '../data-strategy/data-strategy-provider';
 import { ReactStateConfig } from '../react-state.config';
+import { ASYNC_FUNCTIONS_METADATA } from '../constants';
+import { IsAsync } from './asyn.decorator';
 
 export function InjectStore(newPath: string[] | string | ((currentPath: any, stateIndex: any) => string[] | string), intialState?: Object | any, debug: boolean = false) {
     let getStatePath = (currentPath: any, stateIndex: any, extractedPath: any) => {
@@ -40,19 +42,18 @@ export function InjectStore(newPath: string[] | string | ((currentPath: any, sta
     };
 
     let getAllAsyncMethods = function (target: any): { name: string, isGetter: boolean }[] {
-        let methods = <any[]>[];
-        while (target = Reflect.getPrototypeOf(target)) {
-            let asyncMethods = (<any>Object).entries((<any>Object).getOwnPropertyDescriptors(target))
-                .filter(([key, descriptor]: [string, any]) => {
-                    return key.endsWith('Async');
-                })
-                .map(([key, descriptor]: [string, any]) => {
-                    return { name: key, isGetter: typeof descriptor.get === 'function' };
-                });
-            methods = [...methods, ...asyncMethods];
-        }
 
-        return methods;
+        target = Reflect.getPrototypeOf(target);
+        let asyncMethods = (<any>Object).entries((<any>Object).getOwnPropertyDescriptors(target))
+            .filter(([key, descriptor]: [string, any]) => {
+                const metaData = Reflect.getMetadata(ASYNC_FUNCTIONS_METADATA, target.constructor, key);
+                return metaData && (metaData as IsAsync).isAsync;
+            })
+            .map(([key, descriptor]: [string, any]) => {
+                return { name: key, isGetter: typeof descriptor.get === 'function' };
+            });
+
+        return asyncMethods;
     };
 
     let getObservableId = function (funcName: any, actionId: string) {

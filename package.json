@@ -103,5 +103,8 @@
             "^@react-state/immutable-data-strategy$": "<rootDir>/projects/immutable-data-strategy/release",
             "^@react-state/(.*)$": "<rootDir>/projects/$1/release"
         }
+    },
+    "dependencies": {
+        "reflect-metadata": "^0.1.13"
     }
 }

@@ -1,3 +1,7 @@
+### 6.4.0
+- fixed `clear` operator
+- added `@Async()` decorator. Now to make action async it should not end with `Async` any more instead mark it with `@Async()` decorator. Action still need to return `Observable`
+
 ### 6.3.0
 - immutable data stratgey retruned to optional `withMutations` strategy in order fix the bug when working with lists. Only limited amount of operators can be applied when used withMutations. Read more about it on: (immutable documentation)(https://immutable-js.github.io/immutable-js). To use `withMutations` you need to add last argument in `store.update` function like: `this.store.update(...action, {}, { withMutations: true } as ImmutableUpdateActionAdditionalSettings)`. In order to get this fix applied please upgrade `@react-state/store` and `@react-state/immutablejs-data-strategy`
 

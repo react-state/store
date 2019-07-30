@@ -3,6 +3,7 @@ import { fromJS, List } from 'immutable';
 import { TodoModel } from './todo.model';
 import * as _Cursor from 'immutable/contrib/cursor';
 import { ImmutableUpdateActionAdditionalSettings } from '../../../../projects/immutable-data-strategy';
+import { Async } from '../../../../projects/react-state/src/decorators/asyn.decorator';
 
 @InjectStore('todos')
 export class TodosStateActions extends HasStore<any> {
@@ -34,7 +35,8 @@ export class TodosStateActions extends HasStore<any> {
         this.store.reset();
     }
 
-    get todosAsync(): any {
+    @Async()
+    get todos(): any {
         return this.store.map(state => state.toArray());
     }
 }

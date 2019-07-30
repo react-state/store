@@ -1,11 +1,12 @@
 import { HasStore, InjectStore } from '../../../../projects/react-state/src/decorators/inject-store.decorator';
 
-import { Store } from '../../../../projects/react-state/src/store/store';
+import { Async } from '../../../../projects/react-state/src/decorators/asyn.decorator';
 
 @InjectStore(['${stateIndex}'])
 export class TodoStateActions extends HasStore<any> {
 
-    get todoDescriptionAsync() {
+    @Async()
+    get todoDescription() {
         return this.store.map((state) => {
             return state.get('description');
         });

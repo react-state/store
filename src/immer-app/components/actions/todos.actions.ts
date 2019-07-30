@@ -1,6 +1,6 @@
 import { HasStore, InjectStore } from '../../../../projects/react-state/src/decorators/inject-store.decorator';
-import { Store } from '../../../../projects/react-state/src/store/store';
 import { TodoModel } from './todo.model';
+import { Async } from '../../../../projects/react-state/src/decorators/asyn.decorator';
 
 @InjectStore('todos')
 export class TodosStateActions extends HasStore<any> {
@@ -36,7 +36,8 @@ export class TodosStateActions extends HasStore<any> {
         this.store.reset();
     }
 
-    get todosAsync(): any {
+    @Async()
+    get todos(): any {
         return this.store.map(state => state);
     }
 }

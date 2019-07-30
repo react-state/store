@@ -1,6 +1,6 @@
 {
     "name": "@react-state/immer-data-strategy",
-    "version": "1.3.0",
+    "version": "1.4.0",
     "description": "Immer data strategy for @react-state/store",
     "main": "index.js",
     "repository": {

@@ -38,17 +38,19 @@ export class Todos extends React.Component {
     }
 
     render() {
-        if (!this.actions.todosAsync) {
+        if (!this.actions.todos) {
             return;
         }
 
-        const todoItems = this.actions.todosAsync.map((item: any, index: any) => {
-            return (<tr key={index}>
-                <th scope='row'>{index + 1}</th>
-                <td>{item.get('name')}</td>
-                <td><TodoDescription key={index} statePath={this.statePath} stateIndex={index} /></td>
-                <td><button className='btn btn-danger' onClick={() => this.deleteItem(index)}>X</button></td>
-            </tr>);
+        const todoItems = this.actions.todos.map((item: any, index: any) => {
+            return (
+                <tr key={index}>
+                    <th scope='row'>{index + 1}</th>
+                    <td>{item.get('name')}</td>
+                    <td><TodoDescription key={index} statePath={this.statePath} stateIndex={index} /></td>
+                    <td><button className='btn btn-danger' onClick={() => this.deleteItem(index)}>X</button></td>
+                </tr>
+            );
         });
 
         return (

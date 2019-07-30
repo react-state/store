@@ -9,7 +9,7 @@ export class TodoDescription extends React.Component<any, any> implements HasSta
     statePath: any;
 
     render() {
-        return <div>{this.actions.todoDescriptionAsync} - {this.interpolationTest()}</div>;
+        return <div>{this.actions.todoDescription} - {this.interpolationTest()}</div>;
     }
 
     interpolationTest() {

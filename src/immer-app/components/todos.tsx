@@ -38,11 +38,11 @@ export class Todos extends React.Component {
     }
 
     render() {
-        if (!this.actions.todosAsync) {
+        if (!this.actions.todos) {
             return;
         }
 
-        const todoItems = this.actions.todosAsync.map((item: any, index: any) => {
+        const todoItems = this.actions.todos.map((item: any, index: any) => {
             return (<tr key={index}>
                 <th scope='row'>{index + 1}</th>
                 <td>{item.name}</td>
