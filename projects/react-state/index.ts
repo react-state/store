@@ -5,7 +5,6 @@ export * from './src/store/store';
 export * from './src/store/initialize';
 export * from './src/store/select';
 export * from './src/store/update';
-export * from './src/store/cursor';
 export * from './src/store/map';
 export * from './src/store/reset';
 export * from './src/store/plugins/form-manager.plugin';

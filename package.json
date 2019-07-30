@@ -4,7 +4,7 @@
     "description": "RxJS and ImmutableJs powered nested state management for React apps inspired by @ngrx and Redux.",
     "main": "index.js",
     "scripts": {
-        "dev": "webpack-dev-server --inline --progress --profile --port 3000 --info",
+        "dev": "webpack-dev-server --inline --progress --profile --port 3001 --info",
         "test": "jest --verbose",
         "build:data-strategy": "cd projects/data-strategy && npm run build",
         "build:immer-data-strategy": "cd projects/immer-data-strategy && npm run build",

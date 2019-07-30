@@ -1,7 +1,8 @@
 import { HasStore, InjectStore } from '../../../../projects/react-state/src/decorators/inject-store.decorator';
-import { fromJS } from 'immutable';
-import { Store } from '../../../../projects/react-state/src/store/store';
+import { fromJS, List } from 'immutable';
 import { TodoModel } from './todo.model';
+import * as _Cursor from 'immutable/contrib/cursor';
+import { ImmutableUpdateActionAdditionalSettings } from '../../../../projects/immutable-data-strategy';
 
 @InjectStore('todos')
 export class TodosStateActions extends HasStore<any> {
@@ -14,9 +15,9 @@ export class TodosStateActions extends HasStore<any> {
     }
 
     deleteTodo(index: number) {
-        this.store.update(state => {
+        this.store.update((state: List<any>) => {
             state.delete(index);
-        });
+        }); // , {}, { withMutations: true } as ImmutableUpdateActionAdditionalSettings
     }
 
     clearTodos() {

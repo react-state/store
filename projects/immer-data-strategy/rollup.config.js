@@ -2,7 +2,7 @@ export default {
     entry: './release/index.js',
     dest: './release/bundles/immerDataStrategy.umd.js',
     format: 'umd',
-    moduleName: 'ngState.immerDataStrategy',
+    moduleName: 'reactState.immerDataStrategy',
     globals: {
     }
   }
