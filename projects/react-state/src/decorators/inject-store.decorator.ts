@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+
 import { StateHistory } from '../state/history';
 import { Store } from '../store/store';
 import { AsyncValueResolver } from '../helpers/async-value-resolver';

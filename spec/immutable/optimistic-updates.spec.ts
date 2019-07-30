@@ -1,6 +1,6 @@
 import { Store } from '../../projects/react-state/src/store/store';
 import { StateHistory } from '../../projects/react-state/src/state/history';
-import { ImmutableJsDataStrategy } from '../../projects/immutable-data-strategy/src/immutablejs.data-strategy';
+import { ImmutableJsDataStrategy, ImmutableUpdateActionAdditionalSettings } from '../../projects/immutable-data-strategy/src/immutablejs.data-strategy';
 import { ReactStateTestBed } from '../../projects/react-state/src/react-state.test-bed';
 import { OptimistaicUpdatesManager } from '../../projects/react-state/src/store/plugins/optimistic-updates.plugin';
 
@@ -50,7 +50,7 @@ describe('Optimistic updates - Immutable', () => {
         store.update(state => {
             state.setIn(['layout', 'test'], 'test3');
             state.set('counter', 2);
-        });
+        }, {}, { withMutations: true } as ImmutableUpdateActionAdditionalSettings);
 
         expect(stateHistory.currentState.getIn(['layout', 'test'])).toEqual('test3');
         expect(stateHistory.currentState.get('counter')).toEqual(2);
