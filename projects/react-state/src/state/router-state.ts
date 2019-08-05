@@ -5,6 +5,7 @@ import { DataStrategyProvider } from '../data-strategy/data-strategy-provider';
 
 export class RouterState {
     static startingRoute = '/';
+    static instance: RouterState;
 
     history: History;
     currentRoute: string;
@@ -13,6 +14,8 @@ export class RouterState {
         this.history = serverSideRenderingEnabled
             ? createMemoryHistory()
             : createBrowserHistory();
+
+        RouterState.instance = this;
     }
 
     init() {

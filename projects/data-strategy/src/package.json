@@ -1,6 +1,6 @@
 {
     "name": "@react-state/data-strategy",
-    "version": "1.4.3",
+    "version": "1.5.1",
     "description": "Contract for different data stratgies for @react-state",
     "main": "index.js",
     "repository": {

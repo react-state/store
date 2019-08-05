@@ -19,4 +19,5 @@ export * from './src/react-component-with-state-actions';
 export * from './src/react-state.test-bed';
 export * from './src/debug/debug-info';
 export * from './src/debug/debug-info-data';
+export * from './src/router-history';
 export { ReactState } from './src/index';

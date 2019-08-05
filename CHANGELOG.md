@@ -1,3 +1,7 @@
+### 6.5.0
+- made router history accessible for external use via `RouterHistory.history`. With this redirects become possible from any place: `RouterHistory.history.push('/login')`. Where browser uses `createBrowserHistory` and unit tests are uses `createMemoryHistory`;
+- added assigment `Store.store = store;` to ReactStateTestBed so you d not need o assign it manually when creating store for unit tests
+
 ### 6.4.0
 - fixed `clear` operator
 - added `@Async()` decorator. Now to make action async it should not end with `Async` any more instead mark it with `@Async()` decorator. Action still need to return `Observable`
