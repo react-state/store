@@ -1,6 +1,6 @@
 import { HasStore, InjectStore } from '../../../../projects/react-state/src/decorators/inject-store.decorator';
 import { TodoModel } from './todo.model';
-import { Async } from '../../../../projects/react-state/src/decorators/asyn.decorator';
+import { Async } from '../../../../projects/react-state/src/decorators/async.decorator';
 
 @InjectStore('todos')
 export class TodosStateActions extends HasStore<any> {

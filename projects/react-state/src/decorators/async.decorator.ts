@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { ASYNC_FUNCTIONS_METADATA } from '../constants';
 
 export function Async() {
-    return (target: any, key: any, index: any) => {
+    return (target: any, key: any) => {
         target = Reflect.getPrototypeOf(target);
         const args = Reflect.getMetadata(ASYNC_FUNCTIONS_METADATA, target.constructor, key) || {};
         (args as IsAsync).isAsync = true;

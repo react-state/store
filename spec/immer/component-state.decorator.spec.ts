@@ -11,6 +11,7 @@ class TestStateActions {
     createStore(statePath: string[], stateIndex: number | null) {
         return ['newStatePath'];
     }
+    onDestroy = () => {};
 }
 
 class TargetComponent {
@@ -29,7 +30,7 @@ class TargetComponent {
 describe('ComponentState decorator', () => {
     let target: TargetComponent;
 
-    let beforeEach = function (actions?) {
+    let beforeEach = (actions?) => {
         ReactStateTestBed.setTestEnvironment(new ImmerDataStrategy());
         ReactStateConfig.isTest = false;
         const decorator = ComponentState(actions);
@@ -87,8 +88,19 @@ describe('ComponentState decorator', () => {
         shouldUpdate = target.shouldComponentUpdate();
         expect(shouldUpdate).toBeFalsy();
 
-        StateKeeper.CURRENT_STATE = StateKeeper.CURRENT_STATE = { newStatePath: { test: 2} };
+        StateKeeper.CURRENT_STATE = StateKeeper.CURRENT_STATE = { newStatePath: { test: 2 } };
         shouldUpdate = target.shouldComponentUpdate();
         expect(shouldUpdate).toBeTruthy();
+    });
+
+    it('should call onDestroy on componentWillUnmount hook', () => {
+        beforeEach(TestStateActions);
+        target.componentWillMount();
+        target.componentDidMount();
+        jest.spyOn(target.actions, 'onDestroy');
+
+        target.componentWillUnmount();
+
+        expect(target.actions.onDestroy).toHaveBeenCalled();
     });
 });

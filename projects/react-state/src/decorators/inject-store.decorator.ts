@@ -8,7 +8,7 @@ import { Helpers } from '../helpers/helpers';
 import { DataStrategyProvider } from '../data-strategy/data-strategy-provider';
 import { ReactStateConfig } from '../react-state.config';
 import { ASYNC_FUNCTIONS_METADATA } from '../constants';
-import { IsAsync } from './asyn.decorator';
+import { IsAsync } from './async.decorator';
 
 export function InjectStore(newPath: string[] | string | ((currentPath: any, stateIndex: any) => string[] | string), intialState?: Object | any, debug: boolean = false) {
     let getStatePath = (currentPath: any, stateIndex: any, extractedPath: any) => {

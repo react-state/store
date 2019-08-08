@@ -1,11 +1,14 @@
-import { Subject } from 'rxjs';
-import { fromJS } from 'immutable';
+import { Subject, BehaviorSubject } from 'rxjs';
 import { InjectStore } from '../../projects/react-state/src/decorators/inject-store.decorator';
+import { Async } from '../../projects/react-state/src/decorators/async.decorator';
 import { StateKeeper } from '../../projects/react-state/src/state/history';
 import { ReactStateTestBed } from '../../projects/react-state/src/react-state.test-bed';
 import { ImmerDataStrategy } from '../../projects/immer-data-strategy/src/immer.data-strategy';
 import { Store } from '../../projects/react-state/src/store/store';
 import { ReactStateConfig } from '../../projects/react-state/src/react-state.config';
+import { AsyncValueResolver } from '../../projects/react-state/src/helpers/async-value-resolver';
+
+const asyncValue = new BehaviorSubject<number>(1);
 
 class TestStateActions {
     store: any;
@@ -14,6 +17,10 @@ class TestStateActions {
     }
     get isOpened() {
         return true;
+    }
+
+    get isClosed() {
+        return asyncValue;
     }
 }
 
@@ -29,15 +36,16 @@ describe('InjectStore decorator', () => {
     beforeEach(() => {
         ReactStateTestBed.setTestEnvironment(new ImmerDataStrategy());
         Store.store = store as any;
+        AsyncValueResolver['_instance'] = null;
     });
 
     let setup = (newPath: string[] | string | ((currentPath, stateIndex) => string[] | string), intialState?: Object | any, debug: boolean = false) => {
+        target = new TestStateActions();
+        Async()(target, 'isClosed');
         const decorator = InjectStore(newPath, intialState, debug);
         decorator(TestStateActions);
-        target = new TestStateActions();
-        StateKeeper.CURRENT_STATE = fromJS({});
-        spyOn(StateKeeper.CURRENT_STATE, 'getIn').and.returnValue(true);
 
+        StateKeeper.CURRENT_STATE = {};
     };
 
     it('should resolve state path from anonymous function', () => {
@@ -117,5 +125,53 @@ describe('InjectStore decorator', () => {
         target.createStore(['parent']);
         expect(console.error).not.toHaveBeenCalled();
         ReactStateConfig.isProd = false;
+    });
+
+    describe('when @Async action', () => {
+        beforeEach(() => {
+            ReactStateConfig.isProd = true;
+        });
+
+        afterEach(() => {
+            ReactStateConfig.isProd = false;
+        });
+
+        it('should subscribe to observable', () => {
+            setup(['test'], null, true);
+            target.createStore(['parent']);
+            ((target as TestStateActions).isClosed as any);
+            expect(Object.keys(AsyncValueResolver.instance['values']).length).toBe(1);
+            expect(Object.keys(AsyncValueResolver.instance['subscriptions']).length).toBe(1);
+        });
+
+        it('should subscribe serve observable', () => {
+            setup(['test'], null, true);
+            target.createStore(['parent']);
+            let value = ((target as TestStateActions).isClosed as any);
+            expect(value).toEqual(1);
+
+            asyncValue.next(2);
+            value = ((target as TestStateActions).isClosed as any);
+            expect(value).toEqual(2);
+        });
+
+        it('should unsubscribe from observable', () => {
+            setup(['test'], null, true);
+            target.createStore(['parent']);
+            ((target as TestStateActions).isClosed as any);
+
+            const subscriptionKeys = Object.keys(AsyncValueResolver.instance['subscriptions']);
+
+            expect(Object.keys(AsyncValueResolver.instance['values']).length).toBe(1);
+            expect(subscriptionKeys.length).toBe(1);
+
+            const firstSubscription = AsyncValueResolver.instance['subscriptions'][subscriptionKeys[0]];
+            spyOn(firstSubscription, 'unsubscribe');
+            (target as any).onDestroy();
+
+            expect(Object.keys(AsyncValueResolver.instance['values']).length).toBe(0);
+            expect(Object.keys(AsyncValueResolver.instance['subscriptions']).length).toBe(0);
+            expect(firstSubscription.unsubscribe).toHaveBeenCalled();
+        });
     });
 });
