@@ -7,37 +7,34 @@ export function ComponentState(stateActions: any | ((T: any) => any), updateComp
 
     return (target: any) => {
 
-        const componentWillMount = target.prototype.componentWillMount || (() => { });
         const componentDidMount = target.prototype.componentDidMount || (() => { });
         const componentWillUnmount = target.prototype.componentWillUnmount || (() => { });
         const shouldComponentUpdate = target.prototype.shouldComponentUpdate || (() => updateComponentOnEveryRender);
 
-        target.prototype.componentWillMount = function () {
+        const componentWillMount = function (componentInstance: any, props: { statePath: any, stateIndex: any }) {
 
             if (ReactStateConfig.isTest) {
                 return;
             }
 
-            this.statePath = !this.props.statePath
+            let statePath = !props.statePath
                 ? []
-                : this.props.statePath;
+                : props.statePath;
 
             if (stateActions) {
                 // DOC - CONVETION: only annonymous function allowed for choosing state; Actions can be only named functions;
                 const extractedStateAction = stateActions.name === ''
-                    ? stateActions(this)
+                    ? stateActions(componentInstance)
                     : stateActions;
 
                 const actions = new extractedStateAction();
-                const stateIndex = this.stateIndex
-                    ? this.stateIndex
-                    : this.props.stateIndex;
+                const stateIndex = componentInstance.stateIndex
+                    ? componentInstance.stateIndex
+                    : props.stateIndex;
 
-                this.statePath = actions.createStore(this.statePath, stateIndex);
-                this.actions = actions;
+                componentInstance.statePath = actions.createStore(statePath, stateIndex);
+                componentInstance.actions = actions;
             }
-
-            componentWillMount.call(this);
         };
 
         target.prototype.componentDidMount = function () {
@@ -81,6 +78,13 @@ export function ComponentState(stateActions: any | ((T: any) => any), updateComp
 
             componentWillUnmount.call(this);
         };
+
+        return class extends target {
+            constructor(...props) {
+                super(...props);
+                componentWillMount(this, props[0]);
+            }
+        } as typeof target;
     };
 }
 

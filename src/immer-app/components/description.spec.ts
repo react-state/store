@@ -35,7 +35,6 @@ describe('TodoDescription', () => {
 
         const actions = ReactStateTestBed.createActions(TodoStateActions, initialState, ['todos', 0]) as TodoStateActions;
         ReactStateTestBed.setActionsToComponent(actions, component);
-        (<any>component).componentWillMount();
         expect(component.actions.testTodoDescriptio).toEqual('test description');
     });
 });

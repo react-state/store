@@ -11,15 +11,15 @@ class TestStateActions {
     createStore(statePath: string[], stateIndex: number | null) {
         return ['newStatePath'];
     }
-    onDestroy = () => {};
+    onDestroy = () => { };
 }
 
 class TargetComponent {
+    constructor(props: any) { }
     statePath: string[];
     stateIndex: number | null;
     actions: any;
     props = {};
-    componentWillMount() { }
     componentDidMount() { }
     shouldComponentUpdate() { }
     componentWillUnmount() { }
@@ -34,27 +34,24 @@ describe('ComponentState decorator', () => {
         ReactStateTestBed.setTestEnvironment(new ImmerDataStrategy());
         ReactStateConfig.isTest = false;
         const decorator = ComponentState(actions);
-        decorator(TargetComponent);
-        target = new TargetComponent();
+        const decoratedClass = decorator(TargetComponent);
+        target = new decoratedClass({ statePath: [] });
     };
 
     it('should resolve stateActions', () => {
         beforeEach(TestStateActions);
-        target.componentWillMount();
         expect(target.statePath[0]).toBe('newStatePath');
         expect(target.actions instanceof TestStateActions).toBeTruthy();
     });
 
     it('should resolve stateActions from anonymous function', () => {
         beforeEach(() => TestStateActions);
-        target.componentWillMount();
         expect(target.statePath[0]).toBe('newStatePath');
         expect(target.actions instanceof TestStateActions).toBeTruthy();
     });
 
     it('should call forceUpdate after state change', () => {
         beforeEach(TestStateActions);
-        target.componentWillMount();
         target.componentDidMount();
         jest.spyOn(target, 'forceUpdate');
 
@@ -66,7 +63,6 @@ describe('ComponentState decorator', () => {
     it('shouldUpdate should return true if state value is different', () => {
         StateKeeper.CURRENT_STATE = { newStatePath: 1 };
         beforeEach(TestStateActions);
-        target.componentWillMount();
         let shouldUpdate = target.shouldComponentUpdate();
         expect(shouldUpdate).toBeTruthy();
 
@@ -81,7 +77,6 @@ describe('ComponentState decorator', () => {
     it('shouldUpdate should return true if state object is different', () => {
         StateKeeper.CURRENT_STATE = { newStatePath: { test: 1 } };
         beforeEach(TestStateActions);
-        target.componentWillMount();
         let shouldUpdate = target.shouldComponentUpdate();
         expect(shouldUpdate).toBeTruthy();
 
@@ -95,7 +90,6 @@ describe('ComponentState decorator', () => {
 
     it('should call onDestroy on componentWillUnmount hook', () => {
         beforeEach(TestStateActions);
-        target.componentWillMount();
         target.componentDidMount();
         jest.spyOn(target.actions, 'onDestroy');
 
