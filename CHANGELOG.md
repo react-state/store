@@ -1,3 +1,10 @@
+### 6.8.1
+- simplified actions assigment for component. Now actons are assigned automatically by actions type to each component. No need to call `setActionsToComponent` unless you want to assigne custom actions instance to specific component.
+
+### 6.6.0
+- removed dependency to 'componentWillUpdate' hook because it will deprecated
+- Added support for UI testing approach with UI interactors like Enzyme
+
 ### 6.5.0
 - made router history accessible for external use via `RouterHistory.history`. With this redirects become possible from any place: `RouterHistory.history.push('/login')`. Where browser uses `createBrowserHistory` and unit tests are uses `createMemoryHistory`;
 - added assigment `Store.store = store;` to ReactStateTestBed so you d not need o assign it manually when creating store for unit tests

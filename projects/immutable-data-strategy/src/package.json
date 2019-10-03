@@ -1,6 +1,6 @@
 {
     "name": "@react-state/immutablejs-data-strategy",
-    "version": "1.5.1",
+    "version": "1.8.1",
     "description": "ImmutableJs data strategy for @react-state/store",
     "main": "index.js",
     "repository": {

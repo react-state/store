@@ -8,33 +8,31 @@ import { ImmerDataStrategy } from '../../../projects/immer-data-strategy//src/im
 describe('TodoDescription', () => {
 
     let component: TodoDescription;
+    let copyIntitialState: typeof initialState;
 
     beforeEach(() => {
         ReactStateTestBed.setTestEnvironment(new ImmerDataStrategy());
+        ReactStateTestBed.strictActionsCheck = false;
+
+        copyIntitialState = JSON.parse(JSON.stringify(initialState));
+        copyIntitialState.todos.push(<TodoModel>{ description: 'test description' });
+        ReactStateTestBed.createActions(TodoStateActions, copyIntitialState, ['todos', 0]) as TodoStateActions;
         component = new TodoDescription(null);
     });
 
     it('should get description', () => {
-        initialState.todos.push(<TodoModel>{description: 'test description'});
-
-        const actions = ReactStateTestBed.createActions(TodoStateActions, initialState, ['todos', 0]) as TodoStateActions;
-        expect(actions.testTodoDescriptio).toEqual('test description');
+        expect(component.actions.testTodoDescriptio).toEqual('test description');
     });
 
     it('should get description from oveeriden constructor', () => {
-        const todo = new TodoModel();
-        todo.description = 'test description';
-        initialState.todos.push(todo);
-
-        const actions = ReactStateTestBed.createActions(TodoStateActions, initialState, ['todos', 0]) as TodoStateActions;
-        expect(actions.testTodoDescriptio).toEqual('test description');
+        expect(component.actions.testTodoDescriptio).toEqual('test description');
     });
 
-    it ('should set actions to component', () => {
-        initialState.todos.push(<TodoModel>{description: 'test description'});
+    it('should set explicite actions to component', () => {
+        copyIntitialState.todos.push(<TodoModel>{ description: 'test description 2' });
 
-        const actions = ReactStateTestBed.createActions(TodoStateActions, initialState, ['todos', 0]) as TodoStateActions;
+        const actions = ReactStateTestBed.createActions(TodoStateActions, copyIntitialState, ['todos', 1]) as TodoStateActions;
         ReactStateTestBed.setActionsToComponent(actions, component);
-        expect(component.actions.testTodoDescriptio).toEqual('test description');
+        expect(component.actions.testTodoDescriptio).toEqual('test description 2');
     });
 });

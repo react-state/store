@@ -35,6 +35,10 @@ export class TodosStateActions extends HasStore<any> {
         this.store.reset();
     }
 
+    get todosSync(): any {
+        return this.state.toArray();
+    }
+
     @Async()
     get todos(): any {
         return this.store.map(state => state.toArray());

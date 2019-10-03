@@ -2,6 +2,7 @@ import { StateHistory } from '../state/history';
 import { Dispatcher } from '../services/dispatcher';
 import { DataStrategyProvider } from '../data-strategy/data-strategy-provider';
 import { ReactStateConfig } from '../react-state.config';
+import { ReactStateTestBed } from '../react-state.test-bed';
 
 export function ComponentState(stateActions: any | ((T: any) => any), updateComponentOnEveryRender: boolean = false) {
 
@@ -14,6 +15,7 @@ export function ComponentState(stateActions: any | ((T: any) => any), updateComp
         const componentWillMount = function (componentInstance: any, props: { statePath: any, stateIndex: any }) {
 
             if (ReactStateConfig.isTest) {
+                componentInstance.actions = ReactStateTestBed.getActionsInstance(stateActions, ReactStateTestBed.strictActionsCheck);
                 return;
             }
 
