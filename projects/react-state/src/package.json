@@ -28,7 +28,7 @@
     },
     "homepage": "https://github.com/react-state/store#readme",
     "dependencies": {
-        "@react-state/data-strategy": "^1.4.2",
+        "@react-state/data-strategy": "^1.8.2",
         "reflect-metadata":"0.1.13"
     },
     "peerDependencies": {
