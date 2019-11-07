@@ -17,7 +17,7 @@ export class ReactStateTestBed {
     public static getActionsInstance(actionsType: any, strictActionsCheck: boolean = true) {
         const componentActions = ReactStateTestBed.actions.find(c => c.actionsType === actionsType);
         if (componentActions) {
-            return componentActions.instance;
+            return componentActions;
         } else if (strictActionsCheck) {
             throw new Error(`No actions were found for ${actionsType}`);
         } else {
@@ -53,7 +53,7 @@ export class ReactStateTestBed {
         actions.createTestStore(ReactStateTestBed.getPath(path));
 
         if (!ReactStateTestBed.getActionsInstance(actionsType, false)) {
-            ReactStateTestBed.actions.push({ actionsType, instance: actions });
+            ReactStateTestBed.actions.push({ actionsType, instance: actions, statePath: path });
         }
 
         return actions;
@@ -76,4 +76,5 @@ export class ReactStateTestBed {
 export interface TestComponentActions {
     actionsType: any;
     instance: any;
+    statePath: string | any[];
 }

@@ -9,7 +9,7 @@
         "noImplicitAny": false,
         "moduleResolution": "node",
         "module": "commonjs",
-        "target": "es2015",
+        "target": "es5",
         "jsx": "react",
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
@@ -26,6 +26,9 @@
             ],
             "@react-state/immutablejs-data-strategy": [
                 "./projects/immutable-data-strategy/release"
+            ],
+            "@react-state/store": [
+                "./projects/react-state/release"
             ]
         }
     },

@@ -15,28 +15,30 @@ export function ComponentState(stateActions: any | ((T: any) => any), updateComp
         const componentWillMount = function (componentInstance: any, props: { statePath: any, stateIndex: any }) {
 
             if (ReactStateConfig.isTest) {
-                componentInstance.actions = ReactStateTestBed.getActionsInstance(stateActions, ReactStateTestBed.strictActionsCheck);
-                return;
+                const actions = ReactStateTestBed.getActionsInstance(stateActions, ReactStateTestBed.strictActionsCheck);
+                if (actions) {
+                    componentInstance.actions = actions.instance;
+                    componentInstance.statePath = actions.statePath;
+                    return;
+                }
             }
 
             let statePath = !props.statePath
                 ? []
                 : props.statePath;
 
-            if (stateActions) {
-                // DOC - CONVETION: only annonymous function allowed for choosing state; Actions can be only named functions;
-                const extractedStateAction = stateActions.name === ''
-                    ? stateActions(componentInstance)
-                    : stateActions;
+            // DOC - CONVETION: only annonymous function allowed for choosing state; Actions can be only named functions;
+            const extractedStateAction = stateActions.name === ''
+                ? stateActions(componentInstance)
+                : stateActions;
 
-                const actions = new extractedStateAction();
-                const stateIndex = componentInstance.stateIndex
-                    ? componentInstance.stateIndex
-                    : props.stateIndex;
+            const actions = new extractedStateAction();
+            const stateIndex = componentInstance.stateIndex
+                ? componentInstance.stateIndex
+                : props.stateIndex;
 
-                componentInstance.statePath = actions.createStore(statePath, stateIndex);
-                componentInstance.actions = actions;
-            }
+            componentInstance.statePath = actions.createStore(statePath, stateIndex);
+            componentInstance.actions = actions;
         };
 
         target.prototype.componentDidMount = function () {

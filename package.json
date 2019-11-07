@@ -33,13 +33,18 @@
         "@types/react-dom": "^16.8.3",
         "@types/react-router-dom": "^4.3.1",
         "awesome-typescript-loader": "^5.2.1",
+        "@types/enzyme": "^3.10.3",
+        "@types/enzyme-adapter-react-16": "^1.0.5",
         "babel-runtime": "^6.23.0",
         "bootstrap": "^4.3.1",
         "core-js": "^2.4.1",
         "cpy-cli": "^1.0.1",
+        "enzyme": "^3.10.0",
+        "enzyme-adapter-react-16": "^1.15.1",
+        "enzyme-to-json": "^3.4.3",
         "fast-deep-equal": "^2.0.1",
         "html-webpack-plugin": "^3.2.0",
-        "immer": "^3.1.2",
+        "immer": "^5.0.0",
         "immutable": "^3.8.1",
         "immutable-cursor": "^2.0.1",
         "istanbul-instrumenter-loader": "^0.2.0",
@@ -61,48 +66,6 @@
         "webpack": "^4.29.6",
         "webpack-cli": "^3.3.0",
         "webpack-dev-server": "^3.2.1"
-    },
-    "jest": {
-        "transform": {
-            "^.+\\.(ts|tsx)?$": "ts-jest"
-        },
-        "testRegex": "(spec/__tests__/.*|(\\.|/)(test|spec))\\.((ts|tsx)?)$",
-        "testPathIgnorePatterns": [
-            "/node_modules/"
-        ],
-        "collectCoverage": false,
-        "coverageReporters": [
-            "lcov",
-            "text"
-        ],
-        "coverageDirectory": "tests-coverage",
-        "collectCoverageFrom": [
-            "src/**/*component.ts",
-            "src/**/*service.ts",
-            "src/**/*pipe.ts",
-            "src/**/form-element.base.ts"
-        ],
-        "moduleFileExtensions": [
-            "ts",
-            "tsx",
-            "js",
-            "jsx",
-            "json",
-            "node"
-        ],
-        "setupFiles": [
-            "./spec/localstorage.mock.ts"
-        ],
-        "modulePathIgnorePatterns": [
-            "<rootDir>/projects/"
-        ],
-        "moduleNameMapper": {
-            "^@react-state/store$": "<rootDir>/projects/react-state/release",
-            "^@react-state/data-strategy$": "<rootDir>/projects/data-strategy/release",
-            "^@react-state/immer-data-strategy$": "<rootDir>/projects/immer-data-strategy/release",
-            "^@react-state/immutable-data-strategy$": "<rootDir>/projects/immutable-data-strategy/release",
-            "^@react-state/(.*)$": "<rootDir>/projects/$1/release"
-        }
     },
     "dependencies": {
         "reflect-metadata": "^0.1.13"

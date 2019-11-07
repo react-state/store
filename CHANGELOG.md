@@ -1,3 +1,8 @@
+### 6.8.2
+- made fully compatible for enzyme testing including nested components
+- added optional type to `select` operator for type of subselect state
+- upgraded peer dependency of immer to 5.0.0
+
 ### 6.8.1
 - simplified actions assigment for component. Now actons are assigned automatically by actions type to each component. No need to call `setActionsToComponent` unless you want to assigne custom actions instance to specific component.
 
@@ -68,7 +73,7 @@
 - Fixed bug with inheritance
 
 ### 3.3.2
-- Added createStore method to NgStateTestBed
+- Added createStore method to ReactStateTestBed
 
 ### 3.1.1
 - Simplified TestBed. Now `initial state` and `statePath` are optional and has defult values of `{}` and `[]`. More info in Readme.

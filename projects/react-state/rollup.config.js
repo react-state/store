@@ -2,7 +2,7 @@ export default {
   entry: './release/index.js',
   dest: './release/bundles/store.umd.js',
   format: 'umd',
-  moduleName: 'ngState.store',
+  moduleName: 'reactState.store',
   globals: {
     'react': 'React',
     'react-dom': 'ReactDOM',
