@@ -32,10 +32,9 @@
         "reflect-metadata":"0.1.13"
     },
     "peerDependencies": {
-        "core-js": "^2.4.1",
         "react": "^16.0.0",
         "react-dom": "^16.0.0",
-        "react-router-dom": "^4.2.2",
+        "react-router-dom": "^5.x",
         "rxjs": "^6.3.2",
         "history": "^4.9.0"
     }
