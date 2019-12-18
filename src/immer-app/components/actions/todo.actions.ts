@@ -11,7 +11,7 @@ export class TodoStateActions extends HasStore<any> {
         });
     }
 
-    get testTodoDescriptio() {
+    get testTodoDescription() {
         return this.state.description;
     }
 }

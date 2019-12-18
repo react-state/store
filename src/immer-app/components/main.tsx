@@ -6,6 +6,7 @@ import { AsyncDemo } from './async-demo';
 import { Wrapper } from './wrapper';
 import { StorageComponent } from './external-storage';
 import { FormsComponent } from './forms.component';
+import WrapperHooks from './wrapper-hooks';
 
 export class Main extends React.Component<any, undefined> {
 
@@ -15,6 +16,9 @@ export class Main extends React.Component<any, undefined> {
             <nav className='nav'>
                 <li className='nav-item'>
                     <Link className='nav-link' to='/' title='Todos'>Todos</Link>
+                </li>
+                <li className='nav-item'>
+                    <Link className='nav-link' to='/todos-hooks' title='Async Demo'>Todos Hooks</Link>
                 </li>
                 <li className='nav-item'>
                     <Link className='nav-link' to='/forms' title='Forms'>Forms</Link>
@@ -37,6 +41,7 @@ export class Main extends React.Component<any, undefined> {
                             <Route path='/async-demo' component={AsyncDemo} />
                             <Route path='/forms' component={FormsComponent} />
                             <Route path='/external-storage' component={StorageComponent} />
+                            <Route path='/todos-hooks' component={WrapperHooks} />
                         </div>
                     </Router>
                 </div>

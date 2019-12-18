@@ -21,11 +21,11 @@ describe('TodoDescription', () => {
     });
 
     it('should get description', () => {
-        expect(component.actions.testTodoDescriptio).toEqual('test description');
+        expect(component.actions.testTodoDescription).toEqual('test description');
     });
 
     it('should get description from oveeriden constructor', () => {
-        expect(component.actions.testTodoDescriptio).toEqual('test description');
+        expect(component.actions.testTodoDescription).toEqual('test description');
     });
 
     it('should set explicite actions to component', () => {
@@ -33,6 +33,6 @@ describe('TodoDescription', () => {
 
         const actions = ReactStateTestBed.createActions(TodoStateActions, copyIntitialState, ['todos', 1]) as TodoStateActions;
         ReactStateTestBed.setActionsToComponent(actions, component);
-        expect(component.actions.testTodoDescriptio).toEqual('test description 2');
+        expect(component.actions.testTodoDescription).toEqual('test description 2');
     });
 });

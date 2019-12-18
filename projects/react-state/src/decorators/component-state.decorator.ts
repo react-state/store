@@ -1,16 +1,14 @@
-import { StateHistory } from '../state/history';
-import { Dispatcher } from '../services/dispatcher';
-import { DataStrategyProvider } from '../data-strategy/data-strategy-provider';
 import { ReactStateConfig } from '../react-state.config';
 import { ReactStateTestBed } from '../react-state.test-bed';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
-export function ComponentState(stateActions: any | ((T: any) => any), updateComponentOnEveryRender: boolean = false) {
+export function ComponentState(stateActions: any | ((T: any) => any)) {
 
     return (target: any) => {
-
         const componentDidMount = target.prototype.componentDidMount || (() => { });
         const componentWillUnmount = target.prototype.componentWillUnmount || (() => { });
-        const shouldComponentUpdate = target.prototype.shouldComponentUpdate || (() => updateComponentOnEveryRender);
+        const shouldComponentUpdate = target.prototype.shouldComponentUpdate || (() => false);
 
         const componentWillMount = function (componentInstance: any, props: { statePath: any, stateIndex: any }) {
 
@@ -42,31 +40,12 @@ export function ComponentState(stateActions: any | ((T: any) => any), updateComp
         };
 
         target.prototype.componentDidMount = function () {
-            this.asyncUpdateSubscription = Dispatcher
-                .subscribe(this.actions.aId, (state) => {
-                    if (state) {
-                        this.prevState = state;
-                    }
-
-                    this.forceUpdate();
-                });
+            this.unsubscriber = new Subject();
+            this.asyncUpdateSubscription = this.actions.store
+                .pipe(takeUntil(this.unsubscriber))
+                .subscribe(() => this.forceUpdate());
 
             componentDidMount.call(this);
-        };
-
-        target.prototype.shouldComponentUpdate = function (nextProps: any, nextState: any) {
-            const currentState = DataStrategyProvider.instance.getIn(StateHistory.instance.currentState, this.statePath);
-
-            const shouldUpdate = this.prevState == null ||
-                (DataStrategyProvider.instance.isObject(currentState)
-                    ? !DataStrategyProvider.instance.equals(this.prevState, currentState)
-                    : this.prevState !== currentState);
-
-            this.prevState = currentState;
-
-            return shouldUpdate
-                ? true
-                : shouldComponentUpdate.apply(this, arguments);
         };
 
         target.prototype.componentWillUnmount = function () {
@@ -76,11 +55,14 @@ export function ComponentState(stateActions: any | ((T: any) => any), updateComp
                 this.actions.onDestroy();
             }
 
-            if (this.asyncUpdateSubscription) {
-                this.asyncUpdateSubscription.unsubscribe();
-            }
+            this.unsubscriber.next();
+            this.unsubscriber.unsubscribe();
 
             componentWillUnmount.call(this);
+        };
+
+        target.prototype.shouldComponentUpdate = function () {
+            return shouldComponentUpdate.apply(this, arguments);
         };
 
         return class extends target {

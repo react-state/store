@@ -3,7 +3,6 @@ import 'reflect-metadata';
 import { StateHistory } from '../state/history';
 import { Store } from '../store/store';
 import { AsyncValueResolver } from '../helpers/async-value-resolver';
-import { Dispatcher } from '../services/dispatcher';
 import { Helpers } from '../helpers/helpers';
 import { DataStrategyProvider } from '../data-strategy/data-strategy-provider';
 import { ReactStateConfig } from '../react-state.config';
@@ -133,7 +132,6 @@ export function InjectStore(newPath: string[] | string | ((currentPath: any, sta
             this.stateChangeSubscription = this.store
                 .subscribe((state: any) => {
                     this.state = state;
-                    Dispatcher.publish(this.aId, state);
 
                     if (debug) {
                         console.info(DataStrategyProvider.instance.toJS(state));
