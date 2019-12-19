@@ -6,7 +6,7 @@ import { AsyncDemo } from './async-demo';
 import { Wrapper } from './wrapper';
 import { StorageComponent } from './external-storage';
 import { FormsComponent } from './forms.component';
-import WrapperHooks from './wrapper-hooks';
+import WrapperHooks from './hooks/wrapper-hooks';
 
 export class Main extends React.Component<any, undefined> {
 

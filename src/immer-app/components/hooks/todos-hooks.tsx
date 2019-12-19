@@ -1,13 +1,13 @@
 import * as React from 'react';
 
-import { ClearTodoMessage, TodoModel } from './actions/todo.model';
-import { Dispatcher, Message } from '../../../projects/react-state/src/services/dispatcher';
+import { ClearTodoMessage, TodoModel } from '../actions/todo.model';
+import { Dispatcher, Message } from '../../../../projects/react-state/src/services/dispatcher';
 
 import { Subscription } from 'rxjs';
 import TodoDescriptionHooks from './description-hooks';
 import { useEffect } from 'react';
-import { TodosStateActions } from './actions/todos.actions';
-import useComponentState = require('../../../projects/react-state/src/decorators/component-state.hook');
+import { TodosStateActions } from '../actions/todos.actions';
+import useComponentState = require('../../../../projects/react-state/src/decorators/component-state.hook');
 
 const TodosWithHooks = ({ testProp }: any) => {
     let description: HTMLInputElement;
@@ -93,4 +93,4 @@ const TodosWithHooks = ({ testProp }: any) => {
     );
 };
 
-export default React.memo(TodosWithHooks);
+export default TodosWithHooks;
