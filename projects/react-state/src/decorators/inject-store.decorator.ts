@@ -108,7 +108,7 @@ export function InjectStore(newPath: string[] | string | ((currentPath: any, sta
     return (target: any) => {
         target.prototype.createStore = function (currentPath: any[], stateIndex: (string | number) | (string | number)[]) {
 
-            this.aId = Helpers.guid();
+            this.aId = Helpers.guid(); // TODO: REMOVE
 
             let extractedPath = typeof newPath === 'function' && (<any>newPath).name === ''
                 ? (<any>newPath)(currentPath, stateIndex)
@@ -161,4 +161,10 @@ export function InjectStore(newPath: string[] | string | ((currentPath: any, sta
 export abstract class HasStore<T> {
     store: Store<T> = null;
     state: T = null;
+}
+
+export interface ActionInjector<T> extends HasStore<T> {
+    onDestroy: () => void;
+    createTestStore: (statePath: any[]) => void;
+    createStore: (currentPath: string | any[], stateIndex: (string | number) | (string | number)[]) => string | string[];
 }

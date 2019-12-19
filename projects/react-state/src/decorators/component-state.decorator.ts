@@ -43,7 +43,7 @@ export function ComponentState(stateActions: any | ((T: any) => any)) {
             this.unsubscriber = new Subject();
             this.asyncUpdateSubscription = this.actions.store
                 .pipe(takeUntil(this.unsubscriber))
-                .subscribe(() => this.forceUpdate());
+                .subscribe(() => { console.log(this.actions.statePath); this.forceUpdate(); });
 
             componentDidMount.call(this);
         };

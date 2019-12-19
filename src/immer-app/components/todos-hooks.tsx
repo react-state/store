@@ -3,23 +3,20 @@ import * as React from 'react';
 import { ClearTodoMessage, TodoModel } from './actions/todo.model';
 import { Dispatcher, Message } from '../../../projects/react-state/src/services/dispatcher';
 
-import { HasStateActions } from '../../../projects/react-state/src/decorators/component-state.decorator';
 import { Subscription } from 'rxjs';
-import { TodoDescription } from './description';
+import TodoDescriptionHooks from './description-hooks';
 import { useEffect } from 'react';
 import { TodosStateActions } from './actions/todos.actions';
-import connect from '../../../projects/react-state/src/decorators/component-state.hook';
+import useComponentState = require('../../../projects/react-state/src/decorators/component-state.hook');
 
-interface Props extends HasStateActions<TodosStateActions> {
-    testProp: string;
-}
-
-const TodosWithHooks = ({ actions = {} as any, statePath, testProp }: Props) => {
+const TodosWithHooks = ({ testProp }: any) => {
     let description: HTMLInputElement;
     let name: HTMLInputElement;
     let subscription: Subscription;
+    const { actions, statePath } = useComponentState(TodosStateActions);
 
     useEffect(() => {
+
         subscription = Dispatcher
             .subscribe(ClearTodoMessage as Message, (payload: any) => {
                 actions.clearTodos();
@@ -53,7 +50,7 @@ const TodosWithHooks = ({ actions = {} as any, statePath, testProp }: Props) => 
         return Math.random();
     };
 
-    if (!actions.todos) {
+    if (!actions) {
         return null;
     }
 
@@ -61,7 +58,7 @@ const TodosWithHooks = ({ actions = {} as any, statePath, testProp }: Props) => 
         return (<tr key={index}>
             <th scope='row'>{index + 1}</th>
             <td>{item.name}</td>
-            <td><TodoDescription key={index} statePath={statePath} stateIndex={index} /></td>
+            <td><TodoDescriptionHooks key={index} statePath={statePath} stateIndex={index} /></td>
             <td><button className='btn btn-danger' onClick={() => deleteItem(index)}>X</button></td>
         </tr>);
     });
@@ -96,15 +93,4 @@ const TodosWithHooks = ({ actions = {} as any, statePath, testProp }: Props) => 
     );
 };
 
-const TodosWithState = connect(TodosStateActions, TodosWithHooks);
-
-const wrapper = () => {
-    return (
-        <div>
-            <TodosWithState testProp={2} />
-        </div>
-    );
-};
-
-
-export default wrapper;
+export default React.memo(TodosWithHooks);
