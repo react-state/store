@@ -3,8 +3,7 @@ import { Dispatcher, Message } from '../../projects/react-state/src/services/dis
 import { ImmutableJsDataStrategy } from '../../projects/immutable-data-strategy/src/immutablejs.data-strategy';
 import { ReactStateTestBed } from '../../projects/react-state/src/react-state.test-bed';
 import { ReactStateConfig } from '../../projects/react-state/src/react-state.config';
-import { StateKeeper } from '../../projects/react-state/src/state/history';
-import { fromJS } from 'immutable';
+import { Subject } from 'rxjs';
 
 const actionId = 'actionId';
 class TestStateActions {
@@ -12,9 +11,12 @@ class TestStateActions {
     createStore(statePath: string[], stateIndex: number | null) {
         return ['newStatePath'];
     }
+    store = null;
+    onDestroy = () => { };
 }
 
 class TargetComponent {
+    constructor(props: any) { }
     statePath: string[];
     stateIndex: number | null;
     actions: any;
@@ -25,65 +27,82 @@ class TargetComponent {
     forceUpdate() { }
 }
 
+class TargetComponentSecond {
+    constructor(props: any) { }
+    statePath: string[];
+    stateIndex: number | null;
+    actions: any;
+    props = {};
+    componentDidMount() { }
+    shouldComponentUpdate() { }
+    componentWillUnmount() { }
+    forceUpdate() { }
+}
 
 describe('ComponentState decorator', () => {
     let target: TargetComponent;
+    const decorator = ComponentState(TestStateActions);
+    const decoratedClass = decorator(TargetComponent);
 
-    let beforeEach = function (actions?) {
+    let beforeEach = () => {
         ReactStateTestBed.setTestEnvironment(new ImmutableJsDataStrategy());
         ReactStateConfig.isTest = false;
-        const decorator = ComponentState(actions);
-        const decoratedClass = decorator(TargetComponent);
         target = new decoratedClass({ statePath: [] });
+        target.actions.store = new Subject();
     };
 
     it('should resolve stateActions', () => {
-        beforeEach(TestStateActions);
-        expect(target.statePath[0]).toBe('newStatePath');
-        expect(target.actions instanceof TestStateActions).toBeTruthy();
-    });
-
-    it('should resolve stateActions from anonymous function', () => {
-        beforeEach(() => TestStateActions);
+        beforeEach();
         expect(target.statePath[0]).toBe('newStatePath');
         expect(target.actions instanceof TestStateActions).toBeTruthy();
     });
 
     it('should call forceUpdate after state change', () => {
-        beforeEach(TestStateActions);
+        beforeEach();
         target.componentDidMount();
         jest.spyOn(target, 'forceUpdate');
-
-        Dispatcher.publish(new Message(actionId, ''));
+        target.actions.store.next();
 
         expect(target.forceUpdate).toHaveBeenCalled();
     });
 
-    it('shouldUpdate should return true if state value is different', () => {
-        StateKeeper.CURRENT_STATE = fromJS({ newStatePath: 1 });
-        beforeEach(TestStateActions);
-        let shouldUpdate = target.shouldComponentUpdate();
-        expect(shouldUpdate).toBeTruthy();
+    it('should call onDestroy on componentWillUnmount hook', () => {
+        beforeEach();
+        target.componentDidMount();
+        jest.spyOn(target.actions, 'onDestroy');
 
-        shouldUpdate = target.shouldComponentUpdate();
-        expect(shouldUpdate).toBeFalsy();
+        target.componentWillUnmount();
 
-        StateKeeper.CURRENT_STATE = StateKeeper.CURRENT_STATE.set('newStatePath', 2);
-        shouldUpdate = target.shouldComponentUpdate();
-        expect(shouldUpdate).toBeTruthy();
+        expect(target.actions.onDestroy).toHaveBeenCalled();
     });
 
-    it('shouldUpdate should return true if state object is different', () => {
-        StateKeeper.CURRENT_STATE = fromJS({ newStatePath: { test: 1 } });
-        beforeEach(TestStateActions);
-        let shouldUpdate = target.shouldComponentUpdate();
-        expect(shouldUpdate).toBeTruthy();
+    it('should unsubscribe from store componentWillUnmount hook', () => {
+        beforeEach();
+        target.componentDidMount();
+        jest.spyOn(target, 'forceUpdate');
 
-        shouldUpdate = target.shouldComponentUpdate();
-        expect(shouldUpdate).toBeFalsy();
+        target.componentWillUnmount();
+        target.actions.store.next();
 
-        StateKeeper.CURRENT_STATE = StateKeeper.CURRENT_STATE.setIn(['newStatePath', 'test'], 2);
-        shouldUpdate = target.shouldComponentUpdate();
-        expect(shouldUpdate).toBeTruthy();
+        expect(target.forceUpdate).not.toHaveBeenCalled();
+    });
+});
+
+describe('ComponentState decorator', () => {
+    let target: TargetComponentSecond;
+    const decorator = ComponentState(() => TestStateActions);
+    const decoratedClass = decorator(TargetComponentSecond);
+
+    let beforeEach = () => {
+        ReactStateTestBed.setTestEnvironment(new ImmutableJsDataStrategy());
+        ReactStateConfig.isTest = false;
+        target = new decoratedClass({ statePath: [] });
+        target.actions.store = new Subject();
+    };
+
+    it('should resolve stateActions from anonymous function', () => {
+        beforeEach();
+        expect(target.statePath[0]).toBe('newStatePath');
+        expect(target.actions instanceof TestStateActions).toBeTruthy();
     });
 });
