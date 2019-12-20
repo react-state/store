@@ -52,7 +52,9 @@ const useComponentState = <T>(stateActions: new () => HasStore<T>, statePath: st
     React.useEffect(() => {
         actions.current.store
             .pipe(takeUntil(unsubscriber))
-            .subscribe(() => { console.log(sp.current); forceUpdate(); });
+            .subscribe(() => {
+                forceUpdate();
+            });
 
         return () => {
             componentWillUnmount();
