@@ -1,6 +1,6 @@
 {
     "name": "@react-state/data-strategy",
-    "version": "1.8.2",
+    "version": "2.0.0",
     "description": "Contract for different data stratgies for @react-state",
     "main": "index.js",
     "repository": {
@@ -8,21 +8,26 @@
       "url": "git+https://github.com/ng-state/data-strategy.git"
     },
     "keywords": [
-        "ng-state",
+        "react-state",
         "rxjs",
         "immer",
         "immutablejs",
-        "angular",
+        "react",
         "state",
         "management",
         "typescript",
-        "angular",
-        "store",
-        "store",
         "observable",
         "data",
         "store",
-        "redux"
+        "redux",
+        "mobx",
+        "hooks",
+        "state management",
+        "immutable",
+        "nested state",
+        "observable data store",
+        "javascript",
+        "react store"
     ],
     "author": "Vytautas Pranskunas <vytautas.pranskunas@gmail.com>",
     "license": "MIT",

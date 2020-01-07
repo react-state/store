@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ImmerDataStrategy } from '../../projects/immer-data-strategy/src/immer.data-strategy';
 import { ReactStateTestBed } from '../../projects/react-state/src/react-state.test-bed';
 import { ReactStateConfig } from '../../projects/react-state/src/react-state.config';
-import useComponentState = require('../../projects/react-state/src/decorators/component-state.hook');
+import { useComponentState } from '../../projects/react-state/src/decorators/component-state.hook';
 import { HasStore } from '../../projects/react-state/src/decorators/inject-store.decorator';
 import { Subject } from 'rxjs';
 

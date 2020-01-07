@@ -1,6 +1,5 @@
 import { DataStrategy } from '@react-state/data-strategy';
 import { produce, setAutoFreeze } from 'immer';
-import * as deepEquals from 'fast-deep-equal';
 
 export class ImmerDataStrategy extends DataStrategy {
 
@@ -95,10 +94,6 @@ export class ImmerDataStrategy extends DataStrategy {
         });
 
         this.rootStore.next(nextState);
-    }
-
-    equals(objOne: any, objTwo: any): boolean {
-        return deepEquals(objOne, objTwo);
     }
 
     private getCursor(state: any, propertyPath: string | any[]): any {

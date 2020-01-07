@@ -1,6 +1,6 @@
 {
     "name": "@react-state/immutablejs-data-strategy",
-    "version": "1.8.2",
+    "version": "2.0.0",
     "description": "ImmutableJs data strategy for @react-state/store",
     "main": "index.js",
     "repository": {
@@ -8,21 +8,26 @@
         "url": "git+https://github.com/ng-state/data-strategy.git"
     },
     "keywords": [
-        "ng-state",
+        "react-state",
         "rxjs",
         "immer",
         "immutablejs",
-        "angular",
+        "react",
         "state",
         "management",
         "typescript",
-        "angular",
-        "store",
-        "store",
         "observable",
         "data",
         "store",
-        "redux"
+        "redux",
+        "mobx",
+        "hooks",
+        "state management",
+        "immutable",
+        "nested state",
+        "observable data store",
+        "javascript",
+        "react store"
     ],
     "author": "Vytautas Pranskunas <vytautas.pranskunas@gmail.com>",
     "license": "MIT",
@@ -31,8 +36,9 @@
     },
     "homepage": "https://github.com/ng-state/data-strategy#readme",
     "peerDependencies": {
-        "@react-state/data-strategy": "^1.0.2",
-        "immer": "^3.1.2",
+        "@react-state/data-strategy": "^2.0.0",
+        "immutable": "^3.8.1",
+        "immutable-cursor": "^2.0.1",
         "rxjs": "^6.3.2"
     }
 }

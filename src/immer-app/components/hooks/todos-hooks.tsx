@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs';
 import TodoDescriptionHooks from './description-hooks';
 import { useEffect } from 'react';
 import { TodosStateActions } from '../actions/todos.actions';
-import useComponentState = require('../../../../projects/react-state/src/decorators/component-state.hook');
+import { useComponentState } from '../../../../projects/react-state/src/decorators/component-state.hook';
 
 const TodosWithHooks = ({ testProp }: any) => {
     let description: HTMLInputElement;

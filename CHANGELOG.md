@@ -1,3 +1,6 @@
+### 7.0.0
+- introduced `useComponentState` hook to follow React hooks concept
+
 ### 6.8.2
 - made fully compatible for enzyme testing including nested components
 - added optional type to `select` operator for type of subselect state

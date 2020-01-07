@@ -1,6 +1,6 @@
 {
     "name": "@react-state/store",
-    "version": "6.8.2",
+    "version": "7.0.0",
     "description": "RxJS and ImmutableJs powered nested state management for React apps inspired by @ngrx and Redux.",
     "main": "index.js",
     "repository": {
@@ -8,18 +8,26 @@
         "url": "git+https://github.com/react-state/store.git"
     },
     "keywords": [
-        "state management",
+        "react-state",
         "rxjs",
-        "react",
-        "immutable",
+        "immer",
         "immutablejs",
-        "nested state",
+        "react",
+        "state",
+        "management",
+        "typescript",
+        "observable",
+        "data",
         "store",
+        "redux",
+        "mobx",
+        "hooks",
+        "state management",
+        "immutable",
+        "nested state",
         "observable data store",
         "javascript",
-        "typescript",
-        "react store",
-        "redux"
+        "react store"
     ],
     "author": "Vytautas Pranskunas <vytautas.pranskunas@gmail.com>",
     "license": "MIT",
@@ -28,7 +36,7 @@
     },
     "homepage": "https://github.com/react-state/store#readme",
     "dependencies": {
-        "@react-state/data-strategy": "^1.8.2",
+        "@react-state/data-strategy": "^2.0.0",
         "reflect-metadata":"0.1.13"
     },
     "peerDependencies": {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { TodoStateActions } from '../actions/todo.actions';
-import useComponentState = require('../../../../projects/react-state/src/decorators/component-state.hook');
+import { useComponentState }from '../../../../projects/react-state/src/decorators/component-state.hook';
 
 const TodoDescriptionHooks = ({ statePath, stateIndex }) => {
     const { actions } = useComponentState(TodoStateActions, statePath, stateIndex);

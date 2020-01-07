@@ -5,7 +5,7 @@ import { Dispatcher } from '../../../../projects/react-state/src/services/dispat
 import { ClearTodoMessage, UpdateTodoItemMessage } from '../actions/todo.model';
 import { InterpolationTwoStateActions } from '../actions/interpolation-two.actions';
 import { Store } from '../../../../projects/react-state/src/store/store';
-import useComponentState = require('../../../../projects/react-state/src/decorators/component-state.hook');
+import { useComponentState } from '../../../../projects/react-state/src/decorators/component-state.hook';
 
 const InterpolationTwo = ({ statePath }) => {
     const { actions } = useComponentState(InterpolationTwoStateActions, statePath);

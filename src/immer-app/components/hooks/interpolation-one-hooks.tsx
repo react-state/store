@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 import { InterpolationOneStateActions } from '../actions/interpolation-one.actions';
-import useComponentState = require('../../../../projects/react-state/src/decorators/component-state.hook');
+import { useComponentState } from '../../../../projects/react-state/src/decorators/component-state.hook';
 
 
 const InterpolationTwo = ({ statePath }) => {

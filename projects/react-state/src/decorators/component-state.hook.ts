@@ -64,4 +64,4 @@ const useComponentState = <T>(stateActions: new () => HasStore<T>, statePath: st
     return { actions: actions.current as never as T, statePath: sp.current };
 };
 
-export = useComponentState;
+export { useComponentState };
