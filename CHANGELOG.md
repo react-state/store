@@ -1,3 +1,6 @@
+### 7.1.0
+- added `listenTo` method to `Dispatcher`. It returns Observable and can be used with `takeUntil` and other RxJs functions
+
 ### 7.0.0
 - introduced `useComponentState` hook to follow React hooks concept
 
