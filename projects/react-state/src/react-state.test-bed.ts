@@ -13,6 +13,7 @@ export class ReactStateTestBed {
     private static actions: TestComponentActions[] = [];
 
     public static strictActionsCheck = true;
+    public static useComponentRenderer = false;
 
     public static getActionsInstance(actionsType: any, strictActionsCheck: boolean = true) {
         const componentActions = ReactStateTestBed.actions.find(c => c.actionsType === actionsType);
@@ -30,6 +31,7 @@ export class ReactStateTestBed {
         DataStrategyProvider.instance = dataStrategy;
         ReactStateTestBed.actions = [];
         ReactStateTestBed.strictActionsCheck = true;
+        ReactStateTestBed.useComponentRenderer = false;
     }
 
     public static createStore(initialState: any): Store<any> {

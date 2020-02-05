@@ -66,6 +66,7 @@ describe('Enzyme compatibility', () => {
 
         ReactStateTestBed.setTestEnvironment(new ImmerDataStrategy());
         ReactStateTestBed.strictActionsCheck = false;
+        ReactStateTestBed.useComponentRenderer = true;
         ReactStateTestBed.createActions(TodosStateActions, initialState, ['todos']);
 
         wrapper = shallow(<Todos />);

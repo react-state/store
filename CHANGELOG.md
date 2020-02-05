@@ -1,3 +1,6 @@
+### 7.1.2
+- added flag `useComponentRenderer` to `ReactStateTestBed` which should be added in order to use tests with Enzyme or other renderers.
+
 ### 7.1.0
 - added `listenTo` method to `Dispatcher`. It returns Observable and can be used with `takeUntil` and other RxJs functions
 

@@ -40,10 +40,16 @@ export function ComponentState(stateActions: any | ((T: any) => any)) {
         };
 
         target.prototype.componentDidMount = function () {
-            this.unsubscriber = new Subject();
-            this.asyncUpdateSubscription = this.actions.store
-                .pipe(takeUntil(this.unsubscriber))
-                .subscribe(() => this.forceUpdate());
+            this.reactstore__asyncUpdateUnsubscription_ = new Subject();
+            this.actions.store
+                .pipe(takeUntil(this.reactstore__asyncUpdateUnsubscription_))
+                .subscribe(() => {
+                    if (ReactStateConfig.isTest && !ReactStateTestBed.useComponentRenderer) {
+                        return;
+                    }
+
+                    this.forceUpdate();
+                });
 
             componentDidMount.call(this);
         };
@@ -55,8 +61,8 @@ export function ComponentState(stateActions: any | ((T: any) => any)) {
                 this.actions.onDestroy();
             }
 
-            this.unsubscriber.next();
-            this.unsubscriber.unsubscribe();
+            this.reactstore__asyncUpdateUnsubscription_.next();
+            this.reactstore__asyncUpdateUnsubscription_.unsubscribe();
 
             componentWillUnmount.call(this);
         };
