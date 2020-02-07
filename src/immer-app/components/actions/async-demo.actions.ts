@@ -1,10 +1,13 @@
 import { HasStore, InjectStore } from '../../../../projects/react-state/src/decorators/inject-store.decorator';
-import { takeUntil, tap, switchMap } from 'rxjs/operators';
+import { takeUntil, tap, switchMap, map } from 'rxjs/operators';
 import { timer, interval, iif, of } from 'rxjs';
+import { Async } from '../../../../projects/react-state/src/decorators/async.decorator';
 
 @InjectStore('asyncDemo')
 export class AsyncDemoStateActions extends HasStore<any> {
-    get progressAsync(): any {
+
+    @Async()
+    get progress(): any {
         return this.store.select(['checkbox'])
             .pipe(
                 switchMap(state => iif(() => !!state,
@@ -21,12 +24,13 @@ export class AsyncDemoStateActions extends HasStore<any> {
             );
     }
 
-    get disabledAsync(): any {
+    @Async()
+    get disabled(): any {
         return this.store.map(state => state.disabled);
     }
 
     reset = () => {
-        if (this.state.get('checkbox')) {
+        if (this.state.checkbox) {
             this.store.reset();
         }
     }

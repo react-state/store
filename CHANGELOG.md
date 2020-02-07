@@ -1,3 +1,5 @@
+### 7.1.3 Fixed bug with `@Async` decorator that ui was not updated on observable change
+
 ### 7.1.2
 - added flag `useComponentRenderer` to `ReactStateTestBed` which should be added in order to use tests with Enzyme or other renderers.
 

@@ -3,6 +3,7 @@ import { ImmerDataStrategy } from '../../projects/immer-data-strategy/src/immer.
 import { ReactStateTestBed } from '../../projects/react-state/src/react-state.test-bed';
 import { ReactStateConfig } from '../../projects/react-state/src/react-state.config';
 import { Subject } from 'rxjs';
+import { Dispatcher } from '../../projects/react-state/src/services/dispatcher';
 
 const actionId = 'actionId';
 class TestStateActions {
@@ -61,6 +62,15 @@ describe('ComponentState decorator', () => {
         target.componentDidMount();
         jest.spyOn(target, 'forceUpdate');
         target.actions.store.next();
+
+        expect(target.forceUpdate).toHaveBeenCalled();
+    });
+
+    it('should call forceUpdate after async value change', () => {
+        beforeEach();
+        target.componentDidMount();
+        jest.spyOn(target, 'forceUpdate');
+        Dispatcher.publish(actionId, '');
 
         expect(target.forceUpdate).toHaveBeenCalled();
     });

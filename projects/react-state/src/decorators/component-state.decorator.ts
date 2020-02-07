@@ -1,7 +1,8 @@
 import { ReactStateConfig } from '../react-state.config';
 import { ReactStateTestBed } from '../react-state.test-bed';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { Subject, merge } from 'rxjs';
+import { Dispatcher } from '../services/dispatcher';
 
 export function ComponentState(stateActions: any | ((T: any) => any)) {
 
@@ -40,8 +41,10 @@ export function ComponentState(stateActions: any | ((T: any) => any)) {
         };
 
         target.prototype.componentDidMount = function () {
+
             this.reactstore__asyncUpdateUnsubscription_ = new Subject();
-            this.actions.store
+
+            merge(this.actions.store, Dispatcher.listenTo(this.actions.aId))
                 .pipe(takeUntil(this.reactstore__asyncUpdateUnsubscription_))
                 .subscribe(() => {
                     if (ReactStateConfig.isTest && !ReactStateTestBed.useComponentRenderer) {

@@ -12,12 +12,7 @@ export class AsyncDemo extends ReactComponentWithStateActions<any, any, AsyncDem
     private formStateManager: FormStateManager;
     private unsubscribe = new Subject<any>();
 
-    constructor(props: any) {
-        super(props);
-    }
-
     componentDidMount() {
-
         this.formStateManager = Store.store.select(['asyncDemo']).form
             .bind(this.form.current)
             .sync();
@@ -43,13 +38,13 @@ export class AsyncDemo extends ReactComponentWithStateActions<any, any, AsyncDem
                             <div className='form-group' style={{position: 'relative'}}>
                                 <div style={{
                                     position: 'absolute',
-                                    width: (this.actions.progressAsync * 2) + 'px',
+                                    width: (this.actions.progress * 2) + 'px',
                                     height: '2px',
                                     backgroundColor: '#007bff'
                                     }}></div>
                             </div>
                             <div className='form-group'>
-                                <input className='form-control' form-ignore='true' disabled={this.actions.disabledAsync} />
+                                <input className='form-control' form-ignore='true' disabled={this.actions.disabled} />
                             </div>
                         </section>
                     </form>

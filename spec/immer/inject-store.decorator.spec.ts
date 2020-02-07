@@ -7,6 +7,7 @@ import { ImmerDataStrategy } from '../../projects/immer-data-strategy/src/immer.
 import { Store } from '../../projects/react-state/src/store/store';
 import { ReactStateConfig } from '../../projects/react-state/src/react-state.config';
 import { AsyncValueResolver } from '../../projects/react-state/src/helpers/async-value-resolver';
+import { Dispatcher } from '../../projects/react-state/src/services/dispatcher';
 
 const asyncValue = new BehaviorSubject<number>(1);
 
@@ -172,6 +173,16 @@ describe('InjectStore decorator', () => {
             expect(Object.keys(AsyncValueResolver.instance['values']).length).toBe(0);
             expect(Object.keys(AsyncValueResolver.instance['subscriptions']).length).toBe(0);
             expect(firstSubscription.unsubscribe).toHaveBeenCalled();
+        });
+
+        it('should dispatch message about value change', () => {
+            setup(['test'], null, true);
+            target.createStore(['parent']);
+            spyOn(Dispatcher, 'publish');
+
+            asyncValue.next(2);
+             ((target as TestStateActions).isClosed as any);
+            expect(Dispatcher.publish).toHaveBeenCalled();
         });
     });
 });
