@@ -48,7 +48,7 @@
     },
     "homepage": "https://github.com/ng-state/data-strategy#readme",
     "devDependencies": {
-        "@angular/core": "^7.2.15",
+        "@angular/core": "^11.0.5",
         "@ng-state/data-strategy": "^1.0.2",
         "@types/node": "^11.13.4",
         "awesome-typescript-loader": "^5.2.1",
